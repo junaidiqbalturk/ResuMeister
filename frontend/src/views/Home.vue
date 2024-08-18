@@ -34,6 +34,7 @@
 
     <!-- Features Section -->
     <section class="features">
+      <h2>Why Choose ResuMeister?</h2>
       <div class="container">
         <div class="feature-item" v-for="feature in features" :key="feature.id">
           <i :class="feature.icon"></i>
@@ -41,6 +42,37 @@
           <p>{{ feature.description }}</p>
         </div>
       </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+      <h2>How It Works</h2>
+      <div class="steps-container">
+        <div class="step" v-for="step in steps" :key="step.id">
+          <i :class="step.icon"></i>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.description }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+      <h2>What Our Users Say</h2>
+      <div class="testimonials-container">
+        <div class="testimonial" v-for="testimonial in testimonials" :key="testimonial.id">
+          <img :src="testimonial.photo" alt="User Photo" class="testimonial-photo">
+          <p class="testimonial-text">“{{ testimonial.feedback }}”</p>
+          <p class="testimonial-author">{{ testimonial.name }}, {{ testimonial.jobTitle }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+      <h2>Ready to Land Your Dream Job?</h2>
+      <p>Sign up today and start building your professional resume with ResuMeister.</p>
+      <a href="#" class="btn btn-primary">Create Your Resume</a>
     </section>
 
     <!-- Footer -->
@@ -55,17 +87,17 @@
   </div>
 </template>
 
-
 <script>
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.css';
+
 export default {
   name: 'Home',
   components: {
     Swiper,
     SwiperSlide
   },
-data() {
+  data() {
     return {
       slides: [
         {
@@ -84,21 +116,76 @@ data() {
       features: [
         {
           id: 1,
-          icon: 'fas fa-file-alt',
-          title: 'Beautiful Templates',
-          description: 'Choose from a variety of professional templates.'
+          icon: 'fas fa-star',
+          title: 'Easy to Use',
+          description: 'Our user-friendly interface lets you create your resume with just a few clicks.'
         },
         {
           id: 2,
-          icon: 'fas fa-user-edit',
-          title: 'Easy Customization',
-          description: 'Personalize your resume to suit your needs.'
+          icon: 'fas fa-briefcase',
+          title: 'Professional Templates',
+          description: 'Choose from a variety of templates designed by experts.'
         },
         {
           id: 3,
-          icon: 'fas fa-share-alt',
-          title: 'One-Click Sharing',
-          description: 'Share your resume directly with employers.'
+          icon: 'fas fa-cogs',
+          title: 'Customizable',
+          description: 'Tailor your resume to your unique style and profession.'
+        },
+        {
+          id: 4,
+          icon: 'fas fa-check',
+          title: 'ATS Friendly',
+          description: 'Our resumes are optimized to get past Applicant Tracking Systems.'
+        }
+      ],
+      steps: [
+        {
+          id: 1,
+          icon: 'fas fa-template',
+          title: 'Select a Template',
+          description: 'Choose from a range of professional templates.'
+        },
+        {
+          id: 2,
+          icon: 'fas fa-user',
+          title: 'Enter Your Details',
+          description: 'Fill in your personal information, work experience, and skills.'
+        },
+        {
+          id: 3,
+          icon: 'fas fa-paint-brush',
+          title: 'Customize',
+          description: 'Adjust the layout, colors, and fonts to your preference.'
+        },
+        {
+          id: 4,
+          icon: 'fas fa-download',
+          title: 'Download',
+          description: 'Save your resume as a PDF or share it directly with employers.'
+        }
+      ],
+      testimonials: [
+        {
+          id: 1,
+          photo: '@/assets/user1.jpg',
+          feedback: 'ResuMeister helped me land my dream job! The templates are top-notch and easy to use.',
+          name: 'Jane Doe',
+          jobTitle: 'Marketing Specialist'
+        },
+        {
+          id: 2,
+          photo: '@/assets/user2.jpg',
+          feedback: 'I love the customization options. My resume looks fantastic!',
+          name: 'John Smith',
+          jobTitle: 'Software Engineer'
+        },
+        {
+          id: 3,
+          photo: '@/assets/user3.jpg',
+          feedback: 'The ATS-friendly feature is a game-changer. I got more interviews after using ResuMeister.',
+          name: 'Emily Johnson',
+          jobTitle: 'Graphic Designer'
         }
       ]
     };
@@ -111,10 +198,33 @@ data() {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', sans-serif;
   box-sizing: border-box;
   overflow-x: hidden;
+  width: 100%;
+  height: 100%;
 }
+.container {
+  width: 100%;
+  max-width: 1200px; /* Or any max-width suitable for your design */
+  margin: 0 auto; /* Center the container */
+  padding: 0 15px; /* Add some padding if needed */
+}
+section, .feature-item, .step, .testimonial {
+  box-sizing: border-box;
+}
+.navbar, .slider, .features, .how-it-works, .testimonials, .cta, footer {
+  width: 100%;
+  box-sizing: border-box;
+}
+.slider {
+  width: 100vw;
+  height: 80vh;
+}
+body {
+  overflow-x: hidden;
+}
+
 
 /* Navbar Styles */
 .navbar {
@@ -230,11 +340,18 @@ body {
 .features {
   padding: 60px 50px;
   background-color: #f4f4f4;
+  text-align: center;
+}
+
+.features h2 {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  color: #333;
 }
 
 .features .container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 30px;
 }
@@ -254,19 +371,154 @@ body {
 }
 
 .feature-item i {
-  font-size: 3em;
+  font-size: 2em;
   color: #ff6347;
   margin-bottom: 15px;
 }
 
 .feature-item h3 {
-  font-size: 1.6em;
+  font-size: 1.4em;
   margin-bottom: 10px;
 }
 
 .feature-item p {
-  font-size: 1.1em;
+  font-size: 1em;
   color: #666;
+}
+
+/* How It Works Section */
+.how-it-works {
+  padding: 60px 50px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.how-it-works h2 {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.steps-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.step {
+  max-width: 250px;
+  text-align: center;
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.step:hover {
+  transform: translateY(-10px);
+}
+
+.step i {
+  font-size: 2.5em;
+  color: #ff6347;
+  margin-bottom: 15px;
+}
+
+.step h3 {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+.step p {
+  font-size: 1em;
+  color: #666;
+}
+
+/* Testimonials Section */
+.testimonials {
+  padding: 60px 50px;
+  background-color: #f4f4f4;
+  text-align: center;
+}
+
+.testimonials h2 {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.testimonials-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.testimonial {
+  max-width: 350px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+.testimonial:hover {
+  transform: translateY(-10px);
+}
+
+.testimonial-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.testimonial-text {
+  font-size: 1em;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.testimonial-author {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Call to Action Section */
+.cta {
+  padding: 60px 50px;
+  background-color: #ff6347;
+  color: #fff;
+  text-align: center;
+}
+
+.cta h2 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.cta p {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+}
+
+.cta .btn {
+  padding: 15px 30px;
+  font-size: 1.2em;
+  border-radius: 30px;
+  background-color: #fff;
+  color: #ff6347;
+  border-color: #fff;
+}
+
+.cta .btn:hover {
+  background-color: #f4f4f4;
 }
 
 /* Footer */
@@ -331,6 +583,14 @@ footer p {
   .features .container {
     flex-direction: column;
     align-items: center;
+  }
+
+  .steps-container {
+    flex-direction: column;
+  }
+
+  .testimonials-container {
+    flex-direction: column;
   }
 }
 </style>
