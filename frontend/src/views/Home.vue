@@ -1,74 +1,108 @@
 <template>
-  <div class="home">
+  <div>
     <!-- Navbar -->
-    <header class="navbar">
+    <nav class="navbar">
       <div class="container">
-        <div class="navbar-content">
-          <!-- Logo -->
-          <div class="logo">
-            <router-link to="/">ResuMeister</router-link>
-          </div>
-          <!-- Navigation Items -->
-          <nav class="nav-items">
-            <router-link to="/">Home</router-link>
-            <router-link to="/about">About Us</router-link>
-            <router-link to="/templates">Resume Templates</router-link>
-            <router-link to="/contact">Contact Us</router-link>
-          </nav>
-          <!-- Action Buttons -->
-          <div class="action-buttons">
-            <router-link to="/login" class="btn btn-primary" style="background-color: green;">Log In</router-link>
-            <router-link to="/register" class="btn btn-primary">Register Now</router-link>
-          </div>
+        <div class="logo">
+          <a href="#">ResuMeister</a>
+        </div>
+        <div class="nav-items">
+          <a href="#">Home</a>
+          <a href="#">About Us</a>
+          <a href="#">Resume Templates</a>
+          <a href="#">Contact Us</a>
+        </div>
+        <div class="action-buttons">
+          <a href="#" class="btn btn-outline">Login</a>
+          <a href="#" class="btn btn-primary">Register Now</a>
         </div>
       </div>
-    </header>
+    </nav>
 
-    <!-- Slider Section -->
+    <!-- Slider -->
     <section class="slider">
-      <div class="container">
-        <h1>Craft Your Perfect Resume</h1>
-        <p>Professional templates and easy-to-use tools to help you stand out.</p>
-      </div>
+      <swiper :slides-per-view="1" autoplay loop>
+        <swiper-slide v-for="(slide, index) in slides" :key="index" class="slider-content">
+          <div class="slider-inner">
+            <h1>{{ slide.title }}</h1>
+            <p>{{ slide.description }}</p>
+            <a href="#" class="btn btn-primary">Get Started</a>
+          </div>
+        </swiper-slide>
+      </swiper>
     </section>
 
     <!-- Features Section -->
     <section class="features">
       <div class="container">
-        <div class="feature-item">
-          <i class="fas fa-cogs"></i>
-          <h3>Customizable Templates</h3>
-          <p>Choose from a variety of modern, customizable templates.</p>
-        </div>
-        <div class="feature-item">
-          <i class="fas fa-user-tie"></i>
-          <h3>Professional Design</h3>
-          <p>Ensure your resume looks professional and is ATS-friendly.</p>
-        </div>
-        <div class="feature-item">
-          <i class="fas fa-check-circle"></i>
-          <h3>Easy & Fast</h3>
-          <p>Create and download your resume in minutes with ease.</p>
+        <div class="feature-item" v-for="feature in features" :key="feature.id">
+          <i :class="feature.icon"></i>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
         </div>
       </div>
     </section>
 
     <!-- Footer -->
     <footer>
-      <div class="container">
-        <p>&copy; 2024 ResuMeister. All rights reserved.</p>
-        <nav>
-          <router-link to="/privacy">Privacy Policy</router-link>
-          <router-link to="/terms">Terms of Service</router-link>
-        </nav>
-      </div>
+      <nav>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact Us</a>
+      </nav>
+      <p>&copy; 2024 ResuMeister. All rights reserved.</p>
     </footer>
   </div>
 </template>
 
+
 <script>
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/swiper-bundle.css';
 export default {
   name: 'Home',
+  components: {
+    Swiper,
+    SwiperSlide
+  },
+data() {
+    return {
+      slides: [
+        {
+          title: 'Create Professional Resumes',
+          description: 'Design and customize your resume with ease.'
+        },
+        {
+          title: 'Showcase Your Skills',
+          description: 'Highlight your expertise and achievements.'
+        },
+        {
+          title: 'Get Hired Faster',
+          description: 'Land your dream job with a top-notch resume.'
+        }
+      ],
+      features: [
+        {
+          id: 1,
+          icon: 'fas fa-file-alt',
+          title: 'Beautiful Templates',
+          description: 'Choose from a variety of professional templates.'
+        },
+        {
+          id: 2,
+          icon: 'fas fa-user-edit',
+          title: 'Easy Customization',
+          description: 'Personalize your resume to suit your needs.'
+        },
+        {
+          id: 3,
+          icon: 'fas fa-share-alt',
+          title: 'One-Click Sharing',
+          description: 'Share your resume directly with employers.'
+        }
+      ]
+    };
+  }
 };
 </script>
 
@@ -76,21 +110,22 @@ export default {
 /* Global Styles */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* Navbar Styles */
 .navbar {
-  background-color: #333;
+  background-color: #222;
   color: #fff;
-  padding: 15px 20px;
+  padding: 20px 50px;
   position: fixed;
   width: 100%;
   top: 0;
-  left: 0;
   z-index: 1000;
-
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .navbar .container {
@@ -99,44 +134,41 @@ body {
   justify-content: space-between;
 }
 
-.navbar .navbar-content {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
 .navbar .logo a {
-  font-size: 1.5em;
+  font-size: 1.8em;
+  font-weight: bold;
   color: #fff;
   text-decoration: none;
 }
 
 .navbar .nav-items {
   display: flex;
-  gap: 20px;
-  flex: 1;
-  justify-content: center;
+  gap: 25px;
 }
 
 .navbar .nav-items a {
   color: #fff;
   text-decoration: none;
-  font-size: 1em;
+  font-size: 1.1em;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-items a:hover {
+  color: #ff6347;
 }
 
 .navbar .action-buttons {
   display: flex;
-  gap: 10px;
-  margin-right: 49px;
+  gap: 15px;
 }
 
 .navbar .btn {
-  padding: 10px 20px;
-  border-radius: 25px;
-  font-size: 0.9em;
+  padding: 10px 25px;
+  border-radius: 30px;
+  font-size: 1em;
   text-decoration: none;
-  display: inline-block;
   border: 2px solid transparent;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .btn-outline {
@@ -145,61 +177,90 @@ body {
   color: #fff;
 }
 
+.btn-outline:hover {
+  background-color: #fff;
+  color: #222;
+}
+
 .btn-primary {
-  background-color: #667eea;
+  background-color: #ff6347;
   color: #fff;
-  border-color: #667eea;
+  border-color: #ff6347;
+}
+
+.btn-primary:hover {
+  background-color: #ff4500;
+  border-color: #ff4500;
 }
 
 /* Slider Section */
 .slider {
-  background: url('@/assets/slider-bg.jpeg') no-repeat center center/cover;
-  color: #fff;
-  text-align: center;
-  padding: 100px 20px;
-  margin-top: 70px; /* To make space for the fixed navbar */
+  background-color: #222;
+  padding: 0;
   width: 100%;
-  position: relative;
-  margin-left: -8px;
+  margin-top: 80px;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+}
+
+.slider-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.slider-inner {
+  text-align: center;
+  color: #fff;
 }
 
 .slider h1 {
-  font-size: 3em;
+  font-size: 3.5em;
   margin-bottom: 20px;
 }
 
 .slider p {
-  font-size: 1.25em;
+  font-size: 1.5em;
   margin-bottom: 30px;
 }
 
 /* Features Section */
 .features {
-  padding: 60px 20px;
-  background-color: #fff;
-  text-align: center;
+  padding: 60px 50px;
+  background-color: #f4f4f4;
 }
 
 .features .container {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  gap: 30px;
 }
 
 .feature-item {
   max-width: 300px;
-  margin: 20px;
   text-align: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-10px);
 }
 
 .feature-item i {
   font-size: 3em;
-  color: #667eea;
+  color: #ff6347;
   margin-bottom: 15px;
 }
 
 .feature-item h3 {
-  font-size: 1.5em;
+  font-size: 1.6em;
   margin-bottom: 10px;
 }
 
@@ -210,11 +271,11 @@ body {
 
 /* Footer */
 footer {
-  padding: 24px 0;
-  background-color: #333;
+  padding: 30px 50px;
+  background-color: #222;
   color: #fff;
   text-align: center;
-
+  margin-top: 50px;
 }
 
 footer nav {
@@ -225,39 +286,51 @@ footer nav a {
   color: #fff;
   margin: 0 15px;
   text-decoration: none;
+  font-size: 1em;
+  transition: color 0.3s ease;
+}
+
+footer nav a:hover {
+  color: #ff6347;
 }
 
 footer p {
-  font-size: 0.9em;
+  font-size: 1em;
   margin-bottom: 0;
 }
 
 /* Responsive Styles */
 @media (max-width: 768px) {
+  .navbar .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .navbar .nav-items {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 15px;
   }
 
   .navbar .action-buttons {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 15px;
   }
 
   .slider h1 {
-    font-size: 2em;
+    font-size: 2.5em;
   }
 
   .slider p {
-    font-size: 1em;
+    font-size: 1.2em;
   }
 
-  .features {
-    padding: 40px 20px;
-  }
-
-  .feature-item {
-    margin: 10px;
+  .features .container {
+    flex-direction: column;
+    align-items: center;
   }
 }
 </style>
