@@ -1,0 +1,6 @@
+# IDE and editor folders
+.idea/
+*.iml
+
+# Virtual environment
+venv/
