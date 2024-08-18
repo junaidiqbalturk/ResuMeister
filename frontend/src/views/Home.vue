@@ -17,7 +17,7 @@
           </nav>
           <!-- Action Buttons -->
           <div class="action-buttons">
-            <router-link to="/login" class="btn btn-outline">Log In</router-link>
+            <router-link to="/login" class="btn btn-primary" style="background-color: green;">Log In</router-link>
             <router-link to="/register" class="btn btn-primary">Register Now</router-link>
           </div>
         </div>
@@ -84,12 +84,13 @@ body {
 .navbar {
   background-color: #333;
   color: #fff;
-  padding: 10px 20px;
+  padding: 15px 20px;
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
   z-index: 1000;
+
 }
 
 .navbar .container {
@@ -126,6 +127,7 @@ body {
 .navbar .action-buttons {
   display: flex;
   gap: 10px;
+  margin-right: 49px;
 }
 
 .navbar .btn {
@@ -156,6 +158,9 @@ body {
   text-align: center;
   padding: 100px 20px;
   margin-top: 70px; /* To make space for the fixed navbar */
+  width: 100%;
+  position: relative;
+  margin-left: -8px;
 }
 
 .slider h1 {
@@ -205,10 +210,11 @@ body {
 
 /* Footer */
 footer {
-  padding: 20px 0;
+  padding: 24px 0;
   background-color: #333;
   color: #fff;
   text-align: center;
+
 }
 
 footer nav {
