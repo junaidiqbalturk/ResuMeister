@@ -26,7 +26,7 @@ export default {
   methods: {
     async handleLogin() {
       try {
-        const response = await fetch('/api/login', {
+        const response = await fetch('http://localhost:5000/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -41,6 +41,7 @@ export default {
         if (data.success) {
           // Handle successful login (e.g., redirect to dashboard)
           alert('Login successful');
+          this.$router.push('/');
         } else {
           // Handle error (e.g., display error message)
           alert('Login failed');

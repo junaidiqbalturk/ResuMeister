@@ -13,8 +13,8 @@
           <a href="#">Contact Us</a>
         </div>
         <div class="action-buttons">
-          <a href="#" class="btn btn-outline">Login</a>
-          <a href="#" class="btn btn-primary">Register Now</a>
+          <a href="/login" class="btn btn-outline">Login</a>
+          <a href="/register" class="btn btn-primary">Register Now</a>
         </div>
       </div>
     </nav>

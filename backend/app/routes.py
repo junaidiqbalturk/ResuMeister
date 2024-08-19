@@ -7,7 +7,6 @@ from app.models import User
 # Define the blueprint
 main = Blueprint('main', __name__)
 
-
 # Sample in-memory user storage for demo purposes (in real apps, use a database)
 users = {}
 
@@ -18,7 +17,9 @@ def register():
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
-    confirm_password = data.get('confirm_password')
+    print("Password getting from data:", password)
+    confirm_password = data.get('confirmPassword')
+    print("Confirmed Password getting from data:", confirm_password)
 
     if password != confirm_password:
         return jsonify({'message': 'Passwords do not match'}), 400
@@ -28,7 +29,7 @@ def register():
 
     if User.query.filter_by(email=email).first():
         return jsonify({'message': 'Email already exists'}), 400
-
+    username = email.split('@')[0]  # making username by spiriting the email address
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
     new_user = User(username=username, email=email, password=hashed_password)
 
@@ -41,10 +42,17 @@ def register():
 @main.route('/login', methods=['POST'])
 def login():
     data = request.json
-    username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
 
-    if users.get(username) == password:
-        return jsonify({'message': 'Login successful'}), 200
+    user = User.query.filter_by(email=email).first()
+
+    if user and bcrypt.check_password_hash(user.password, password):
+        # User authenticated successfully
+        return jsonify({'success': True, 'message': 'Login successful'}), 200
     else:
-        return jsonify({'message': 'Invalid credentials'}), 401
+        # Authentication failed
+        return jsonify({'success': False, 'message': 'Invalid credentials'}), 401
+
+
+

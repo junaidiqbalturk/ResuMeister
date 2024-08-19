@@ -45,6 +45,7 @@ export default {
           body: JSON.stringify({
             email: this.email,
             password: this.password,
+            confirmPassword: this.confirmPassword,
           }),
         });
         const data = await response.json();
