@@ -41,7 +41,7 @@ export default {
         if (data.success) {
           // Handle successful login (e.g., redirect to dashboard)
           alert('Login successful');
-          this.$router.push('/');
+          this.$router.push('/Dashboard');
         } else {
           // Handle error (e.g., display error message)
           alert('Login failed');

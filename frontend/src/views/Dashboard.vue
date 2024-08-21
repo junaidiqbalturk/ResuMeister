@@ -1,13 +1,40 @@
 <template>
-  <div class="dashboard-container">
-    <h1>Welcome to Your Dashboard</h1>
-    <div class="card-container">
-      <div class="card" v-for="feature in features" :key="feature.title">
-        <i :class="feature.icon"></i>
-        <h3>{{ feature.title }}</h3>
-        <p>{{ feature.description }}</p>
-        <router-link :to="feature.link">Go to {{ feature.title }}</router-link>
-      </div>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <nav>
+        <ul>
+          <li @click="navigateTo('overview')">Dashboard Overview</li>
+          <li @click="navigateTo('create')">Create New Resume</li>
+          <li @click="navigateTo('resumes')">My Resumes</li>
+          <li @click="navigateTo('settings')">Account Settings</li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="main-content">
+      <header>
+        <div class="top-bar">
+          <span>ResuMeister Dashboard</span>
+          <div class="user-menu">
+            <span @click="logout">Logout</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div v-if="currentSection === 'overview'">
+          <!-- Overview content here -->
+        </div>
+        <div v-else-if="currentSection === 'create'">
+          <!-- Create new resume content here -->
+        </div>
+        <div v-else-if="currentSection === 'resumes'">
+          <!-- List of resumes content here -->
+        </div>
+        <div v-else-if="currentSection === 'settings'">
+          <!-- Account settings content here -->
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -16,81 +43,74 @@
 export default {
   data() {
     return {
-      features: [
-        {
-          title: 'Generate Resume',
-          description: 'Create a professional resume using our templates.',
-          icon: 'fas fa-file-alt',
-          link: '/generate-resume',
-        },
-        {
-          title: 'Edit Profile',
-          description: 'Update your personal information and preferences.',
-          icon: 'fas fa-user-edit',
-          link: '/edit-profile',
-        },
-        {
-          title: 'View Templates',
-          description: 'Browse through available resume templates.',
-          icon: 'fas fa-th-list',
-          link: '/templates',
-        },
-      ],
+      currentSection: 'overview',
     };
   },
+  methods: {
+    navigateTo(section) {
+      this.currentSection = section;
+    },
+    logout() {
+      // Handle logout
+    }
+  }
 };
 </script>
 
-<style scoped>
-.dashboard-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
+<style>
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.card-container {
+.dashboard {
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
+  height: 100vh;
+  width: 100vw;
 }
 
-.card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 30%;
-  margin: 10px;
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  color: white;
+  padding-top: 20px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+}
+
+.sidebar ul li {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.sidebar ul li:hover {
+  background-color: #444;
+}
+
+.main-content {
+  flex-grow: 1;
+}
+
+.top-bar {
+  background-color: #555;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-menu {
+  cursor: pointer;
+}
+
+.content {
   padding: 20px;
-  text-align: center;
-  transition: transform 0.3s;
 }
 
-.card:hover {
-  transform: translateY(-10px);
-}
-
-.card i {
-  font-size: 48px;
-  margin-bottom: 15px;
-}
-
-.card h3 {
-  margin-bottom: 10px;
-}
-
-.card p {
-  margin-bottom: 15px;
-  color: #555;
-}
-
-.card a {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.card a:hover {
-  text-decoration: underline;
-}
+/* Other styles as needed */
 </style>
