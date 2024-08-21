@@ -24,6 +24,8 @@
       <section class="content">
         <div v-if="currentSection === 'overview'">
           <!-- Overview content here -->
+          <h2>Welcome, {{ userName }}!</h2>
+          <p>Here's what's happening in your account today:</p>
         </div>
         <div v-else-if="currentSection === 'create'">
           <!-- Create new resume content here -->
