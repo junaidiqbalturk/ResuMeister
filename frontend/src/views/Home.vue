@@ -4,7 +4,9 @@
     <nav class="navbar">
       <div class="container">
         <div class="logo">
-          <a href="#">ResuMeister</a>
+          <a href="#">
+            <img src="/logo.png" alt="ResuMeister Logo" class="logo-img">
+          </a>
         </div>
         <div class="nav-items">
           <a href="#">Home</a>
@@ -23,7 +25,7 @@
     <section class="slider">
       <swiper :slides-per-view="1" autoplay loop>
         <swiper-slide v-for="(slide, index) in slides" :key="index" class="slider-content">
-          <div class="slider-inner">
+          <div class="slider-inner" :style="{ backgroundImage: `url(${slide.image})` }">
             <h1>{{ slide.title }}</h1>
             <p>{{ slide.description }}</p>
             <a href="#" class="btn btn-primary">Get Started</a>
@@ -90,7 +92,9 @@
 <script>
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.css';
-
+import { Autoplay } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/autoplay';
 export default {
   name: 'Home',
   components: {
@@ -102,15 +106,18 @@ export default {
       slides: [
         {
           title: 'Create Professional Resumes',
-          description: 'Design and customize your resume with ease.'
+          description: 'Design and customize your resume with ease.',
+          image: '/slide1.jpg'
         },
         {
           title: 'Showcase Your Skills',
-          description: 'Highlight your expertise and achievements.'
+          description: 'Highlight your expertise and achievements.',
+          image: '/slide2.jpg'
         },
         {
           title: 'Get Hired Faster',
-          description: 'Land your dream job with a top-notch resume.'
+          description: 'Land your dream job with a top-notch resume.',
+          image: '/slide3.jpg'
         }
       ],
       features: [
@@ -168,21 +175,21 @@ export default {
       testimonials: [
         {
           id: 1,
-          photo: '@/assets/user1.jpg',
+          photo: '/slide1.jpg',
           feedback: 'ResuMeister helped me land my dream job! The templates are top-notch and easy to use.',
           name: 'Jane Doe',
           jobTitle: 'Marketing Specialist'
         },
         {
           id: 2,
-          photo: '@/assets/user2.jpg',
+          photo: '/slide2.jpg',
           feedback: 'I love the customization options. My resume looks fantastic!',
           name: 'John Smith',
           jobTitle: 'Software Engineer'
         },
         {
           id: 3,
-          photo: '@/assets/user3.jpg',
+          photo: '/slide3.jpg',
           feedback: 'The ATS-friendly feature is a game-changer. I got more interviews after using ResuMeister.',
           name: 'Emily Johnson',
           jobTitle: 'Graphic Designer'
@@ -204,6 +211,12 @@ body {
   width: 100%;
   height: 100%;
 }
+.logo-img {
+  max-width: 150px;
+  max-height: 150px; /* Ensures the logo doesn't exceed this height */
+  height: auto;
+}
+
 .container {
   width: 100%;
   max-width: 1200px; /* Or any max-width suitable for your design */
