@@ -5,7 +5,7 @@
       <div class="container">
         <div class="logo">
           <a href="#">
-            <img src="/logo.png" alt="ResuMeister Logo" class="logo-img">
+            <img src="/resumeister.png" alt="ResuMeister Logo" class="logo-img">
           </a>
         </div>
         <div class="nav-items">
@@ -241,9 +241,9 @@ body {
 
 /* Navbar Styles */
 .navbar {
-  background-color: #222;
+  background-color: brown;
   color: #fff;
-  padding: 20px 50px;
+  padding: 7px 28px;
   position: fixed;
   width: 100%;
   top: 0;
