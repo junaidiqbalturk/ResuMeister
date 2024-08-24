@@ -23,40 +23,53 @@
 
     <!-- Slider -->
     <section class="slider">
-      <swiper :slides-per-view="1" autoplay loop>
-        <swiper-slide v-for="(slide, index) in slides" :key="index" class="slider-content">
-          <div class="slider-inner" :style="{ backgroundImage: `url(${slide.image})` }">
-            <h1>{{ slide.title }}</h1>
-            <p>{{ slide.description }}</p>
-            <a href="#" class="btn btn-primary">Get Started</a>
-          </div>
-        </swiper-slide>
-      </swiper>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features">
-      <h2>Why Choose ResuMeister?</h2>
-      <div class="container">
-        <div class="feature-item" v-for="feature in features" :key="feature.id">
-          <i :class="feature.icon"></i>
-          <h3>{{ feature.title }}</h3>
-          <p>{{ feature.description }}</p>
-        </div>
+      <div class="swiper-wrapper">
+      <div class="swiper-slide" v-for="(slide, index) in slides" :key="index" :style="{ backgroundImage: `url(${slide.image})` }">
+        <h1>{{ slide.title }}</h1>
+        <p>{{ slide.description }}</p>
+         <button class="get-started-button">Get Started</button>
       </div>
+    </div>
     </section>
 
-    <!-- How It Works Section -->
+    <section class="why-choose">
+      <div class="heading-container">
+        <h2 class="section-heading">Why Choose ResuMeister</h2>
+      </div>
+    <div class="card-container">
+      <div class="card feature-item" v-for="feature in features" :key="feature.id">
+        <div class="icon">{{ feature.icon }}</div>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </div>
+    </div>
+  </section>
+
+     <section class="how-it-works">
+    <h2 class="section-heading">How It Works</h2>
+    <div class="steps-container">
+      <div v-for="(step, index) in steps" :key="index" class="step-card">
+        <div class="step-icon">{{ step.icon }}</div>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.description }}</p>
+      </div>
+    </div>
+  </section>
+
+    <!--- New Try --->
     <section class="how-it-works">
-      <h2>How It Works</h2>
-      <div class="steps-container">
-        <div class="step" v-for="step in steps" :key="step.id">
-          <i :class="step.icon"></i>
+    <h2 class="section-heading">How It Works</h2>
+    <div class="steps-container">
+      <div v-for="(step, index) in steps" :key="index" class="step-card">
+        <div class="step-icon">{{ step.icon }}</div>
+        <div class="step-content">
           <h3>{{ step.title }}</h3>
           <p>{{ step.description }}</p>
         </div>
+        <div v-if="index < steps.length - 1" class="step-line"></div>
       </div>
-    </section>
+    </div>
+  </section>
 
     <!-- Testimonials Section -->
     <section class="testimonials">
@@ -95,6 +108,7 @@ import 'swiper/swiper-bundle.css';
 import { Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/autoplay';
+
 export default {
   name: 'Home',
   components: {
@@ -123,25 +137,25 @@ export default {
       features: [
         {
           id: 1,
-          icon: 'fas fa-star',
+          icon: '🚀',
           title: 'Easy to Use',
           description: 'Our user-friendly interface lets you create your resume with just a few clicks.'
         },
         {
           id: 2,
-          icon: 'fas fa-briefcase',
+          icon: '🎨',
           title: 'Professional Templates',
           description: 'Choose from a variety of templates designed by experts.'
         },
         {
           id: 3,
-          icon: 'fas fa-cogs',
+          icon: '🔒',
           title: 'Customizable',
           description: 'Tailor your resume to your unique style and profession.'
         },
         {
           id: 4,
-          icon: 'fas fa-check',
+          icon: '💬',
           title: 'ATS Friendly',
           description: 'Our resumes are optimized to get past Applicant Tracking Systems.'
         }
@@ -149,25 +163,25 @@ export default {
       steps: [
         {
           id: 1,
-          icon: 'fas fa-template',
+          icon: '🔍',
           title: 'Select a Template',
           description: 'Choose from a range of professional templates.'
         },
         {
           id: 2,
-          icon: 'fas fa-user',
+          icon: '📝',
           title: 'Enter Your Details',
           description: 'Fill in your personal information, work experience, and skills.'
         },
         {
           id: 3,
-          icon: 'fas fa-paint-brush',
+          icon: '✏️',
           title: 'Customize',
           description: 'Adjust the layout, colors, and fonts to your preference.'
         },
         {
           id: 4,
-          icon: 'fas fa-download',
+          icon: '📥',
           title: 'Download',
           description: 'Save your resume as a PDF or share it directly with employers.'
         }
@@ -201,6 +215,122 @@ export default {
 </script>
 
 <style scoped>
+.section-heading {
+  font-size: 2.5rem;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  margin-bottom: 40px;
+  animation: fadeInUp 1s ease-out;
+}
+
+.steps-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.step-card {
+  background: #fff; /* White background for clean look */
+  border-radius: 15px;
+  padding: 20px;
+  width: 250px;
+  text-align: center;
+  color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+  position: relative;
+}
+
+.step-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  background-color: #f0f9ff; /* Light blue background on hover */
+}
+
+.how-it-works {
+  padding: 40px 20px;
+  background: #e8f4f8; /* Light blue background for contrast */
+  text-align: center;
+}
+/* How it works css ends here */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+.why-choose {
+  padding: 40px 20px;
+  background: #f4f4f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.heading-container {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.section-heading {
+  font-size: 2.5rem;
+  font-family: 'Poppins', sans-serif; /* Use the professional font */
+  color: #333;
+  animation: fadeInUp 1s ease-out;
+}
+
+/* Keyframes for the refined heading animation */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*Why Choose section CSS above end */
+.why-choose {
+  padding: 40px 20px;
+  background: #f4f4f9; /* Light background for contrast */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between cards */
+  justify-content: center;
+}
+
+.card {
+  background: #fff; /* White background for a clean look */
+  border-radius: 15px;
+  padding: 20px;
+  width: 250px;
+  text-align: center;
+  color: #333; /* Dark text for better readability */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+
+.icon {
+  font-size: 3rem; /* Large icon */
+  margin-bottom: 10px;
+  transition: transform 0.3s;
+}
+
+.card:hover .icon {
+  transform: rotate(20deg); /* Rotate icon on hover */
+}
+
+
 /* Global Styles */
 body {
   margin: 0;
@@ -604,6 +734,55 @@ footer p {
 
   .testimonials-container {
     flex-direction: column;
+  }
+}
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  text-align: center;
+  flex-direction: column;
+}
+h1 {
+  font-size: 3em;
+}
+
+p {
+  font-size: 1.5em;
+}
+.get-started-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: brown;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+
+  /* Animation properties */
+  opacity: 0; /* Start as invisible */
+  transform: translateX(50px); /* Start shifted to the right */
+  animation: slideIn 0.6s forwards; /* Apply the animation */
+}
+
+.get-started-button:hover {
+  background-color: #0056b3;
+}
+
+/* Keyframes for sliding in */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 </style>
