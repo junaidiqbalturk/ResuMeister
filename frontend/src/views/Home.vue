@@ -22,15 +22,25 @@
     </nav>
 
     <!-- Slider -->
+    <!-- Slider -->
     <section class="slider">
-      <div class="swiper-wrapper">
-      <div class="swiper-slide" v-for="(slide, index) in slides" :key="index" :style="{ backgroundImage: `url(${slide.image})` }">
-        <h1>{{ slide.title }}</h1>
-        <p>{{ slide.description }}</p>
-         <button class="get-started-button">Get Started</button>
-      </div>
-    </div>
+      <swiper-container
+        :slides-per-view="1"
+        :autoplay="{ delay: 3000 }"
+        loop
+        pagination
+        class="swiper-container"
+      >
+        <swiper-slide v-for="(slide, index) in slides" :key="index">
+          <div class="slide-content" :style="{ backgroundImage: `url(${slide.image})` }">
+            <h1>{{ slide.title }}</h1>
+            <p>{{ slide.description }}</p>
+            <button class="get-started-button">Get Started</button>
+          </div>
+        </swiper-slide>
+      </swiper-container>
     </section>
+
 
     <section class="why-choose">
       <div class="heading-container">
@@ -44,33 +54,52 @@
       </div>
     </div>
   </section>
-
-     <section class="how-it-works">
-    <h2 class="section-heading">How It Works</h2>
-    <div class="steps-container">
-      <div v-for="(step, index) in steps" :key="index" class="step-card">
-        <div class="step-icon">{{ step.icon }}</div>
-        <h3>{{ step.title }}</h3>
-        <p>{{ step.description }}</p>
+    <!-- second try -->
+  <section class="how-it-workss">
+    <h2 class="section-titles">How ResuMeister Works</h2>
+    <div class="steps-containers">
+      <div class="steps" v-for="(step, index) in steps" :key="index">
+        <div class="step-number-containers">
+          <div class="step-number-wrapper">
+            <svg class="step-numbers" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="circle-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FF99CC" />
+                  <stop offset="100%" stop-color="#FF3399" />
+                </linearGradient>
+              </defs>
+              <circle class="outer-circle" cx="50" cy="50" r="48" fill="url(#circle-gradient)" />
+              <circle class="inner-circle" cx="50" cy="50" r="44" fill="#FF66B2" />
+              <text class="step-text" x="50" y="65" text-anchor="middle">{{ step.id }}</text>
+            </svg>
+          </div>
       </div>
-    </div>
-  </section>
-
-    <!--- New Try --->
-    <section class="how-it-works">
-    <h2 class="section-heading">How It Works</h2>
-    <div class="steps-container">
-      <div v-for="(step, index) in steps" :key="index" class="step-card">
-        <div class="step-icon">{{ step.icon }}</div>
-        <div class="step-content">
-          <h3>{{ step.title }}</h3>
-          <p>{{ step.description }}</p>
+        <div class="step-contents">
+          <div class="step-titles">{{ step.title }}</div>
+          <div class="step-descriptions">{{ step.description }}</div>
         </div>
-        <div v-if="index < steps.length - 1" class="step-line"></div>
+        <!-- Display arrow unless it's the last step -->
+        <div class="curved-arrows" v-if="index < steps.length - 1">
+          <svg viewBox="0 0 100 50">
+            <path
+              class="arrow-path"
+              d="M0 40 C 20 40, 20 10, 90 10"
+              fill="none"
+              stroke="#fff"
+              stroke-width="2"
+              stroke-dasharray="4,2"
+            />
+            <polygon
+                class="arrow-head"
+              points="85,5 85,15 95,10"
+              fill="#fff"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   </section>
-
+<!-- ends here-->
     <!-- Testimonials Section -->
     <section class="testimonials">
       <h2>What Our Users Say</h2>
@@ -215,6 +244,183 @@ export default {
 </script>
 
 <style scoped>
+/* swiper slider*/
+
+/* Swiper Styles */
+.swiper-container {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.slide-content {
+  text-align: center;
+  color: #fff;
+}
+
+
+/* ends here */
+
+
+
+/* New Try here ends here*/
+.how-it-workss {
+  background-color: #5B2DC7;
+  padding: 50px 20px;
+  color: white;
+  text-align: center;
+}
+
+.section-titles {
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+}
+
+.steps-containers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.steps {
+  text-align: center;
+  margin: 0 20px;
+  position: relative;
+  flex: 1;
+}
+
+.step-number-containers {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.step-number-wrapper {
+  perspective: 1000px;
+  transition: transform 0.3s ease;
+}
+
+.step-number-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.step-numbers {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.step-number-wrapper:hover .step-numbers {
+  transform: rotateY(10deg) rotateX(10deg);
+}
+
+.outer-circle {
+  transition: fill 0.3s ease;
+}
+
+.step-number-wrapper:hover .outer-circle {
+  fill: url(#circle-gradient-hover);
+}
+
+.inner-circle {
+  fill: #FF66B2;
+  transition: fill 0.3s ease;
+}
+
+.step-number-wrapper:hover .inner-circle {
+  fill: #FF3399;
+}
+
+.step-text {
+  font-size: 48px;
+  font-weight: bold;
+  fill: black;
+  stroke: black;
+  stroke-width: 1px;
+  paint-order: stroke;
+  stroke-dasharray: 3 3;
+  text-shadow: 2px 2px 1px rgba(255, 255, 255, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.step-number-wrapper:hover .step-text {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.step-contents {
+  margin-top: 10px;
+}
+
+.step-titles {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.step-descriptions {
+  font-size: 1rem;
+  line-height: 1.5;
+  font-family: 'Roboto', sans-serif;
+}
+
+.curved-arrows {
+  width: 121px;
+  height: 61px;
+  position: absolute;
+  top: 10px;
+  right: -66px;
+  transform: rotate(0deg);
+}
+
+.arrow-path {
+  stroke-dasharray: 4 2;
+  animation: dash 1s linear infinite;
+}
+.arrow-head {
+  animation: pulse 2s ease-in-out infinite;
+  transform-origin: 90px 10px;
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.curved-arrows svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Ensure the arrows don't appear after the last step */
+.steps-container .step:nth-child(4) .curved-arrow {
+  display: none;
+}
+/* New Try here ends here*/
+
 .section-heading {
   font-size: 2.5rem;
   font-family: 'Poppins', sans-serif;
@@ -223,36 +429,6 @@ export default {
   animation: fadeInUp 1s ease-out;
 }
 
-.steps-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.step-card {
-  background: #fff; /* White background for clean look */
-  border-radius: 15px;
-  padding: 20px;
-  width: 250px;
-  text-align: center;
-  color: #333;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
-  position: relative;
-}
-
-.step-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  background-color: #f0f9ff; /* Light blue background on hover */
-}
-
-.how-it-works {
-  padding: 40px 20px;
-  background: #e8f4f8; /* Light blue background for contrast */
-  text-align: center;
-}
 /* How it works css ends here */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
 .why-choose {
@@ -335,7 +511,7 @@ export default {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
   overflow-x: hidden;
   width: 100%;
@@ -522,11 +698,13 @@ body {
 .feature-item h3 {
   font-size: 1.4em;
   margin-bottom: 10px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .feature-item p {
   font-size: 1em;
   color: #666;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* How It Works Section */
@@ -717,6 +895,7 @@ footer p {
 
   .slider h1 {
     font-size: 2.5em;
+    font-family: 'Poppins', sans-serif;
   }
 
   .slider p {
@@ -745,6 +924,7 @@ footer p {
   color: #fff;
   text-align: center;
   flex-direction: column;
+  font-family: 'Poppins', sans-serif;
 }
 h1 {
   font-size: 3em;
@@ -763,6 +943,7 @@ p {
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
 
   /* Animation properties */
   opacity: 0; /* Start as invisible */
