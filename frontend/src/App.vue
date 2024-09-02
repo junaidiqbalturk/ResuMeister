@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import Glide from '@glidejs/glide';
+import '@glidejs/glide/dist/css/glide.core.min.css'; // Ensure Glide CSS is imported
 export default {
   name: 'App'
 };

@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@glidejs/glide": "^3.6.2",
     "axios": "^1.7.4",
     "swiper": "^11.1.9",
     "vue-router": "^4.4.3",

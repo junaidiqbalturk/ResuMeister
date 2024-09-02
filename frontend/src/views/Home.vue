@@ -1,44 +1,58 @@
 <template>
   <div>
     <!-- Navbar -->
-    <nav class="navbar">
-      <div class="container">
-        <div class="logo">
-          <a href="#">
-            <img src="/resumeister.png" alt="ResuMeister Logo" class="logo-img">
-          </a>
-        </div>
-        <div class="nav-items">
-          <a href="#">Home</a>
-          <a href="#">About Us</a>
-          <a href="#">Resume Templates</a>
-          <a href="#">Contact Us</a>
-        </div>
-        <div class="action-buttons">
-          <a href="/login" class="btn btn-outline">Login</a>
-          <a href="/register" class="btn btn-primary">Register Now</a>
-        </div>
-      </div>
-    </nav>
+<nav class="navbar">
+  <div class="container">
+    <div class="logo">
+      <a href="#">
+        <img src="/resumeister.png" alt="ResuMeister Logo" class="logo-img">
+      </a>
+    </div>
+    <div class="nav-toggle">
+      <button class="nav-toggle-btn" aria-label="Toggle navigation">
+        <span class="nav-toggle-icon"></span>
+      </button>
+    </div>
+    <div class="nav-items">
+      <a href="#">Home</a>
+      <a href="#">About Us</a>
+      <a href="#">Resume Templates</a>
+      <a href="#">Contact Us</a>
+    </div>
+    <div class="action-buttons">
+      <a href="/login" class="btn btn-outline">Login</a>
+      <a href="/register" class="btn btn-primary">Register Now</a>
+    </div>
+  </div>
+</nav>
+
 
     <!-- Slider -->
     <!-- Slider -->
-    <section class="slider">
-      <swiper-container
-        :slides-per-view="1"
-        :autoplay="{ delay: 3000 }"
-        loop
-        pagination
-        class="swiper-container"
-      >
-        <swiper-slide v-for="(slide, index) in slides" :key="index">
-          <div class="slide-content" :style="{ backgroundImage: `url(${slide.image})` }">
-            <h1>{{ slide.title }}</h1>
-            <p>{{ slide.description }}</p>
-            <button class="get-started-button">Get Started</button>
-          </div>
-        </swiper-slide>
-      </swiper-container>
+   <section class="sliders">
+      <div class="glide">
+        <div class="glide__track" data-glide-el="track">
+          <ul class="glide__slides">
+            <li class="glide__slide" v-for="(item, index) in items" :key="index">
+              <img :src="item.image" :alt="item.text" />
+              <div class="slide-text"><h2>{{ item.text }}</h2></div>
+              <div class="slide-description">{{ item.description }}</div>
+              <div class="slide-buttons">
+                <a v-for="(button, btnIndex) in item.buttons" :key="btnIndex" :href="button.link" class="btn" :class="{'btn-primary': btnIndex === 0, 'btn-secondary': btnIndex !== 0}">
+                  {{ button.text }}
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="glide__arrows" data-glide-el="controls">
+          <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&lt;</button>
+          <button class="glide__arrow glide__arrow--right" data-glide-dir=">">&gt;</button>
+        </div>
+        <div class="glide__bullets" data-glide-el="controls[nav]">
+          <button class="glide__bullet" v-for="(item, index) in items" :key="'bullet-'+index" :data-glide-dir="'='+index"></button>
+        </div>
+      </div>
     </section>
 
 
@@ -132,35 +146,37 @@
 </template>
 
 <script>
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import 'swiper/swiper-bundle.css';
-import { Autoplay } from 'swiper';
-import 'swiper/css';
-import 'swiper/css/autoplay';
-
+import Glide from '@glidejs/glide';
+import '@glidejs/glide/dist/css/glide.core.min.css';
+import '@glidejs/glide/dist/css/glide.theme.min.css';
 export default {
   name: 'Home',
-  components: {
-    Swiper,
-    SwiperSlide
-  },
   data() {
     return {
-      slides: [
+      items: [
         {
-          title: 'Create Professional Resumes',
-          description: 'Design and customize your resume with ease.',
-          image: '/slide1.jpg'
+          image: '/slide1.jpg',
+          text: 'Craft Your Perfect Resume with ResuMeister!',
+          description: 'Create professional resumes effortlessly and stand out from the crowd',
+          buttons: [
+          { text: 'Get Started Now', link: '#learn-more' },
+        ]
         },
         {
-          title: 'Showcase Your Skills',
-          description: 'Highlight your expertise and achievements.',
-          image: '/slide2.jpg'
+          image: '/slide1.jpg',
+          text: 'Why Choose ResuMeister?',
+          description: 'Features That Make Resume Building Simple and Effective',
+          buttons: [
+          { text: 'Explore Features', link: '#learn-more' },
+        ]
         },
         {
-          title: 'Get Hired Faster',
-          description: 'Land your dream job with a top-notch resume.',
-          image: '/slide3.jpg'
+          image: '/slide1.jpg',
+          text: 'Success Stories from Our Users',
+          description: 'See How ResuMeister Has Helped Professionals Achieve Their Career Goals',
+          buttons: [
+          { text: 'Read Their Stories', link: '#learn-more' },
+        ]
         }
       ],
       features: [
@@ -238,35 +254,160 @@ export default {
           jobTitle: 'Graphic Designer'
         }
       ]
+
     };
+  },
+  mounted() {
+  this.$nextTick(() => {
+    setTimeout(() => {
+      this.initializeGlide();
+    }, 100);
+  });
+},
+  methods: {
+    initializeGlide() {
+      new Glide('.glide', {
+        type: 'carousel',
+        perView: 1,
+        focusAt: 'center',
+        gap: 0,
+        autoplay: 5000,
+        hoverpause: true,
+        animationDuration: 1000,
+        breakpoints: {
+          800: {
+            perView: 1
+          }
+        }
+      }).mount();
+    }
   }
 };
 </script>
 
 <style scoped>
-/* swiper slider*/
 
-/* Swiper Styles */
-.swiper-container {
-  width: 100%;
+.slide-buttons {
+  margin-top: 240px; /* Space between text and buttons */
+  display: flex;
+  justify-content: center; /* Center buttons horizontally */
+  position: absolute;
+}
+
+.slide-buttons .btn {
+  margin: 0 5px; /* Space between buttons */
+  padding: 10px 20px; /* Padding inside buttons */
+  text-decoration: none;
+  color: white;
+  border-radius: 5px; /* Optional: for rounded buttons */
+}
+
+.btn-primary {
+  background-color: #007bff; /* Primary button color */
+}
+
+.btn-secondary {
+  background-color: #6c757d; /* Secondary button color */
+}
+/* glide carousel css */
+.sliders {
+  position: relative;
+}
+.slide-text {
+  position: absolute;
+  font-family: 'Poppins', sans-serif;
+  bottom: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, 50%); /* Adjust for centering */
+  color: white;
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 5px; /* Optional: for a rounded look */
+  text-align: center; /* Center text inside the box */
+  z-index: 10; /* Ensures text appears above other content */
+}
+.glide {
   height: 100%;
 }
 
-.swiper-slide {
+.glide__track,
+.glide__slides {
+  height: 100%;
+}
+
+.glide__slide {
+  position: relative;
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  //overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+
+.glide__arrows {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.glide__arrow {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-size: cover;
-  background-position: center;
+  cursor: pointer;
 }
 
-.slide-content {
+.glide__arrow--left {
+  left: 20px;
+}
+
+.glide__arrow--right {
+  right: 20px;
+}
+
+.glide__bullets {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+.slide-description {
+  display: block; /* Ensure the description is a block-level element */
+  width: 100%; /* Make the description span the full width of the container */
+  margin-top: 120px; /* Optional: add some space between the heading and description */
+  position: absolute;
+  padding: 10px; /* Example padding */
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  font-size: 20px;
   text-align: center;
-  color: #fff;
+}
+.glide__bullet {
+  width: 10px;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
+.glide__bullet--active {
+  background-color: white;
+}
 
-/* ends here */
+/* Adjust layout for sections after the slider */
+
+/*ends here */
 
 
 
@@ -532,14 +673,11 @@ body {
 section, .feature-item, .step, .testimonial {
   box-sizing: border-box;
 }
-.navbar, .slider, .features, .how-it-works, .testimonials, .cta, footer {
+.navbar, .features, .how-it-works, .testimonials, .cta, footer {
   width: 100%;
   box-sizing: border-box;
 }
-.slider {
-  width: 100vw;
-  height: 80vh;
-}
+
 body {
   overflow-x: hidden;
 }
@@ -547,7 +685,7 @@ body {
 
 /* Navbar Styles */
 .navbar {
-  background-color: brown;
+  background-color: #2e576b;
   color: #fff;
   padding: 7px 28px;
   position: fixed;
@@ -620,39 +758,6 @@ body {
 .btn-primary:hover {
   background-color: #ff4500;
   border-color: #ff4500;
-}
-
-/* Slider Section */
-.slider {
-  background-color: #222;
-  padding: 0;
-  width: 100%;
-  margin-top: 80px;
-  height: 80vh;
-  display: flex;
-  align-items: center;
-}
-
-.slider-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.slider-inner {
-  text-align: center;
-  color: #fff;
-}
-
-.slider h1 {
-  font-size: 3.5em;
-  margin-bottom: 20px;
-}
-
-.slider p {
-  font-size: 1.5em;
-  margin-bottom: 30px;
 }
 
 /* Features Section */
@@ -814,7 +919,7 @@ body {
 /* Call to Action Section */
 .cta {
   padding: 60px 50px;
-  background-color: #ff6347;
+  background-color: #a52a2a;
   color: #fff;
   text-align: center;
 }
@@ -845,7 +950,7 @@ body {
 /* Footer */
 footer {
   padding: 30px 50px;
-  background-color: #222;
+  background-color: #2e576b;
   color: #fff;
   text-align: center;
   margin-top: 50px;
@@ -915,17 +1020,7 @@ footer p {
     flex-direction: column;
   }
 }
-.swiper-slide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-size: cover;
-  background-position: center;
-  color: #fff;
-  text-align: center;
-  flex-direction: column;
-  font-family: 'Poppins', sans-serif;
-}
+
 h1 {
   font-size: 3em;
 }
