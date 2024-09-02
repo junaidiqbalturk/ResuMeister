@@ -14,6 +14,7 @@ bert_model = SentenceTransformer('bert-base-nli-mean-tokens')
 
 # Function to extract text from PDF files
 def extract_text_from_pdf(pdf_path):
+    """Extracts text from PDF files."""
     text = ""
     with pdfplumber.open(pdf_path) as pdf:
         for page in pdf.pages:
@@ -23,6 +24,7 @@ def extract_text_from_pdf(pdf_path):
 
 # Function to extract text from DOCX files
 def extract_text_from_docx(docx_path):
+    """Extracts text from DOCX files."""
     doc = Document(docx_path)
     text = ""
     for para in doc.paragraphs:
@@ -32,6 +34,7 @@ def extract_text_from_docx(docx_path):
 
 # Function to preprocess text by removing stopwords and punctuation using SpaCy
 def preprocess_text(text):
+    """Preprocesses text by removing stopwords and punctuation."""
     doc = nlp(text)
     filtered_words = [token.text for token in doc if not token.is_stop and not token.is_punct]
     return ' '.join(filtered_words)
@@ -39,6 +42,7 @@ def preprocess_text(text):
 
 # Function to extract skills using SpaCy NER
 def extract_skills(text):
+    """Extracts skills from text using SpaCy named entity recognition."""
     doc = nlp(text)
     skills = []
     for ent in doc.ents:
@@ -49,6 +53,7 @@ def extract_skills(text):
 
 # Function to calculate skill match score
 def calculate_skill_match(resume_skills, job_skills):
+    """Calculates the skill match score based on overlapping skills."""
     resume_skill_counts = Counter(resume_skills)
     job_skill_counts = Counter(job_skills)
     common_skills = resume_skill_counts & job_skill_counts  # Intersection of skills
@@ -57,10 +62,12 @@ def calculate_skill_match(resume_skills, job_skills):
 
 # Function to match resumes to job descriptions using BERT embeddings and skill matching
 def match_resume_to_job(resume_texts, resume_skills_list, job_description_text, job_skills):
+    """Matches resumes to job descriptions using BERT embeddings and skill matching."""
     # BERT Embeddings
     resume_embeddings = bert_model.encode(resume_texts)
     job_description_embedding = bert_model.encode([job_description_text])[0]
 
+    # Calculate cosine similarity between resume embeddings and job description embedding
     similarities = cosine_similarity(resume_embeddings, [job_description_embedding])
 
     # Skill Match Scores
@@ -75,6 +82,7 @@ def match_resume_to_job(resume_texts, resume_skills_list, job_description_text, 
 
 # Function to rank candidates based on combined scores
 def rank_candidates(resume_paths, job_description):
+    """Ranks candidates based on combined scores from BERT similarity and skill matching."""
     resume_texts = []
     resume_skills_list = []
     for path in resume_paths:
@@ -96,13 +104,21 @@ def rank_candidates(resume_paths, job_description):
     preprocessed_job_description = preprocess_text(job_description)
     job_skills = extract_skills(job_description)
 
+    # Calculate scores
     scores = match_resume_to_job(resume_texts, resume_skills_list, preprocessed_job_description, job_skills)
-    ranked_candidates = sorted(zip(resume_paths, scores), key=lambda x: x[1], reverse=True)
+
+    # Combine paths and scores into tuples
+    ranked_candidates = list(zip(resume_paths, scores))
+
+    # Sort candidates by score
+    ranked_candidates = sorted(ranked_candidates, key=lambda x: x[1], reverse=True)
+
     return ranked_candidates
 
 
 # Main function to demonstrate the ATS algorithm
 def main():
+    """Main function to run the ATS algorithm."""
     # Example job description
     job_description = "Data Scientist with experience in Python, Machine Learning, and Data Analysis."
 
@@ -112,8 +128,23 @@ def main():
     ]
 
     ranked_candidates = rank_candidates(resume_paths, job_description)
+
+    # Output results with explanations
     for resume, score in ranked_candidates:
-        print(f"Resume: {resume}, Score: {score:.2f}")
+        # Extract the skills and BERT scores
+        resume_text = extract_text_from_pdf(resume) if resume.endswith('.pdf') else extract_text_from_docx(resume)
+        resume_skills = extract_skills(resume_text)
+        job_skills = extract_skills(job_description)
+
+        skill_match_score = calculate_skill_match(resume_skills, job_skills)
+        bert_similarity_score = score  # Combined score already includes BERT similarity
+
+        # Print resume information with explanations
+        print(f"Resume: {resume}")
+        print(f"Score: {score:.2f}")
+        print(
+            f"Explanation: Skill Match Score: {skill_match_score:.2f}, BERT Similarity Score: {bert_similarity_score:.2f}")
+        print("-" * 40)
 
 
 if __name__ == "__main__":
