@@ -131,7 +131,28 @@ def rank_candidates(resume_paths, job_description):
 def main():
     """Main function to run the ATS algorithm."""
     # Example job description
-    job_description = "Data Scientist with experience in Python, Machine Learning, and Data Analysis."
+    job_description = """As a key member of the Data Analytics team, you will enjoy rolling up your sleeves to solve complex business questions through data. You will navigate through unique data sets to build and maintain data pipelines, monitor and optimize data processes, and lead feature engineering for our modeling data sets. The DA team proactively works to identify, prioritize and conduct analysis that drives meaningful insight to achieve our performance objectives.
+Able to drive successful completion of deliverables and analytic deliverables
+Ensures quality and reliability of data obtained from client sources and offline data sources (ensuring that data contains required information for analytics and modeling)
+Build and maintain complex data pipelines
+Confirm that the AI team is able to optimize the performance metric desired by the client and that the data provided by the client is sufficient (completeness and usability)
+Drill down on results (problem-solving analysis) and conduct custom analysis
+Reconcile data and procedures with internal teams
+Define and improve data joining procedures for new and existing deployments
+Ensure data integrity on review of historical data
+Bachelors or Masters in Computer Science, Mathematics, Economics, Physics, Engineering or related quantitative field.
+Minimum 2-4 years of experience in data analytics, data modelling, SQL scripting, statistics, ETL and Data Warehousing
+The ability to manage internal stakeholders in ensuring that data is received and managed in a timely and efficient manner
+Experience in a data-centric role in more than one industry
+Ability to work under pressure
+Strong knowledge and understanding of statistical concepts
+Strong problems solving and critical thinking skills
+The ability to convey mathematical concepts in a meaningful way to business clients and internal team members
+The ability to work independently and in a team environment
+The ability to work effectively across functions, levels, and disciplines
+Knowledge of SQL required
+Knowledge of R or Python required
+"""
 
     resume_paths = [
         "Junaid-Iqbal-Resume.pdf",  # Replace with actual paths
