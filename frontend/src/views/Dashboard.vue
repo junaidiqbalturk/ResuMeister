@@ -23,9 +23,17 @@
 
       <section class="content">
         <div v-if="currentSection === 'overview'">
-          <!-- Overview content here -->
           <h2>Welcome, {{ userName }}!</h2>
           <p>Here's what's happening in your account today:</p>
+
+          <!-- Card Section -->
+          <div class="card-container">
+            <div class="card" v-for="n in 6" :key="n">
+              <h3>Card {{ n }}</h3>
+              <p>This is the description of card {{ n }}. It contains useful information about your dashboard.</p>
+              <button @click="handleCardAction(n)">Learn More</button>
+            </div>
+          </div>
         </div>
         <div v-else-if="currentSection === 'create'">
           <!-- Create new resume content here -->
@@ -52,8 +60,11 @@ export default {
     navigateTo(section) {
       this.currentSection = section;
     },
+    handleCardAction(cardNumber) {
+      alert(`Card ${cardNumber} clicked`);
+    },
     logout() {
-      // Handle logout
+      this.$router.push('/login');
     }
   }
 };
@@ -114,5 +125,59 @@ export default {
   padding: 20px;
 }
 
-/* Other styles as needed */
+/* Card styles */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.card button {
+  padding: 10px 20px;
+  background-color: #ff5733;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.card button:hover {
+  background-color: #ff7853;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .card-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
 </style>
