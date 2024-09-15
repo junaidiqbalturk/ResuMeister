@@ -83,7 +83,7 @@
                 </linearGradient>
               </defs>
               <circle class="outer-circle" cx="50" cy="50" r="48" fill="url(#circle-gradient)" />
-              <circle class="inner-circle" cx="50" cy="50" r="44" fill="#FF66B2" />
+              <circle class="inner-circle" cx="50" cy="50" r="44" fill="#489FB5" />
               <text class="step-text" x="50" y="65" text-anchor="middle">{{ step.id }}</text>
             </svg>
           </div>
@@ -115,7 +115,10 @@
   </section>
 <!-- ends here-->
     <!-- Advertisement Section --->
-    <section class = "cta">
+    <section class = "cta-section">
+      <h2>Ready to Land Your Dream Job?</h2>
+      <p>Sign up today and start building your professional resume with ResuMeister.</p>
+
       <div class="clock">
         <div class="top"></div>
         <div class="right"></div>
@@ -143,9 +146,15 @@
 
     <!-- Call to Action -->
     <section class="cta">
-      <h2>Ready to Land Your Dream Job?</h2>
-      <p>Sign up today and start building your professional resume with ResuMeister.</p>
-      <a href="#" class="btn btn-primary">Create Your Resume</a>
+      <h2 class="typing-text">Not Sure Where to Start?</h2>
+      <p>Explore Our Expert Resume Templates and Get Inspired to Create Yours!</p>
+      <a href="/templates" class="cta btn">View Templates</a>
+
+      <div class="floating-icons">
+          <img src="/resume-icon1.png" alt="Resume Icon 1" class="floating-icon">
+          <img src="/resume-icon2.png" alt="Resume Icon 2" class="floating-icon">
+          <img src="/resume-icon3.png" alt="Resume Icon 3" class="floating-icon">
+      </div>
     </section>
 
     <!-- Footer -->
@@ -302,6 +311,30 @@ export default {
 
 <style scoped>
 /* CLock section css */
+.cta-section {
+  background: linear-gradient(90deg, #FF6F61, #FFB6B9);
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.cta-section h2{
+  font-family: 'Poppins', sans-serif;
+}
+
+.cta-section p{
+  font-family: 'Roboto', sans-serif;
+}
+
+@media (max-width: 768px) {
+  .cta-section {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+
 .clock {
   position: relative;
   height: 200px;
@@ -400,7 +433,6 @@ export default {
     left: 0;
     right: 0;
     margin: 0 auto;
-    //animation: time 3600s infinite linear;
     animation: time 30s infinite linear;
     &:before {
       position: absolute;
@@ -418,7 +450,6 @@ export default {
     left: 0;
     right: 0;
     margin: 0 auto;
-    //animation: time 60s infinite linear;
     animation: time 15s infinite linear;
     &:before {
       position: absolute;
@@ -492,7 +523,6 @@ export default {
   display: flex;
   align-items: center; /* Center vertically */
   justify-content: center; /* Center horizontally */
-  //overflow: hidden; /* Ensure content doesn't overflow */
 }
 
 
@@ -586,7 +616,6 @@ export default {
   margin: 0 auto;
   position: relative;
 }
-
 .steps {
   text-align: center;
   margin: 0 20px;
@@ -629,7 +658,7 @@ export default {
 }
 
 .inner-circle {
-  fill: #FF66B2;
+  fill: #489FB5;
   transition: fill 0.3s ease;
 }
 
@@ -713,6 +742,80 @@ export default {
   display: none;
 }
 /* New Try here ends here*/
+/* for mobile devices and small devices responsiveness */
+/* Add media queries for smaller screen sizes */
+@media (max-width: 768px) {
+  .how-it-workss {
+    padding: 30px 10px;
+  }
+
+  .section-titles {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .steps-containers {
+    flex-direction: column; /* Stack the steps vertically */
+    align-items: center;
+  }
+
+  .steps {
+    margin-bottom: 30px; /* Add margin between steps */
+    text-align: center;
+    flex: 1 1 100%; /* Make each step take full width */
+  }
+
+  .step-number-wrapper {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+  }
+
+  .step-numbers {
+    width: 80px;
+    height: 80px;
+  }
+
+  .step-titles {
+    font-size: 1.3rem;
+  }
+
+  .step-descriptions {
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+
+  .curved-arrows {
+    display: none; /* Hide arrows on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .section-titles {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .step-number-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  .step-numbers {
+    width: 60px;
+    height: 60px;
+  }
+
+  .step-titles {
+    font-size: 1.2rem;
+  }
+
+  .step-descriptions {
+    font-size: 0.8rem;
+  }
+}
+
+/* for mobile devices and small devices responsiveness */
 
 .section-heading {
   font-size: 2.5rem;
@@ -837,7 +940,7 @@ body {
 
 /* Navbar Styles */
 .navbar {
-  background-color: #2e576b;
+  background-color: #16697A;
   color: #fff;
   padding: 7px 28px;
   position: fixed;
@@ -902,14 +1005,14 @@ body {
 }
 
 .btn-primary {
-  background-color: #ff6347;
+  background-color: #CC7700;
   color: #fff;
-  border-color: #ff6347;
+  border-color: #CC7700;
 }
 
 .btn-primary:hover {
-  background-color: #ff4500;
-  border-color: #ff4500;
+  background-color: #489FB5;
+  border-color: #489FB5;
 }
 
 /* Features Section */
@@ -1070,33 +1173,123 @@ body {
 
 /* Call to Action Section */
 .cta {
-  padding: 60px 50px;
-  background-color: #a52a2a;
-  color: #fff;
+  position: relative;
+  background: linear-gradient(90deg, #1E3A8A, #7F00FF);
+  color: white;
   text-align: center;
+  padding: 50px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* To ensure floating icons don't go outside the container */
+
 }
 
 .cta h2 {
-  font-size: 2.5em;
+  font-size: 2.5rem;
   margin-bottom: 20px;
+  font-family: 'Courier New', monospace;
 }
 
 .cta p {
-  font-size: 1.2em;
+  font-size: 1.2rem;
   margin-bottom: 30px;
 }
 
 .cta .btn {
+  background-color: #00FF88; /* Bright Neon Green */
+  color: white;
   padding: 15px 30px;
-  font-size: 1.2em;
-  border-radius: 30px;
-  background-color: #fff;
-  color: #ff6347;
-  border-color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .cta .btn:hover {
-  background-color: #f4f4f4;
+   background-color: #00CC6E; /* Darker green on hover */
+}
+/* typing effect and floating in CTA */
+.typing-text {
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid;
+  width: 0;
+  animation: typing 3.5s steps(40, end) forwards, blink .75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+/* Floating Icons */
+.floating-icons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.floating-icon {
+  position: absolute;
+  animation: float 6s ease-in-out infinite;
+  width: 50px;
+  opacity: 0.7;
+}
+
+.floating-icon:nth-child(1) {
+  top: 20%;
+  left: 10%;
+  animation-duration: 5s;
+}
+
+.floating-icon:nth-child(2) {
+  top: 40%;
+  left: 80%;
+  animation-duration: 7s;
+}
+
+.floating-icon:nth-child(3) {
+  top: 70%;
+  left: 50%;
+  animation-duration: 6.5s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@media (max-width: 768px) {
+  .cta {
+    padding: 30px 15px;
+  }
+
+  .cta h2 {
+    font-size: 2rem;
+  }
+
+  .cta p {
+    font-size: 1rem;
+  }
+
+  .cta btn {
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+
+  .floating-icon {
+    width: 40px;
+  }
 }
 
 /* Footer */
