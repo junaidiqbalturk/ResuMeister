@@ -14,7 +14,7 @@
       </button>
     </div>
     <div class="nav-items">
-      <a href="#">Home</a>
+      <a href="#">Why ResuMeister</a>
       <a href="#">About Us</a>
       <a href="#">Resume Templates</a>
       <a href="#">Contact Us</a>
@@ -99,14 +99,14 @@
               class="arrow-path"
               d="M0 40 C 20 40, 20 10, 90 10"
               fill="none"
-              stroke="#fff"
+              stroke="#000000"
               stroke-width="2"
               stroke-dasharray="4,2"
             />
             <polygon
                 class="arrow-head"
               points="85,5 85,15 95,10"
-              fill="#fff"
+              fill="#000000"
             />
           </svg>
         </div>
@@ -312,19 +312,22 @@ export default {
 <style scoped>
 /* CLock section css */
 .cta-section {
-  background: linear-gradient(90deg, #FF6F61, #FFB6B9);
   flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 20px;
+  text-align: center;
+  background: #FF851B;
 }
 
 .cta-section h2{
   font-family: 'Poppins', sans-serif;
+  color: #FFFFFF;
 }
 
 .cta-section p{
   font-family: 'Roboto', sans-serif;
+  color: #FFFFFF;
 }
 
 @media (max-width: 768px) {
@@ -486,7 +489,7 @@ export default {
 }
 
 .btn-primary {
-  background-color: #007bff; /* Primary button color */
+  background-color: #001F3F; /* Primary button color */
 }
 
 .btn-secondary {
@@ -595,9 +598,9 @@ export default {
 
 /* New Try here ends here*/
 .how-it-workss {
-  background-color: #5B2DC7;
+  background-color: #FFFFFF;
   padding: 50px 20px;
-  color: white;
+  color: #001F3F;
   text-align: center;
 }
 
@@ -829,7 +832,7 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
 .why-choose {
   padding: 40px 20px;
-  background: #f4f4f9;
+  background: #FFDC00;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -838,6 +841,7 @@ export default {
 .heading-container {
   text-align: center;
   margin-bottom: 30px;
+  color: #333333
 }
 
 .section-heading {
@@ -862,7 +866,8 @@ export default {
 /*Why Choose section CSS above end */
 .why-choose {
   padding: 40px 20px;
-  background: #f4f4f9; /* Light background for contrast */
+  background: #FFDC00; /* Light background for contrast */
+  color: #333333;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -940,7 +945,7 @@ body {
 
 /* Navbar Styles */
 .navbar {
-  background-color: #16697A;
+  background-color: #001f3f;
   color: #fff;
   padding: 7px 28px;
   position: fixed;
@@ -976,7 +981,7 @@ body {
 }
 
 .navbar .nav-items a:hover {
-  color: #ff6347;
+  color: #00D1B2;
 }
 
 .navbar .action-buttons {
@@ -1005,14 +1010,14 @@ body {
 }
 
 .btn-primary {
-  background-color: #CC7700;
+  background-color: #001F3F;
   color: #fff;
   border-color: #CC7700;
 }
 
 .btn-primary:hover {
-  background-color: #489FB5;
-  border-color: #489FB5;
+  background-color: #00D1B2;
+  border-color: #00D1B2;
 }
 
 /* Features Section */
@@ -1120,14 +1125,16 @@ body {
 /* Testimonials Section */
 .testimonials {
   padding: 60px 50px;
-  background-color: #f4f4f4;
+  background-color: #F4F6F8;
   text-align: center;
+
 }
 
 .testimonials h2 {
   font-size: 2.5em;
   margin-bottom: 30px;
-  color: #333;
+  color: #333333;
+  font-family: 'Poppins', sans-serif;
 }
 
 .testimonials-container {
@@ -1135,11 +1142,12 @@ body {
   justify-content: center;
   flex-wrap: wrap;
   gap: 30px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .testimonial {
   max-width: 350px;
-  background-color: #fff;
+  background-color: #F4F6F8;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -1161,7 +1169,7 @@ body {
 
 .testimonial-text {
   font-size: 1em;
-  color: #666;
+  color: #333333;
   margin-bottom: 10px;
 }
 
@@ -1174,8 +1182,8 @@ body {
 /* Call to Action Section */
 .cta {
   position: relative;
-  background: linear-gradient(90deg, #1E3A8A, #7F00FF);
-  color: white;
+  background: #2ECC40;
+  color: #FFFFFF;
   text-align: center;
   padding: 50px 20px;
   border-radius: 10px;
@@ -1187,22 +1195,24 @@ body {
 .cta h2 {
   font-size: 2.5rem;
   margin-bottom: 20px;
-  font-family: 'Courier New', monospace;
+  font-family: 'Poppins', sans-serif
 }
 
 .cta p {
   font-size: 1.2rem;
   margin-bottom: 30px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .cta .btn {
-  background-color: #00FF88; /* Bright Neon Green */
+  background-color: #001F3F; /* Bright Neon Green */
   color: white;
   padding: 15px 30px;
   text-decoration: none;
   font-size: 1.2rem;
   border-radius: 5px;
   transition: background-color 0.3s ease;
+  font-family: 'Roboto', sans-serif;
 }
 
 .cta .btn:hover {
@@ -1295,8 +1305,8 @@ body {
 /* Footer */
 footer {
   padding: 30px 50px;
-  background-color: #2e576b;
-  color: #fff;
+  background-color: #111111;
+  color: #FFFFFF;
   text-align: center;
   margin-top: 50px;
 }
@@ -1314,7 +1324,7 @@ footer nav a {
 }
 
 footer nav a:hover {
-  color: #ff6347;
+  color: #00D1B2;
 }
 
 footer p {
