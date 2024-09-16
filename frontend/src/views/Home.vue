@@ -1253,7 +1253,7 @@ body {
 }
 
 .floating-icon:nth-child(1) {
-  top: 20%;
+  top: 43%;
   left: 10%;
   animation-duration: 5s;
 }
@@ -1266,7 +1266,7 @@ body {
 
 .floating-icon:nth-child(3) {
   top: 70%;
-  left: 50%;
+  left: 58%;
   animation-duration: 6.5s;
 }
 
