@@ -1,77 +1,68 @@
 <template>
-  <div class="register-container">
-    <!-- Left section for registration form -->
-    <div class="register-form">
-      <div class="back-link">
-        <router-link to="/">←</router-link>
-      </div>
+  <div class="signup-container">
+    <!-- Left section: Form -->
+    <div class="signup-form">
       <div class="form-header">
         <h1>Sign Up</h1>
-        <p>Secure Your Communications with ResuMeister</p>
+        <p>Secure Your Communications with Easymail</p>
       </div>
-      <form @submit.prevent="submitForm">
+      <form class="form-body" @submit.prevent="onSubmit">
+        <!-- Name input -->
         <div class="input-group">
-          <label for="username">Username</label>
-          <input
-            type="text"
-            v-model="form.username"
-            required
-          />
+          <svg class="icon"><!-- User Icon SVG --></svg>
+          <input type="text" placeholder="Daniel Ahmadi" required />
+          <svg class="valid-icon"><!-- Checkmark SVG --></svg>
         </div>
+        <!-- Email input -->
         <div class="input-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            v-model="form.email"
-            required
-          />
+          <svg class="icon"><!-- Email Icon SVG --></svg>
+          <input type="email" placeholder="11Danielahmadi@gmail.com" required />
+          <svg class="valid-icon"><!-- Checkmark SVG --></svg>
         </div>
-        <div class="input-group password-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            v-model="form.password"
-            required
-          />
-          <div class="password-requirements">
-            <p>• At least 8 characters</p>
-            <p>• At least one number (0-9) or symbol</p>
-            <p>• Lowercase (a-z) and Uppercase (A-Z)</p>
-          </div>
-        </div>
+        <!-- Password input -->
         <div class="input-group">
-          <label for="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            v-model="form.confirmPassword"
-            required
-          />
+          <svg class="icon"><!-- Password Icon SVG --></svg>
+          <input type="password" placeholder="Password" required />
+          <svg class="visibility-icon"><!-- Eye Icon SVG --></svg>
         </div>
-        <button type="submit" class="submit-btn">Sign Up</button>
-        <div class="social-signup">
-          <p>Or Sign Up with:</p>
+        <!-- Password requirements -->
+        <ul class="password-requirements">
+          <li>At least 8 characters</li>
+          <li>At least one number (0-9) or a symbol</li>
+          <li>Lowercase (a-z) and uppercase (A-Z)</li>
+        </ul>
+        <!-- Confirm password input -->
+        <div class="input-group">
+          <svg class="icon"><!-- Re-type Password Icon SVG --></svg>
+          <input type="password" placeholder="Re-Type Password" required />
+        </div>
+        <!-- Submit button -->
+        <button type="submit" class="submit-btn">Sign Up <svg><!-- Arrow Icon --></svg></button>
+        <!-- Or login with social media -->
+        <div class="social-login">
+          <p>Or sign up with:</p>
           <div class="social-buttons">
-            <button class="google">Google</button>
-            <button class="facebook">Facebook</button>
+            <button class="social-btn fb-btn"><svg><!-- Facebook Icon --></svg></button>
+            <button class="social-btn google-btn"><svg><!-- Google Icon --></svg></button>
           </div>
         </div>
       </form>
     </div>
 
-    <!-- Right section for background -->
-    <div class="register-background">
-      <div class="visual-elements">
-        <!-- Replace with appropriate image or SVG graphics -->
-        <img src="/registration-graphics.jpg" alt="Graphics" />
-        <div class="text-elements">
-          <h3>Your data, your rules</h3>
-          <p>Your data belongs to you, and our encryption ensures its security.</p>
-        </div>
+    <!-- Right section: Info cards -->
+    <div class="signup-info">
+      <div class="info-card">
+        <p>Inbox</p>
+        <h2>176,18</h2>
+        <div class="graph"><!-- Placeholder for small graph SVG --></div>
+      </div>
+      <div class="info-card">
+        <p>Your data, your rules</p>
+        <p>Your data belongs to you, and our encryption ensures that...</p>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -121,94 +112,105 @@ export default {
 </script>
 
 <style scoped>
-/* General container */
-.register-container {
-  display: flex;
-  justify-content: space-between;
-  height: 100vh;
-  background-color: #f0f4fa;
+/* General styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7ff;
 }
 
-/* Left form section */
-.register-form {
+.signup-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f4ff;
+}
+
+.signup-form {
   width: 50%;
   padding: 60px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.back-link {
-  margin-bottom: 20px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
 }
 
 .form-header h1 {
-  font-size: 36px;
+  font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
 .form-header p {
-  font-size: 16px;
-  margin-bottom: 30px;
+  font-size: 1.1rem;
+  color: #8e8e8e;
+}
+
+.form-body {
+  margin-top: 20px;
 }
 
 .input-group {
-  margin-bottom: 20px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
 }
 
-.input-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
+.input-group input {
+  flex-grow: 1;
+  border: none;
+  padding: 0 15px;
+  font-size: 1.1rem;
+  outline: none;
 }
 
-.input-field {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  margin-top: 5px;
+.icon, .valid-icon, .visibility-icon {
+  width: 20px;
+  height: 20px;
+  fill: #8e8e8e;
 }
 
-/* Password requirements styling */
 .password-requirements {
-  font-size: 14px;
-  color: #888;
-  margin-top: 8px;
-}
-
-.password-requirements ul {
-  list-style-type: disc;
-  padding-left: 20px;
+  list-style: none;
+  padding: 10px;
+  font-size: 0.85rem;
+  color: #8e8e8e;
+  margin-bottom: 20px;
 }
 
 .password-requirements li {
   margin-bottom: 5px;
 }
 
-/* Submit button */
 .submit-btn {
-  background-color: #4b61e1;
-  color: white;
-  padding: 15px;
-  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #4a90e2;
+  color: #fff;
   border: none;
-  width: 100%;
-  border-radius: 4px;
+  padding: 15px;
+  border-radius: 10px;
   cursor: pointer;
   margin-top: 20px;
 }
 
-/* Social sign up section */
-.social-signup {
-  margin-top: 30px;
-  text-align: center;
+.submit-btn svg {
+  margin-left: 10px;
 }
 
-.social-signup p {
-  font-size: 14px;
+.social-login {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.social-login p {
+  font-size: 0.9rem;
+  color: #8e8e8e;
   margin-bottom: 10px;
 }
 
@@ -218,48 +220,53 @@ export default {
   gap: 20px;
 }
 
-.social-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: #f1f1f1;
-}
-
-.google {
-  background-color: #db4437;
-  color: white;
-}
-
-.facebook {
-  background-color: #3b5998;
-  color: white;
-}
-
-/* Right background section */
-.register-background {
-  width: 50%;
-  background: linear-gradient(to bottom right, #e0eafc, #cfdef3);
+.social-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  background-color: #f4f4f4;
 }
 
-.visual-elements {
-  text-align: center;
+.fb-btn {
+  background-color: #3b5998;
 }
 
-.visual-elements img {
-  max-width: 100%;
+.google-btn {
+  background-color: #db4437;
 }
 
-.text-elements h3 {
-  font-size: 24px;
-  margin-top: 20px;
+.signup-info {
+  width: 40%;
+  padding: 40px;
 }
 
-.text-elements p {
-  font-size: 16px;
-  color: #555;
+.info-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.info-card p {
+  font-size: 1.1rem;
+  color: #8e8e8e;
+}
+
+.info-card h2 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.graph {
+  width: 100px;
+  height: 50px;
+  background-color: #ececec;
+  margin-top: 10px;
+  border-radius: 5px;
 }
 </style>
