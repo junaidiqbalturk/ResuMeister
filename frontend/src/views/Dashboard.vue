@@ -109,7 +109,7 @@ export default {
 }
 
 .top-bar {
-  background-color: #555;
+  background-color: #001f3f;
   color: white;
   padding: 10px 20px;
   display: flex;

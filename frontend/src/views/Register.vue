@@ -1,62 +1,45 @@
 <template>
-  <div class="signup-container">
-    <!-- Left section: Form -->
-    <div class="signup-form">
-      <div class="form-header">
-        <h1>Sign Up</h1>
-        <p>Secure Your Communications with Easymail</p>
-      </div>
-      <form class="form-body" @submit.prevent="onSubmit">
-        <!-- Name input -->
+  <div class="registration-container">
+    <div class="form-section">
+      <h1 class="form-title">Sign Up</h1>
+      <p class="form-subtitle">Secure Your Communications with ResuMeister</p>
+
+      <form class="form-body">
+        <!-- Name Field -->
         <div class="input-group">
-          <svg class="icon"><!-- User Icon SVG --></svg>
-          <input type="text" placeholder="Daniel Ahmadi" required />
-          <svg class="valid-icon"><!-- Checkmark SVG --></svg>
+          <input type="text" id="username" class="input-field" v-model="form.username" required />
+          <label for="username" class="floating-label">Your Name</label>
         </div>
-        <!-- Email input -->
+
+        <!-- Email Field -->
         <div class="input-group">
-          <svg class="icon"><!-- Email Icon SVG --></svg>
-          <input type="email" placeholder="11Danielahmadi@gmail.com" required />
-          <svg class="valid-icon"><!-- Checkmark SVG --></svg>
+          <input type="email" id="email" class="input-field" v-model="form.email" required />
+          <label for="email" class="floating-label">Your Email</label>
         </div>
-        <!-- Password input -->
+
+        <!-- Password Field -->
         <div class="input-group">
-          <svg class="icon"><!-- Password Icon SVG --></svg>
-          <input type="password" placeholder="Password" required />
-          <svg class="visibility-icon"><!-- Eye Icon SVG --></svg>
+          <input type="password" id="password" class="input-field" v-model="form.password" required />
+          <label for="password" class="floating-label">Password</label>
         </div>
-        <!-- Password requirements -->
-        <ul class="password-requirements">
-          <li>At least 8 characters</li>
-          <li>At least one number (0-9) or a symbol</li>
-          <li>Lowercase (a-z) and uppercase (A-Z)</li>
-        </ul>
-        <!-- Confirm password input -->
+
+        <!-- Confirm Password Field -->
         <div class="input-group">
-          <svg class="icon"><!-- Re-type Password Icon SVG --></svg>
-          <input type="password" placeholder="Re-Type Password" required />
+          <input type="password" id="confirmPassword" class="input-field" v-model="form.confirmPassword" required />
+          <label for="confirmPassword" class="floating-label">Re-Type Password</label>
         </div>
-        <!-- Submit button -->
-        <button type="submit" class="submit-btn">Sign Up <svg><!-- Arrow Icon --></svg></button>
-        <!-- Or login with social media -->
-        <div class="social-login">
-          <p>Or sign up with:</p>
-          <div class="social-buttons">
-            <button class="social-btn fb-btn"><svg><!-- Facebook Icon --></svg></button>
-            <button class="social-btn google-btn"><svg><!-- Google Icon --></svg></button>
-          </div>
-        </div>
+
+        <!-- Sign Up Button -->
+        <button type="submit" class="submit-btn">Sign Up</button>
       </form>
     </div>
 
-    <!-- Right section: Info cards -->
-    <div class="signup-info">
-      <div class="info-card">
-        <p>Inbox</p>
-        <h2>176,18</h2>
-        <div class="graph"><!-- Placeholder for small graph SVG --></div>
+    <div class="info-section">
+      <div class="info-box">
+        <h2>Inbox</h2>
+        <p class="info-count">176,18</p>
       </div>
-      <div class="info-card">
+      <div class="info-box">
         <p>Your data, your rules</p>
         <p>Your data belongs to you, and our encryption ensures that...</p>
       </div>
@@ -112,161 +95,141 @@ export default {
 </script>
 
 <style scoped>
-/* General styles */
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f7ff;
-}
-
-.signup-container {
+/* Overall Page Layout */
+.registration-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f4f6f8;
+}
+
+.form-section {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.info-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  height: 100vh;
   background-color: #f0f4ff;
 }
 
-.signup-form {
-  width: 50%;
-  padding: 60px;
-  background-color: #fff;
-  border-radius: 20px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-}
-
-.form-header h1 {
-  font-size: 2.5rem;
+/* Form Styles */
+.form-title {
+  font-size: 36px;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-.form-header p {
-  font-size: 1.1rem;
-  color: #8e8e8e;
+.form-subtitle {
+  font-size: 18px;
+  margin-bottom: 30px;
 }
 
 .form-body {
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .input-group {
   position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 10px;
+  margin-bottom: 20px;
 }
 
-.input-group input {
-  flex-grow: 1;
-  border: none;
-  padding: 0 15px;
-  font-size: 1.1rem;
+.input-field {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: transparent;
+}
+
+.input-field:focus {
   outline: none;
+  border-color: #007bff;
 }
 
-.icon, .valid-icon, .visibility-icon {
-  width: 20px;
-  height: 20px;
-  fill: #8e8e8e;
+/* Floating Label */
+.floating-label {
+  position: relative;
 }
 
-.password-requirements {
-  list-style: none;
-  padding: 10px;
-  font-size: 0.85rem;
-  color: #8e8e8e;
-  margin-bottom: 20px;
+.floating-label-text {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  font-size: 16px;
+  color: #777;
+  pointer-events: none;
+  transition: 0.3s ease all;
+  transform: translateY(-50%);
 }
 
-.password-requirements li {
-  margin-bottom: 5px;
-}
-
-.submit-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #4a90e2;
-  color: #fff;
-  border: none;
-  padding: 15px;
-  border-radius: 10px;
-  cursor: pointer;
-  margin-top: 20px;
-}
-
-.submit-btn svg {
-  margin-left: 10px;
-}
-
-.social-login {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.social-login p {
-  font-size: 0.9rem;
-  color: #8e8e8e;
-  margin-bottom: 10px;
-}
-
-.social-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.social-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background-color: #f4f4f4;
-}
-
-.fb-btn {
-  background-color: #3b5998;
-}
-
-.google-btn {
-  background-color: #db4437;
-}
-
-.signup-info {
-  width: 40%;
-  padding: 40px;
-}
-
-.info-card {
+.input-field:focus ~ .floating-label-text,
+.input-field:not(:placeholder-shown):not(:focus) ~ .floating-label-text {
+  top: -10px;
+  left: 10px;
+  font-size: 12px;
+  color: #007bff;
   background-color: #fff;
+  padding: 0 5px;
+}
+
+/* Button Styles */
+.submit-btn {
+  padding: 12px 30px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  width: fit-content;
+  align-self: flex-start;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Info Section Styles */
+.info-section {
   padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.info-box {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  text-align: center;
+  width: 80%;
 }
 
-.info-card p {
-  font-size: 1.1rem;
-  color: #8e8e8e;
-}
-
-.info-card h2 {
-  font-size: 2rem;
+.info-count {
+  font-size: 32px;
   font-weight: bold;
 }
 
-.graph {
-  width: 100px;
-  height: 50px;
-  background-color: #ececec;
-  margin-top: 10px;
-  border-radius: 5px;
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .registration-container {
+    flex-direction: column;
+  }
+
+  .info-section {
+    padding: 20px 10px;
+  }
 }
 </style>
