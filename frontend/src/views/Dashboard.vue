@@ -6,6 +6,7 @@
           <li @click="navigateTo('overview')">Dashboard Overview</li>
           <li @click="navigateTo('create')">Create New Resume</li>
           <li @click="navigateTo('resumes')">My Resumes</li>
+          <li @click="navigateTo('resumes')">Resume Templates</li>
           <li @click="navigateTo('settings')">Account Settings</li>
         </ul>
       </nav>
@@ -28,10 +29,10 @@
 
           <!-- Card Section -->
           <div class="card-container">
-            <div class="card" v-for="n in 6" :key="n">
-              <h3>Card {{ n }}</h3>
-              <p>This is the description of card {{ n }}. It contains useful information about your dashboard.</p>
-              <button @click="handleCardAction(n)">Learn More</button>
+            <div class="card" v-for="(card, index) in cards" :key="index">
+              <h3>{{ card.title }}</h3>
+              <p>{{ card.description }}</p>
+              <button @click="handleCardAction(index)">Learn More</button>
             </div>
           </div>
         </div>
@@ -54,6 +55,14 @@ export default {
   data() {
     return {
       currentSection: 'overview',
+      cards: [
+        { title: "Resume Score", description: "Check how well your resume performs and get improvement suggestions." },
+        { title: "Active Applications", description: "Track your active job applications and view their statuses." },
+        { title: "Suggested Skills", description: "See which skills can enhance your resume for better job matches." },
+        { title: "Latest Resume", description: "Access your most recent resume and make quick edits if needed." },
+        { title: "Quick Resume Builder", description: "Start building a new resume quickly using our easy template options." },
+        { title: "Analytics", description: "View analytics related to your resume views, job applications, and more." }
+      ],
     };
   },
   methods: {
