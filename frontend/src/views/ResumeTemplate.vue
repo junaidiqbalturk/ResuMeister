@@ -15,8 +15,9 @@
     <!-- Hero Section -->
     <section class="hero-section">
       <div class="hero-content">
-        <h1>Choose Your Perfect Resume Template</h1>
-        <p>Find a template that suits your career and make your resume stand out!</p>
+        <h1>Discover the Perfect Resume Template</h1>
+        <p>Stand out in the job market with a professionally designed resume.</p>
+        <button class="cta-btn">Explore Templates</button>
       </div>
     </section>
 
@@ -25,8 +26,10 @@
       <div class="container">
         <h2>Our Top Resume Templates</h2>
         <div class="templates">
-          <div v-for="template in templates" :key="template.id" class="template-card">
-            <img :src="template.image" alt="Template Preview" class="template-image" />
+          <div v-for="template in templates" :key="template.id" class="template-card" @mouseover="animateCard" @mouseleave="resetCard">
+            <div class="template-image-wrapper">
+              <img :src="template.image" alt="Template Preview" class="template-image" />
+            </div>
             <div class="template-info">
               <h3>{{ template.name }}</h3>
               <p>{{ template.description }}</p>
@@ -56,14 +59,24 @@ export default {
   data() {
     return {
       templates: [
-        { id: 1, name: 'Professional', description: 'A clean, corporate-style resume.', image: '/images/professional.jpg' },
+        { id: 1, name: 'Professional', description: 'A clean, corporate-style resume.', image: '/cv-template-professional.jpg' },
         { id: 2, name: 'Creative', description: 'A vibrant, eye-catching resume template.', image: '/images/creative.jpg' },
-        { id: 3, name: 'Minimalist', description: 'A sleek, minimal design to highlight your skills.', image: '/images/minimalist.jpg' },
-        { id: 4, name: 'Modern', description: 'A modern design for a modern job seeker.', image: '/images/modern.jpg' },
-        { id: 5, name: 'Executive', description: 'A high-end resume design for top-level professionals.', image: '/images/executive.jpg' },
-        { id: 6, name: 'Classic', description: 'A timeless, professional layout for any career.', image: '/images/classic.jpg' }
+        { id: 3, name: 'Minimalist', description: 'A sleek, minimal design to highlight your skills.', image: '/cv-template-minimalistic.jpg' },
+        { id: 4, name: 'Modern', description: 'A modern design for a modern job seeker.', image: '/cv-template-modern.jpg' },
+        { id: 5, name: 'Executive', description: 'A high-end resume design for top-level professionals.', image: '/cv-template-executive.jpg' },
+        { id: 6, name: 'Classic', description: 'A timeless, professional layout for any career.', image: '\cv-classic.jpg' }
       ]
     };
+  },
+  methods: {
+    animateCard(event) {
+      const card = event.currentTarget;
+      card.classList.add('animate-card');
+    },
+    resetCard(event) {
+      const card = event.currentTarget;
+      card.classList.remove('animate-card');
+    }
   }
 };
 </script>
@@ -71,10 +84,11 @@ export default {
 <style scoped>
 /* General Styles */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color: #f4f4f9;
 }
 
 .container {
@@ -84,8 +98,12 @@ body {
 
 /* Navbar Styles */
 .navbar {
-  background-color: #2c3e50;
-  padding: 1rem;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .navbar .container {
@@ -95,9 +113,14 @@ body {
 }
 
 .navbar .logo {
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: white;
   text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar .logo:hover {
+  color: #e84393;
 }
 
 .navbar .nav-links {
@@ -113,93 +136,155 @@ body {
   color: white;
   text-decoration: none;
   font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-links a:hover {
+  color: #e84393;
 }
 
 /* Hero Section */
 .hero-section {
-  background-color: #34495e;
+  background: url('C:\Users\junai\ResuMeister\frontend\src\assets\hero-bg.jpeg') no-repeat center center fixed;
+  background-size: cover;
   color: white;
-  padding: 4rem 0;
+  padding: 7rem 0;
   text-align: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: -1;
 }
 
 .hero-section h1 {
-  font-size: 3rem;
+  font-size: 4rem;
   margin-bottom: 1rem;
+  animation: fadeInUp 1s ease-in-out;
 }
 
 .hero-section p {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   margin-top: 0;
+  animation: fadeInUp 1.5s ease-in-out;
+}
+
+.cta-btn {
+  padding: 1.2rem 3rem;
+  background-color: #e84393;
+  color: white;
+  border: none;
+  font-size: 1.4rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.cta-btn:hover {
+  background-color: #d63031;
+  transform: scale(1.05);
 }
 
 /* Resume Templates Grid */
 .templates-grid {
   padding: 4rem 0;
+  background-color: #ffffff;
+  box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .templates-grid h2 {
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 2rem;
+  color: #2d3436;
+  font-weight: bold;
 }
 
 .templates {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;
+  transition: all 0.3s ease;
 }
 
 .template-card {
   background-color: #ecf0f1;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  transform: translateY(0);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  cursor: pointer;
+  position: relative;
 }
 
 .template-card:hover {
-  transform: scale(1.05);
+  transform: translateY(-12px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.template-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid #ccc;
 }
 
 .template-image {
   width: 100%;
   height: auto;
+  transition: transform 0.4s ease;
+}
+
+.template-card:hover .template-image {
+  transform: scale(1.1);
 }
 
 .template-info {
-  padding: 1rem;
+  padding: 1.5rem;
   text-align: center;
 }
 
 .template-info h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  color: #2d3436;
 }
 
 .template-info p {
   font-size: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  color: #636e72;
 }
 
 .btn {
   padding: 0.8rem 1.5rem;
-  background-color: #e74c3c;
+  background-color: #6c5ce7;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 30px;
   cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .btn:hover {
-  background-color: #c0392b;
+  background-color: #a29bfe;
+  transform: scale(1.05);
 }
 
 /* Footer Styles */
 footer {
   background-color: #2c3e50;
   color: white;
-  padding: 2rem 0;
+  padding: 3rem 0;
   text-align: center;
 }
 
@@ -210,11 +295,25 @@ footer p {
 footer .social-links a {
   color: white;
   text-decoration: none;
-  margin: 0 1rem;
+  margin: 0 1.5rem;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
 }
 
 footer .social-links a:hover {
-  color: #e74c3c;
+  color: #e84393;
+}
+
+/* Keyframe Animations */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive Styles */
@@ -224,7 +323,7 @@ footer .social-links a:hover {
   }
 
   .hero-section h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
   }
 
   .templates {
