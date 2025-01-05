@@ -1,3 +1,4 @@
+import pdfkit
 from flask import Blueprint, request, jsonify
 from flask_bcrypt import Bcrypt
 
@@ -55,6 +56,36 @@ def login():
         # Authentication failed
         return jsonify({'success': False, 'message': 'Invalid credentials'}), 401
 
+@main.route('/generate-resume', methods=['POST'])
+def generate_resume():
+    data = request.get_json()
 
+    name = data.get('name')
+    contact = data.get('contact')
+    experience = data.get('experience')
+    template_id = data.get('templateId')  # Template ID sent from Vue
+
+    # Define template-based customizations (for simplicity, we'll assume PDFs are generated with just a name, contact, and experience)
+    template_content = f"""
+    Name: {name}
+    Contact: {contact}
+    Experience: {experience}
+    """
+
+    # Choose a different template style based on template_id (you can expand this logic)
+    if template_id == 1:
+        resume_html = f"<div style='font-family: Arial, sans-serif; color: black;'>{template_content}</div>"
+    else:
+        resume_html = f"<div style='font-family: 'Courier New'; color: blue;'>{template_content}</div>"
+
+    # Generate PDF from HTML using pdfkit
+    pdf = pdfkit.from_string(resume_html, False)
+
+    # Save the PDF file
+    file_path = f"generated_resume_{template_id}.pdf"
+    with open(file_path, 'wb') as file:
+        file.write(pdf)
+
+    return jsonify({"message": "Resume generated successfully", "file_path": file_path})
 
 

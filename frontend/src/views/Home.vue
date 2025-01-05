@@ -16,7 +16,7 @@
     <div class="nav-items">
       <a href="#">Why ResuMeister</a>
       <a href="#">About Us</a>
-      <a href="#">Resume Templates</a>
+      <a href="/resume-template">Resume Templates</a>
       <a href="#">Contact Us</a>
     </div>
     <div class="action-buttons">
@@ -148,7 +148,7 @@
     <section class="cta">
       <h2 class="typing-text">Not Sure Where to Start?</h2>
       <p>Explore Our Expert Resume Templates and Get Inspired to Create Yours!</p>
-      <a href="/templates" class="cta btn">View Templates</a>
+      <a href="/resume-template" class="cta btn">View Templates</a>
 
       <div class="floating-icons">
           <img src="/resume-icon1.png" alt="Resume Icon 1" class="floating-icon">

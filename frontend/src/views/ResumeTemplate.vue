@@ -42,7 +42,7 @@
               <div class="template-overlay">
                 <h3>{{ template.name }}</h3>
                 <p>{{ template.description }}</p>
-                <button class="btn">Use This Template</button>
+                <button class="btn" @click="selectTemplate(template)">Use This Template</button>
               </div>
             </div>
           </div>
@@ -86,6 +86,10 @@ export default {
     resetCard(event) {
       const card = event.currentTarget;
       card.classList.remove('animate-card');
+    },
+    selectTemplate(template) {
+    // Pass the template ID to the FillResume page
+    this.$router.push({ name: 'FillResume', params: { templateId: template.id } });
     }
   }
 };

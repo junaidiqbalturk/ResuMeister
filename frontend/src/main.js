@@ -8,7 +8,8 @@ import Register from './views/Register.vue';
 import Dashboard from "@/views/Dashboard.vue";
 import Glide from '@glidejs/glide';
 import '@glidejs/glide/dist/css/glide.core.min.css';
-import ResumeTemplate from "@/views/ResumeTemplate.vue"; // Ensure Glide CSS is imported
+import ResumeTemplate from "@/views/ResumeTemplate.vue";
+import FillResume from "@/views/FillResume.vue"; // Ensure Glide CSS is imported
 
 const routes = [
   { path: '/', component: Home },
@@ -16,6 +17,7 @@ const routes = [
   { path: '/register', component: Register },
   { path: '/Dashboard', component: Dashboard },
   { path: '/resume-template', component: ResumeTemplate},
+  { path: '/resume-template/fill-resume', component: FillResume},
 ];
 
 const router = createRouter({
