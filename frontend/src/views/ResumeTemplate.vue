@@ -26,14 +26,24 @@
       <div class="container">
         <h2>Our Top Resume Templates</h2>
         <div class="templates">
-          <div v-for="template in templates" :key="template.id" class="template-card" @mouseover="animateCard" @mouseleave="resetCard">
+          <div
+            v-for="template in templates"
+            :key="template.id"
+            class="template-card"
+            @mouseover="animateCard"
+            @mouseleave="resetCard"
+          >
             <div class="template-image-wrapper">
-              <img :src="template.image" alt="Template Preview" class="template-image" />
-            </div>
-            <div class="template-info">
-              <h3>{{ template.name }}</h3>
-              <p>{{ template.description }}</p>
-              <button class="btn">Use This Template</button>
+              <img
+                :src="template.image"
+                alt="Template Preview"
+                class="template-image"
+              />
+              <div class="template-overlay">
+                <h3>{{ template.name }}</h3>
+                <p>{{ template.description }}</p>
+                <button class="btn">Use This Template</button>
+              </div>
             </div>
           </div>
         </div>
@@ -64,7 +74,7 @@ export default {
         { id: 3, name: 'Minimalist', description: 'A sleek, minimal design to highlight your skills.', image: '/cv-template-minimalistic.jpg' },
         { id: 4, name: 'Modern', description: 'A modern design for a modern job seeker.', image: '/cv-template-modern.jpg' },
         { id: 5, name: 'Executive', description: 'A high-end resume design for top-level professionals.', image: '/cv-template-executive.jpg' },
-        { id: 6, name: 'Classic', description: 'A timeless, professional layout for any career.', image: '\cv-classic.jpg' }
+        { id: 6, name: 'Classic', description: 'A timeless, professional layout for any career.', image: '/cv-classic.jpg' }
       ]
     };
   },
@@ -98,7 +108,7 @@ body {
 
 /* Navbar Styles */
 .navbar {
-  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  background: #001f3f;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: sticky;
@@ -145,7 +155,7 @@ body {
 
 /* Hero Section */
 .hero-section {
-  background: url('C:\Users\junai\ResuMeister\frontend\src\assets\hero-bg.jpeg') no-repeat center center fixed;
+  background: url('@/assets/hero-bg.jpeg') no-repeat center center fixed;
   background-size: cover;
   color: white;
   padding: 7rem 0;
@@ -213,7 +223,6 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;
-  transition: all 0.3s ease;
 }
 
 .template-card {
@@ -221,21 +230,21 @@ body {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transform: translateY(0);
+  transform: scale(1);
   transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   cursor: pointer;
   position: relative;
 }
 
 .template-card:hover {
-  transform: translateY(-12px);
+  transform: scale(1.05);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  background-color: #dfe6e9;
 }
 
 .template-image-wrapper {
   position: relative;
   overflow: hidden;
-  border-bottom: 2px solid #ccc;
 }
 
 .template-image {
@@ -248,24 +257,33 @@ body {
   transform: scale(1.1);
 }
 
-.template-info {
-  padding: 1.5rem;
-  text-align: center;
+/* Overlay for Name and Button */
+.template-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.template-info h3 {
-  font-size: 1.6rem;
+.template-card:hover .template-overlay {
+  opacity: 1;
+}
+
+.template-overlay h3 {
+  font-size: 1.8rem;
   margin-bottom: 1rem;
-  color: #2d3436;
 }
 
-.template-info p {
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-  color: #636e72;
-}
-
-.btn {
+.template-overlay .btn {
   padding: 0.8rem 1.5rem;
   background-color: #6c5ce7;
   color: white;
@@ -275,9 +293,21 @@ body {
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.btn:hover {
+.template-overlay .btn:hover {
   background-color: #a29bfe;
   transform: scale(1.05);
+}
+
+/* Template Info Styles */
+.template-info {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.template-info p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: #636e72;
 }
 
 /* Footer Styles */
