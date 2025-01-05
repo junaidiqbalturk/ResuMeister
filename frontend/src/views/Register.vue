@@ -1,90 +1,122 @@
 <template>
-  <div class="registration-container">
-    <div class="form-section">
-      <h1 class="form-title">Sign Up</h1>
-      <p class="form-subtitle">Secure Your Communications with ResuMeister</p>
+  <div class="register-page">
+    <!-- Left Section: Registration Form -->
+    <div class="form-container">
+      <div class="form-header">
+        <h1>Welcome to ResuMeister</h1>
+        <p>Create an account to craft your professional resume effortlessly.</p>
+      </div>
 
-      <form class="form-body">
-        <!-- Name Field -->
-        <div class="input-group">
-          <input type="text" id="username" class="input-field" v-model="form.username" required />
-          <label for="username" class="floating-label">Your Name</label>
+      <form class="register-form" @submit.prevent="registerUser">
+        <!-- Name -->
+        <div class="form-group">
+          <label for="username" class="form-label">Your Name</label>
+          <input
+            type="text"
+            id="username"
+            class="form-input"
+            v-model="form.username"
+            placeholder="Enter your name"
+            required
+          />
         </div>
 
-        <!-- Email Field -->
-        <div class="input-group">
-          <input type="email" id="email" class="input-field" v-model="form.email" required />
-          <label for="email" class="floating-label">Your Email</label>
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            class="form-input"
+            v-model="form.email"
+            placeholder="Enter your email"
+            required
+          />
         </div>
 
-        <!-- Password Field -->
-        <div class="input-group">
-          <input type="password" id="password" class="input-field" v-model="form.password" required />
-          <label for="password" class="floating-label">Password</label>
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-input"
+            v-model="form.password"
+            placeholder="Create a password"
+            required
+          />
+          <small class="form-helper">
+            Password must be at least 8 characters long.
+          </small>
         </div>
 
-        <!-- Confirm Password Field -->
-        <div class="input-group">
-          <input type="password" id="confirmPassword" class="input-field" v-model="form.confirmPassword" required />
-          <label for="confirmPassword" class="floating-label">Re-Type Password</label>
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            class="form-input"
+            v-model="form.confirmPassword"
+            placeholder="Re-enter your password"
+            required
+          />
         </div>
 
-        <!-- Sign Up Button -->
-        <button type="submit" class="submit-btn">Sign Up</button>
+        <!-- Error Message -->
+        <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-button">Sign Up</button>
       </form>
     </div>
 
-    <div class="info-section">
-      <div class="info-box">
-        <h2>Inbox</h2>
-        <p class="info-count">176,18</p>
-      </div>
-      <div class="info-box">
-        <p>Your data, your rules</p>
-        <p>Your data belongs to you, and our encryption ensures that...</p>
+    <!-- Right Section: Visual and Information -->
+    <div class="info-container">
+      <div class="info-overlay">
+        <h2>Your Journey Begins Here</h2>
+        <p>
+          Join thousands of professionals who trust ResuMeister to build their
+          dream resumes.
+        </p>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
       form: {
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        errorMessage: '',
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
       },
-
+      errorMessage: "",
     };
   },
   methods: {
     async registerUser() {
-      if (this.password !== this.confirmPassword) {
+      if (this.form.password !== this.form.confirmPassword) {
         this.errorMessage = "Passwords do not match.";
         return;
       }
       try {
-        const response = await fetch('http://localhost:5000/register', {
-          method: 'POST',
+        const response = await fetch("http://localhost:5000/register", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            username: this.username,
-            email: this.email,
-            password: this.password,
-            confirmPassword: this.confirmPassword,
-          }),
+          body: JSON.stringify(this.form),
         });
         const data = await response.json();
         if (response.ok) {
-          alert('Registration successful!');
-          this.$router.push('/login');
+          alert("Registration successful!");
+          this.$router.push("/login");
         } else {
-          this.errorMessage = data.message;
+          this.errorMessage = data.message || "Registration failed.";
         }
       } catch (error) {
         this.errorMessage = "There was a problem with the registration.";
@@ -95,141 +127,128 @@ export default {
 </script>
 
 <style scoped>
-/* Overall Page Layout */
-.registration-container {
+/* Container Setup */
+.register-page {
   display: flex;
   flex-direction: row;
+  height: 100vh;
   width: 100%;
-  min-height: 100vh;
-  background-color: #f4f6f8;
+  font-family: 'Arial', sans-serif;
 }
 
-.form-section {
+/* Form Section */
+.form-container {
   flex: 1;
-  padding: 20px;
+  padding: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #ffffff;
+  background: #ffffff;
 }
 
-.info-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f4ff;
-}
-
-/* Form Styles */
-.form-title {
-  font-size: 36px;
-  font-weight: bold;
+.form-header h1 {
+  font-size: 32px;
+  color: #333;
   margin-bottom: 10px;
 }
 
-.form-subtitle {
-  font-size: 18px;
+.form-header p {
+  font-size: 16px;
+  color: #666;
   margin-bottom: 30px;
 }
 
-.form-body {
+.register-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.input-group {
-  position: relative;
-  margin-bottom: 20px;
+.form-group {
+  display: flex;
+  flex-direction: column;
 }
 
-.input-field {
-  width: 100%;
+.form-label {
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #444;
+}
+
+.form-input {
   padding: 12px 15px;
+  font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
-  background-color: transparent;
+  transition: border-color 0.3s ease;
 }
 
-.input-field:focus {
+.form-input:focus {
   outline: none;
   border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
-/* Floating Label */
-.floating-label {
-  position: relative;
-}
-
-.floating-label-text {
-  position: absolute;
-  top: 50%;
-  left: 15px;
-  font-size: 16px;
-  color: #777;
-  pointer-events: none;
-  transition: 0.3s ease all;
-  transform: translateY(-50%);
-}
-
-.input-field:focus ~ .floating-label-text,
-.input-field:not(:placeholder-shown):not(:focus) ~ .floating-label-text {
-  top: -10px;
-  left: 10px;
+.form-helper {
   font-size: 12px;
-  color: #007bff;
-  background-color: #fff;
-  padding: 0 5px;
+  color: #888;
+  margin-top: 5px;
 }
 
-/* Button Styles */
-.submit-btn {
-  padding: 12px 30px;
+.form-error {
+  color: #d9534f;
+  font-size: 14px;
+}
+
+.submit-button {
+  padding: 12px 20px;
+  font-size: 16px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
-  font-size: 18px;
   cursor: pointer;
-  width: fit-content;
-  align-self: flex-start;
+  transition: background-color 0.3s ease;
 }
 
-.submit-btn:hover {
+.submit-button:hover {
   background-color: #0056b3;
 }
 
-/* Info Section Styles */
-.info-section {
-  padding: 20px;
+/* Info Section */
+.info-container {
+  flex: 1;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-.info-box {
-  background-color: white;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+.info-overlay {
   text-align: center;
-  width: 80%;
+  max-width: 80%;
 }
 
-.info-count {
-  font-size: 32px;
-  font-weight: bold;
+.info-overlay h2 {
+  font-size: 36px;
+  margin-bottom: 15px;
 }
 
-/* Responsive Styles */
+.info-overlay p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-  .registration-container {
+  .register-page {
     flex-direction: column;
   }
 
-  .info-section {
-    padding: 20px 10px;
+  .info-container {
+    height: 50vh;
   }
 }
 </style>

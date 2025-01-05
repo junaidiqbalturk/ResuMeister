@@ -14,6 +14,7 @@ users = {}
 @main.route('/register', methods=['POST'])
 def register():
     data = request.json
+    print("Data coming from Frontend:", data) # Log incoming
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
