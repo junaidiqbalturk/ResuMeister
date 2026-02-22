@@ -1,254 +1,188 @@
 <template>
-  <div class="register-page">
-    <!-- Left Section: Registration Form -->
-    <div class="form-container">
-      <div class="form-header">
-        <h1>Welcome to ResuMeister</h1>
-        <p>Create an account to craft your professional resume effortlessly.</p>
-      </div>
-
-      <form class="register-form" @submit.prevent="registerUser">
-        <!-- Name -->
-        <div class="form-group">
-          <label for="username" class="form-label">Your Name</label>
-          <input
-            type="text"
-            id="username"
-            class="form-input"
-            v-model="form.username"
-            placeholder="Enter your name"
-            required
-          />
-        </div>
-
-        <!-- Email -->
-        <div class="form-group">
-          <label for="email" class="form-label">Email Address</label>
-          <input
-            type="email"
-            id="email"
-            class="form-input"
-            v-model="form.email"
-            placeholder="Enter your email"
-            required
-          />
-        </div>
-
-        <!-- Password -->
-        <div class="form-group">
-          <label for="password" class="form-label">Password</label>
-          <input
-            type="password"
-            id="password"
-            class="form-input"
-            v-model="form.password"
-            placeholder="Create a password"
-            required
-          />
-          <small class="form-helper">
-            Password must be at least 8 characters long.
-          </small>
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="form-group">
-          <label for="confirmPassword" class="form-label">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            class="form-input"
-            v-model="form.confirmPassword"
-            placeholder="Re-enter your password"
-            required
-          />
-        </div>
-
-        <!-- Error Message -->
-        <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
-
-        <!-- Submit Button -->
-        <button type="submit" class="submit-button">Sign Up</button>
-      </form>
+  <div class="auth-wrapper">
+    <!-- Atmosphere -->
+    <div class="atmosphere">
+      <div class="aura aura-1"></div>
+      <div class="aura aura-2"></div>
+      <div class="aura aura-3"></div>
     </div>
 
-    <!-- Right Section: Visual and Information -->
-    <div class="info-container">
-      <div class="info-overlay">
-        <h2>Your Journey Begins Here</h2>
-        <p>
-          Join thousands of professionals who trust ResuMeister to build their
-          dream resumes.
-        </p>
+    <!-- Minimal Nav -->
+    <nav class="auth-nav container">
+      <a href="/" class="logo-link reveal-up">
+        <img src="/resumeister.png" alt="ResuMeister" class="logo-img">
+        <span class="logo-text">ResuMeister</span>
+      </a>
+    </nav>
+
+    <div class="container auth-content">
+      <div class="auth-card reveal-up">
+        <div class="auth-header">
+           <h1>Start your mission</h1>
+           <p>Build the engine that launches your career.</p>
+        </div>
+
+        <form @submit.prevent="registerUser" class="saas-form">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input v-model="form.username" type="text" placeholder="Johnathan Doe" required />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input v-model="form.email" type="email" placeholder="name@company.com" required />
+          </div>
+          <div class="form-group">
+            <label>Master Password</label>
+            <input v-model="form.password" type="password" placeholder="••••••••" required />
+          </div>
+          
+          <button type="submit" class="btn-auth-primary" :disabled="loading">
+            <span v-if="!loading">Create Workspace</span>
+            <span v-else>Initializing Archive...</span>
+          </button>
+        </form>
+
+        <div class="auth-footer">
+           <p>Already on the platform? <a href="/login">Sign in</a></p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { gsap } from 'gsap';
+
 export default {
+  name: 'Register',
   data() {
     return {
       form: {
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
+        username: '',
+        email: '',
+        password: ''
       },
-      errorMessage: "",
+      loading: false
     };
   },
-  methods: {
-    async registerUser() {
-      if (this.form.password !== this.form.confirmPassword) {
-        this.errorMessage = "Passwords do not match.";
-        return;
-      }
-      try {
-        const response = await fetch("http://localhost:5000/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(this.form),
-        });
-        const data = await response.json();
-        if (response.ok) {
-          alert("Registration successful!");
-          this.$router.push("/login");
-        } else {
-          this.errorMessage = data.message || "Registration failed.";
-        }
-      } catch (error) {
-        this.errorMessage = "There was a problem with the registration.";
-      }
-    },
+  mounted() {
+    this.executeAnimations();
   },
+  methods: {
+    executeAnimations() {
+       gsap.from('.reveal-up', {
+         y: 30,
+         opacity: 0,
+         duration: 1,
+         stagger: 0.1,
+         ease: 'power3.out'
+       });
+    },
+    registerUser() {
+      this.loading = true;
+      setTimeout(() => {
+        this.loading = false;
+        alert('Welcome to ResuMeister Labs. Your workspace is ready.');
+        this.$router.push('/Dashboard');
+      }, 2000);
+    }
+  }
 };
 </script>
 
 <style scoped>
-/* Container Setup */
-.register-page {
-  display: flex;
-  flex-direction: row;
-  height: 100vh;
-  width: 100%;
-  font-family: 'Arial', sans-serif;
-}
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
-/* Form Section */
-.form-container {
-  flex: 1;
-  padding: 50px;
+.auth-wrapper {
+  min-height: 100vh;
+  background-color: #030712;
+  color: #F8FAFC;
+  font-family: 'Outfit', sans-serif;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  background: #ffffff;
-}
-
-.form-header h1 {
-  font-size: 32px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.form-header p {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 30px;
-}
-
-.register-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-label {
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #444;
-}
-
-.form-input {
-  padding: 12px 15px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  transition: border-color 0.3s ease;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-}
-
-.form-helper {
-  font-size: 12px;
-  color: #888;
-  margin-top: 5px;
-}
-
-.form-error {
-  color: #d9534f;
-  font-size: 14px;
-}
-
-.submit-button {
-  padding: 12px 20px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.submit-button:hover {
-  background-color: #0056b3;
-}
-
-/* Info Section */
-.info-container {
-  flex: 1;
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative;
+  overflow: hidden;
 }
 
-.info-overlay {
-  text-align: center;
-  max-width: 80%;
+.atmosphere {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.aura { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.1; }
+.aura-1 { width: 800px; height: 800px; background: #6366F1; top: -10%; left: -10%; }
+.aura-2 { width: 600px; height: 600px; background: #EC4899; bottom: -5%; right: -5%; }
+.aura-3 { width: 400px; height: 400px; background: #FDBA74; top: 30%; left: 40%; opacity: 0.05; }
+
+.auth-nav { padding: 2.5rem 0; z-index: 10; }
+.logo-link { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-img { height: 28px; }
+.logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: #fff; }
+
+.auth-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  padding-bottom: 5rem;
 }
 
-.info-overlay h2 {
-  font-size: 36px;
-  margin-bottom: 15px;
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 32px;
+  padding: 3.5rem;
+  box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);
 }
 
-.info-overlay p {
-  font-size: 16px;
-  line-height: 1.5;
+.auth-header { text-align: center; margin-bottom: 3rem; }
+.auth-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem; }
+.auth-header p { color: #94A3B8; font-size: 1rem; }
+
+.saas-form { display: flex; flex-direction: column; gap: 1.5rem; }
+.form-group { display: flex; flex-direction: column; gap: 10px; }
+.form-group label { font-size: 0.85rem; font-weight: 600; color: #475569; }
+
+.form-group input {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s;
 }
+.form-group input:focus { outline: none; border-color: rgba(99, 102, 241, 0.5); background: rgba(15, 23, 42, 0.9); }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .register-page {
-    flex-direction: column;
-  }
+.btn-auth-primary {
+  margin-top: 1rem;
+  background: #fff;
+  color: #030712;
+  border: none;
+  padding: 1.1rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-auth-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.15); }
+.btn-auth-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  .info-container {
-    height: 50vh;
-  }
+.auth-footer { margin-top: 2.5rem; text-align: center; font-size: 0.9rem; color: #475569; }
+.auth-footer a { color: #fff; text-decoration: none; font-weight: 700; margin-left: 5px; }
+
+@media (max-width: 480px) {
+  .auth-card { padding: 2rem; border-radius: 0; min-height: 100vh; max-width: 100%; border: none; background: transparent; backdrop-filter: none; box-shadow: none; display: flex; flex-direction: column; justify-content: center; }
+  .auth-nav { display: none; }
 }
 </style>

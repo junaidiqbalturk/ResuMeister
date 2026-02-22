@@ -1,192 +1,328 @@
 <template>
-  <div class="dashboard">
-    <aside class="sidebar">
-      <nav>
-        <ul>
-          <li @click="navigateTo('overview')">Dashboard Overview</li>
-          <li @click="navigateTo('create')">Create New Resume</li>
-          <li @click="navigateTo('resumes')">My Resumes</li>
-          <li @click="navigateTo('resumes')">Resume Templates</li>
-          <li @click="navigateTo('settings')">Account Settings</li>
-        </ul>
-      </nav>
-    </aside>
+  <div class="dashboard-wrapper">
+    <!-- Atmosphere -->
+    <div class="atmosphere">
+      <div class="aura aura-1"></div>
+      <div class="aura aura-2"></div>
+    </div>
 
-    <div class="main-content">
-      <header>
-        <div class="top-bar">
-          <span>ResuMeister Dashboard</span>
-          <div class="user-menu">
-            <span @click="logout">Logout</span>
-          </div>
+    <!-- Dashboard App Shell -->
+    <div class="app-shell">
+      <!-- Sidebar Chrome -->
+      <aside class="sidebar reveal-left">
+        <div class="sidebar-brand">
+          <img src="/resumeister.png" alt="ResuMeister" class="s-logo">
+          <span>ResuMeister</span>
         </div>
-      </header>
+        
+        <nav class="sidebar-nav">
+          <a href="#" class="s-nav-link active">
+            <span class="s-icon">▤</span> Overview
+          </a>
+          <a href="/resume-template" class="s-nav-link">
+            <span class="s-icon">⚡</span> New Resume
+          </a>
+          <a href="#" class="s-nav-link">
+            <span class="s-icon">⚙</span> Settings
+          </a>
+        </nav>
 
-      <section class="content">
-        <div v-if="currentSection === 'overview'">
-          <h2>Welcome, {{ userName }}!</h2>
-          <p>Here's what's happening in your account today:</p>
-
-          <!-- Card Section -->
-          <div class="card-container">
-            <div class="card" v-for="(card, index) in cards" :key="index">
-              <h3>{{ card.title }}</h3>
-              <p>{{ card.description }}</p>
-              <button @click="handleCardAction(index)">Learn More</button>
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <div class="avatar">JD</div>
+            <div class="u-info">
+              <p class="u-name">John Doe</p>
+              <p class="u-plan">Pro Plan</p>
             </div>
           </div>
         </div>
-        <div v-else-if="currentSection === 'create'">
-          <!-- Create new resume content here -->
-        </div>
-        <div v-else-if="currentSection === 'resumes'">
-          <!-- List of resumes content here -->
-        </div>
-        <div v-else-if="currentSection === 'settings'">
-          <!-- Account settings content here -->
-        </div>
-      </section>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="dashboard-main">
+        <header class="dash-header container reveal-up">
+           <div class="h-left">
+              <h1>Workspace Overview</h1>
+              <p>Welcome back, commander. Your career engine is optimal.</p>
+           </div>
+           <div class="h-right">
+              <button class="btn-create-saas" @click="$router.push('/resume-template')">
+                <span>+</span> New Strategy
+              </button>
+           </div>
+        </header>
+
+        <section class="container scroll-area">
+           <!-- Statistics Bento -->
+           <div class="bento-grid">
+              <div class="bento-item stat-card reveal-up">
+                 <p class="label">Total Resumes</p>
+                 <div class="val-group">
+                    <span class="value">12</span>
+                    <span class="trend">+2 this week</span>
+                 </div>
+              </div>
+              <div class="bento-item stat-card reveal-up">
+                 <p class="label">ATS Optimization</p>
+                 <div class="val-group">
+                    <span class="value">94%</span>
+                    <span class="trend pos">Deep-sync active</span>
+                 </div>
+              </div>
+              <div class="bento-item bento-wide activity-card reveal-up">
+                 <h3>Recent Activity</h3>
+                 <div class="activity-list">
+                    <div class="act-item">
+                       <span class="act-dot"></span>
+                       <p>Resume <strong>"Software_Eng_v2"</strong> exported as PDF</p>
+                       <span class="act-time">2h ago</span>
+                    </div>
+                    <div class="act-item">
+                       <span class="act-dot"></span>
+                       <p>Mock Interview <strong>"Google_PM"</strong> session completed</p>
+                       <span class="act-time">Yesterday</span>
+                    </div>
+                 </div>
+              </div>
+              <div class="bento-item promo-card reveal-up">
+                 <img src="/resumeister.png" alt="" class="p-logo">
+                 <h3>Unlock AI Design</h3>
+                 <p>Get access to our neural-link design suggestions.</p>
+                 <button class="btn-sm-primary">Upgrade</button>
+              </div>
+           </div>
+
+           <!-- Resume Repository -->
+           <div class="repo-section reveal-up">
+              <div class="section-title">
+                 <h2>Active Narratives</h2>
+                 <a href="#" class="view-all">View All</a>
+              </div>
+              <div class="resume-list">
+                 <div class="resume-row" v-for="i in 3" :key="i">
+                    <div class="r-info">
+                       <div class="r-icon">📄</div>
+                       <div>
+                          <p class="r-name">Principal_Software_Strategist_0{{i}}</p>
+                          <p class="r-meta">Modified Feb 21, 2024 • 2:45 PM</p>
+                       </div>
+                    </div>
+                    <div class="r-actions">
+                       <button class="btn-row-ghost" @click="$router.push('/fill-resume/1')">Edit</button>
+                       <button class="btn-row-ghost">Export</button>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </section>
+      </main>
     </div>
   </div>
 </template>
 
 <script>
+import { gsap } from 'gsap';
+
 export default {
-  data() {
-    return {
-      currentSection: 'overview',
-      cards: [
-        { title: "Resume Score", description: "Check how well your resume performs and get improvement suggestions." },
-        { title: "Active Applications", description: "Track your active job applications and view their statuses." },
-        { title: "Suggested Skills", description: "See which skills can enhance your resume for better job matches." },
-        { title: "Latest Resume", description: "Access your most recent resume and make quick edits if needed." },
-        { title: "Quick Resume Builder", description: "Start building a new resume quickly using our easy template options." },
-        { title: "Analytics", description: "View analytics related to your resume views, job applications, and more." }
-      ],
-    };
+  name: 'Dashboard',
+  mounted() {
+    this.executeAnimations();
   },
   methods: {
-    navigateTo(section) {
-      this.currentSection = section;
-    },
-    handleCardAction(cardNumber) {
-      alert(`Card ${cardNumber} clicked`);
-    },
-    logout() {
-      this.$router.push('/login');
+    executeAnimations() {
+      gsap.from('.reveal-left', {
+        x: -50,
+        opacity: 0,
+        duration: 1,
+        ease: 'expo.out'
+      });
+      gsap.from('.reveal-up', {
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power3.out'
+      });
     }
   }
 };
 </script>
 
-<style>
-/* Global styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
-.dashboard {
-  display: flex;
+.dashboard-wrapper {
   height: 100vh;
-  width: 100vw;
+  background-color: #030712;
+  color: #F8FAFC;
+  font-family: 'Outfit', sans-serif;
+  overflow: hidden;
+  position: relative;
 }
 
+.atmosphere {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.aura { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.08; }
+.aura-1 { width: 600px; height: 600px; background: #6366F1; top: -10%; left: -10%; }
+.aura-2 { width: 500px; height: 500px; background: #EC4899; bottom: -10%; right: -10%; }
+
+.app-shell {
+  display: flex;
+  height: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+/* Sidebar */
 .sidebar {
-  width: 250px;
-  background-color: #333;
-  color: white;
-  padding-top: 20px;
+  width: 280px;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem;
 }
 
-.sidebar ul {
-  list-style-type: none;
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4rem;
+}
+.s-logo { height: 24px; filter: brightness(100); }
+.sidebar-brand span { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; }
+
+.sidebar-nav { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.s-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 16px;
+  color: #64748B;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+.s-nav-link:hover { color: #fff; background: rgba(255,255,255,0.03); }
+.s-nav-link.active { color: #fff; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.05); }
+.s-icon { font-size: 1rem; opacity: 0.7; }
+
+.sidebar-footer { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem; }
+.user-profile { display: flex; align-items: center; gap: 12px; }
+.avatar { width: 40px; height: 40px; background: #6366F1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; }
+.u-name { font-weight: 600; font-size: 0.9rem; }
+.u-plan { font-size: 0.75rem; color: #64748B; font-weight: 500; }
+
+/* Main Area */
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
-.sidebar ul li {
-  padding: 10px 20px;
+.container { max-width: 1000px; margin: 0 auto; padding: 0 4rem; }
+
+.dash-header { padding-top: 5rem; padding-bottom: 3.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
+.dash-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+.dash-header p { color: #94A3B8; font-size: 1.1rem; }
+
+.btn-create-saas {
+  background: #fff;
+  color: #030712;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s;
+}
+.btn-create-saas:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.15); }
+
+/* Bento Grid */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 4rem;
 }
 
-.sidebar ul li:hover {
-  background-color: #444;
+.bento-item {
+  background: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 2rem;
+  transition: all 0.3s;
 }
+.bento-item:hover { border-color: rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.4); }
 
-.main-content {
-  flex-grow: 1;
-}
+.stat-card .label { font-size: 0.8rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.5rem; }
+.val-group { display: flex; flex-direction: column; gap: 5px; }
+.value { font-size: 2.2rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
+.trend { font-size: 0.75rem; color: #64748B; font-weight: 600; }
+.trend.pos { color: #10B981; }
 
-.top-bar {
-  background-color: #001f3f;
-  color: white;
-  padding: 10px 20px;
+.bento-wide { grid-column: span 2; }
+.bento-wide h3 { font-size: 1.1rem; margin-bottom: 2rem; }
+.activity-list { display: flex; flex-direction: column; gap: 1.5rem; }
+.act-item { display: flex; align-items: center; gap: 1rem; font-size: 0.95rem; }
+.act-dot { width: 6px; height: 6px; background: #6366F1; border-radius: 50%; }
+.act-time { margin-left: auto; font-size: 0.8rem; color: #475569; }
+
+.promo-card { background: linear-gradient(135deg, #6366F1, #EC4899); border: none; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; }
+.p-logo { height: 24px; filter: brightness(100); }
+.promo-card h3 { font-size: 1.2rem; font-weight: 700; color: #fff; }
+.promo-card p { font-size: 0.85rem; color: rgba(255,255,255,0.8); }
+.btn-sm-primary { background: #fff; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 700; font-size: 0.75rem; cursor: pointer; }
+
+/* Repository */
+.repo-section { margin-bottom: 8rem; }
+.section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.section-title h2 { font-size: 1.4rem; font-weight: 700; }
+.view-all { font-size: 0.85rem; color: #6366F1; font-weight: 600; text-decoration: none; }
+
+.resume-list { display: flex; flex-direction: column; gap: 12px; }
+.resume-row {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 1.25rem 2rem;
+  border-radius: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: all 0.3s;
 }
+.resume-row:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.1); }
 
-.user-menu {
-  cursor: pointer;
-}
+.r-info { display: flex; align-items: center; gap: 1.5rem; }
+.r-icon { font-size: 1.2rem; }
+.r-name { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
+.r-meta { font-size: 0.8rem; color: #475569; }
 
-.content {
-  padding: 20px;
-}
+.r-actions { display: flex; gap: 10px; }
+.btn-row-ghost { background: transparent; border: 1px solid rgba(255,255,255,0.06); color: #94A3B8; padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+.btn-row-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.02); }
 
-/* Card styles */
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-around;
-}
-
-.card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 300px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.card h3 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-.card p {
-  font-size: 1em;
-  color: #555;
-  margin-bottom: 20px;
-}
-
-.card button {
-  padding: 10px 20px;
-  background-color: #ff5733;
-  border: none;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.card button:hover {
-  background-color: #ff7853;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .card-container {
-    flex-direction: column;
-    align-items: center;
-  }
+@media (max-width: 1024px) {
+  .sidebar { display: none; }
+  .dash-header { padding-top: 3rem; flex-direction: column; align-items: flex-start; gap: 2rem; }
+  .bento-grid { grid-template-columns: 1fr; }
+  .bento-wide { grid-column: span 1; }
+  .resume-row { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+  .r-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
 }
 </style>

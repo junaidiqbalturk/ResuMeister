@@ -13,6 +13,7 @@
   "dependencies": {
     "@glidejs/glide": "^3.6.2",
     "axios": "^1.7.4",
+    "gsap": "^3.14.2",
     "swiper": "^11.1.9",
     "vue-router": "^4.4.3",
     "vuex": "^4.1.0",
