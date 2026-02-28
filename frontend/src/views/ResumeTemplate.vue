@@ -35,7 +35,7 @@
     <!-- Template Grid -->
     <section class="templates-section container">
       <div class="templates-grid">
-        <div v-for="template in templates" :key="template.id" class="template-card-saas reveal-up">
+        <div v-for="template in templates" :key="template.id" class="template-card-saas">
           <div class="card-visual">
             <img :src="template.image" :alt="template.name" class="t-img">
             <div class="t-overlay">
@@ -73,9 +73,11 @@ export default {
   data() {
     return {
       templates: [
-        { id: 1, name: 'The Architect', category: 'Engineering', desc: 'A structure-first layout for senior technical leads.', image: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=2070&auto=format&fit=crop' },
-        { id: 2, name: 'The Specialist', category: 'Product', desc: 'Focuses on outcome-driven metrics and impact.', image: 'https://images.unsplash.com/photo-1626197031507-c17099753214?q=80&w=2070&auto=format&fit=crop' },
-        { id: 3, name: 'The Minimalist', category: 'Creative', desc: 'Clean, Swiss-inspired design for high density.', image: 'https://images.unsplash.com/photo-1512485694743-9c9538b4e6e0?q=80&w=2070&auto=format&fit=crop' }
+        { id: 1, name: 'The Architect', category: 'Engineering', desc: 'A structure-first layout for senior technical leads.', image: '/cv-template-professional.jpg' },
+        { id: 2, name: 'The Specialist', category: 'Product', desc: 'Focuses on outcome-driven metrics and impact.', image: '/cv-template-executive.jpg' },
+        { id: 3, name: 'The Minimalist', category: 'Creative', desc: 'Clean, Swiss-inspired design for high density.', image: '/cv-template-minimalistic.jpg' },
+        { id: 4, name: 'The Classic', category: 'Business', desc: 'Timeless professional layout for established roles.', image: '/cv-classic.jpg' },
+        { id: 5, name: 'The Modern', category: 'Tech', desc: 'Bold, high-contrast design for the modern workforce.', image: '/cv-template-modern.jpg' }
       ]
     };
   },
@@ -84,12 +86,15 @@ export default {
   },
   methods: {
     executeAnimations() {
-      gsap.from('.reveal-up', {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power3.out'
+      this.$nextTick(() => {
+        gsap.from('.reveal-up', {
+          y: 30,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: 'power3.out',
+          clearProps: 'opacity,transform'
+        });
       });
     },
     selectTemplate(id) {
@@ -145,7 +150,7 @@ export default {
 .text-gradient { background: linear-gradient(to right, #6366F1, #FDBA74); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .template-hero p { font-size: 1.25rem; color: #94A3B8; max-width: 600px; margin: 0 auto; }
 
-.templates-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 2rem; padding-bottom: 8rem; }
+.templates-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; padding-bottom: 8rem; }
 
 .template-card-saas { background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; overflow: hidden; transition: all 0.4s; }
 .template-card-saas:hover { border-color: rgba(99, 102, 241, 0.3); transform: translateY(-8px); }

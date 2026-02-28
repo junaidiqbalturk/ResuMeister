@@ -1,185 +1,314 @@
 <template>
-  <div class="auth-wrapper">
-    <!-- Atmosphere -->
-    <div class="atmosphere">
-      <div class="aura aura-1"></div>
-      <div class="aura aura-2"></div>
-    </div>
-
-    <!-- Minimal Back Nav -->
-    <nav class="auth-nav container">
-      <a href="/" class="logo-link reveal-up">
-        <img src="/resumeister.png" alt="ResuMeister" class="logo-img">
-        <span class="logo-text">ResuMeister</span>
-      </a>
-    </nav>
-
-    <div class="container auth-content">
-      <div class="auth-card reveal-up">
-        <div class="auth-header">
-           <h1>Welcome back</h1>
-           <p>Access your professional engineering workspace.</p>
+  <div class="auth-layout">
+    <div class="auth-side visual-side">
+      <div class="visual-content">
+        <router-link to="/" class="logo mb-5">
+          <div class="logo-icon">R</div>
+          <span>ResuMeister</span>
+        </router-link>
+        
+        <h2>Welcome back.</h2>
+        <p>Access your resume dashboard and continue your career journey.</p>
+        
+        <div class="testimonial-card">
+          <p>"ResuMeister helped me land a Senior Dev role at a FAANG company completely stress-free."</p>
+          <div class="author">- Alex D., Software Engineer</div>
         </div>
+      </div>
+      <div class="pattern-overlay"></div>
+    </div>
+    
+    <div class="auth-side form-side">
+      <div class="form-wrapper">
+        <div class="mobile-logo">
+          <div class="logo-icon">R</div> ResuMeister
+        </div>
+        
+        <h1 class="auth-title">Log In</h1>
+        <p class="auth-subtitle">Don't have an account? <router-link to="/register" class="link">Sign up</router-link></p>
 
-        <form @submit.prevent="handleLogin" class="saas-form">
-          <div class="form-group">
-            <label>Email Address</label>
-            <input v-model="email" type="email" placeholder="name@company.com" required />
-          </div>
-          <div class="form-group">
-            <div class="label-row">
-               <label>Password</label>
-               <a href="#" class="forgot-link">Forgot?</a>
-            </div>
-            <input v-model="password" type="password" placeholder="••••••••" required />
+        <button class="social-btn">
+          <span class="g-icon">G</span> Continue with Google
+        </button>
+        <button class="social-btn">
+          <span class="g-icon">in</span> Continue with LinkedIn
+        </button>
+
+        <div class="divider"><span>or sign in with email</span></div>
+
+        <form @submit.prevent="handleLogin" class="auth-form">
+          <div class="input-group floating">
+            <input type="email" id="email" v-model="email" placeholder=" " required />
+            <label for="email">Email address</label>
           </div>
           
-          <button type="submit" class="btn-auth-primary" :disabled="loading">
-            <span v-if="!loading">Login to Workspace</span>
-            <span v-else>Verifying Credentials...</span>
-          </button>
-        </form>
+          <div class="input-group floating">
+            <input type="password" id="password" v-model="password" placeholder=" " required />
+            <label for="password">Password</label>
+          </div>
 
-        <div class="auth-footer">
-           <p>New to ResuMeister? <a href="/register">Create an account</a></p>
-        </div>
+          <div class="form-actions">
+            <label class="checkbox-wrapper">
+              <input type="checkbox" /> Keep me signed in
+            </label>
+            <a href="#" class="link forgot">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn-primary-large full-width">Sign In</button>
+        </form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { gsap } from 'gsap';
-
 export default {
-  name: 'Login',
+  name: 'LoginView',
   data() {
     return {
       email: '',
-      password: '',
-      loading: false
-    };
-  },
-  mounted() {
-    this.executeAnimations();
+      password: ''
+    }
   },
   methods: {
-    executeAnimations() {
-      gsap.from('.reveal-up', {
-        y: 30,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: 'power3.out'
-      });
-    },
     handleLogin() {
-      this.loading = true;
-      setTimeout(() => {
-        this.loading = false;
-        this.$router.push('/Dashboard');
-      }, 1500);
+      // Simulate login and redirect to dashboard
+      console.log('Logging in with', this.email);
+      this.$router.push('/dashboard');
     }
   }
-};
+}
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-
-.auth-wrapper {
+.auth-layout {
+  display: flex;
   min-height: 100vh;
-  background-color: #030712;
-  color: #F8FAFC;
-  font-family: 'Outfit', sans-serif;
+  width: 100%;
+}
+
+.auth-side {
+  flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+/* Visual Side */
+.visual-side {
+  background: linear-gradient(135deg, var(--bg-deep) 0%, #0f172a 100%);
   position: relative;
   overflow: hidden;
+  padding: 4rem;
+  justify-content: center;
+  border-right: 1px solid rgba(255,255,255,0.05);
 }
 
-.atmosphere {
+.visual-content {
+  position: relative;
+  z-index: 2;
+  max-width: 480px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--text-main);
+}
+
+.logo-icon {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--accent), var(--secondary));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: white;
+}
+
+.mb-5 { margin-bottom: 4rem; }
+
+.visual-side h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.visual-side p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 4rem;
+}
+
+.testimonial-card {
+  background: rgba(255,255,255,0.03);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  border-radius: 0 12px 12px 0;
+}
+
+.testimonial-card p {
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+
+.author {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.pattern-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.4;
+  z-index: 1;
 }
-.aura { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.1; }
-.aura-1 { width: 800px; height: 800px; background: #6366F1; top: -10%; left: -10%; }
-.aura-2 { width: 600px; height: 600px; background: #EC4899; bottom: -5%; right: -5%; }
 
-.auth-nav { padding: 2.5rem 0; z-index: 10; }
-.logo-link { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-img { height: 28px; }
-.logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: #fff; }
+/* Form Side */
+.form-side {
+  background: var(--bg-deep);
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+}
 
-.auth-content {
-  flex: 1;
+.form-wrapper {
+  width: 100%;
+  max-width: 420px;
+}
+
+.mobile-logo {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.auth-title {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.link {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+.link:hover { text-decoration: underline; }
+
+.social-btn {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-main);
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
-  padding-bottom: 5rem;
+  gap: 12px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
 }
 
-.auth-card {
+.social-btn:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.g-icon { background: white; color: black; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.8rem; }
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 2rem 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+.divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.divider span { padding: 0 1rem; }
+
+/* Floating Labels */
+.floating {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.floating input {
   width: 100%;
-  max-width: 440px;
-  background: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 32px;
-  padding: 3.5rem;
-  box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);
-}
-
-.auth-header { text-align: center; margin-bottom: 3rem; }
-.auth-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem; }
-.auth-header p { color: #94A3B8; font-size: 1rem; }
-
-.saas-form { display: flex; flex-direction: column; gap: 1.75rem; }
-.form-group { display: flex; flex-direction: column; gap: 10px; }
-.label-row { display: flex; justify-content: space-between; align-items: center; }
-.label-row label { margin-bottom: 0; }
-.form-group label { font-size: 0.85rem; font-weight: 600; color: #475569; }
-
-.forgot-link { font-size: 0.8rem; color: #6366F1; text-decoration: none; font-weight: 600; }
-
-.form-group input {
+  padding: 1.25rem 1rem 0.6rem;
   background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 12px;
-  padding: 1rem 1.25rem;
-  color: #fff;
-  font-family: inherit;
+  color: white;
   font-size: 1rem;
   transition: all 0.3s;
 }
-.form-group input:focus { outline: none; border-color: rgba(99, 102, 241, 0.5); background: rgba(15, 23, 42, 0.9); }
 
-.btn-auth-primary {
-  margin-top: 1rem;
-  background: #fff;
-  color: #030712;
-  border: none;
-  padding: 1.1rem;
-  border-radius: 12px;
-  font-weight: 700;
+.floating input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.floating label {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  color: var(--text-muted);
   font-size: 1rem;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
+.floating input:focus ~ label,
+.floating input:not(:placeholder-shown) ~ label {
+  top: 12px;
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.3s;
 }
-.btn-auth-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.15); }
-.btn-auth-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.auth-footer { margin-top: 2.5rem; text-align: center; font-size: 0.9rem; color: #475569; }
-.auth-footer a { color: #fff; text-decoration: none; font-weight: 700; margin-left: 5px; }
+.btn-primary-large {
+  background: var(--text-main);
+  color: var(--bg-deep) !important;
+  padding: 1rem;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1.05rem;
+}
 
-@media (max-width: 480px) {
-  .auth-card { padding: 2.5rem; border-radius: 0; height: 100vh; max-width: 100%; border: none; background: transparent; backdrop-filter: none; box-shadow: none; }
-  .auth-nav { display: none; }
+@media (max-width: 900px) {
+  .visual-side { display: none; }
+  .mobile-logo { display: flex; }
 }
 </style>
