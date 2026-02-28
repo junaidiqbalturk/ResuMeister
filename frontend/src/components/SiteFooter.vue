@@ -18,7 +18,7 @@
         <div class="link-group">
           <h4>Product</h4>
           <router-link to="/features">Features</router-link>
-          <router-link to="/templates">Templates</router-link>
+          <router-link to="/resume-template">Templates</router-link>
           <router-link to="/pricing">Pricing</router-link>
         </div>
         <div class="link-group">

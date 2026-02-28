@@ -1,45 +1,19 @@
 <template>
-  <div class="templates-wrapper">
-    <!-- Atmosphere -->
-    <div class="atmosphere">
-      <div class="aura aura-1"></div>
-      <div class="aura aura-2"></div>
+  <div class="templates-page">
+    <div class="page-header text-center">
+      <div class="badge">Professional Portfolio</div>
+      <h1 class="page-title">Design your <span class="text-gradient">edge.</span></h1>
+      <p class="page-subtitle">Select a blueprint engineered for high-growth tech and business roles. All templates are ATS-optimized.</p>
     </div>
 
-    <!-- SaaS Navbar -->
-    <nav class="navbar-saas">
-      <div class="container nav-content">
-        <a href="/" class="logo-link">
-          <img src="/resumeister.png" alt="ResuMeister" class="logo-img">
-          <span class="logo-text">ResuMeister</span>
-        </a>
-        <div class="nav-links">
-           <a href="/" class="nav-link">Home</a>
-           <a href="/Dashboard" class="nav-link">Dashboard</a>
-        </div>
-        <div class="nav-actions">
-           <a href="/login" class="btn-ghost">Login</a>
-           <a href="/register" class="btn-saas-primary">Get Started</a>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Template Hero -->
-    <header class="template-hero reveal-up">
-      <div class="container">
-        <h1>Design your <span class="text-gradient">edge.</span></h1>
-        <p>Select a blueprint engineered for high-growth technical roles.</p>
-      </div>
-    </header>
-
     <!-- Template Grid -->
-    <section class="templates-section container">
+    <section class="templates-section">
       <div class="templates-grid">
-        <div v-for="template in templates" :key="template.id" class="template-card-saas">
+        <div v-for="template in templates" :key="template.id" class="template-card">
           <div class="card-visual">
-            <img :src="template.image" :alt="template.name" class="t-img">
+            <img :src="template.image" :alt="template.name" class="t-img" />
             <div class="t-overlay">
-              <button class="btn-saas-select" @click="selectTemplate(template.id)">Use Blueprint</button>
+              <button class="btn-primary-large" @click="selectTemplate(template.id)">Use Blueprint</button>
             </div>
           </div>
           <div class="card-info">
@@ -52,133 +26,243 @@
         </div>
       </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="footer-saas container">
-      <div class="footer-bottom">
-        <p>© 2024 ResuMeister Labs. All blueprints are ATS-optimized by default.</p>
-        <div class="status-badge">
-           <span class="status-dot"></span> System Operational
-        </div>
-      </div>
-    </footer>
   </div>
 </template>
 
 <script>
-import { gsap } from 'gsap';
+import classicImg from '@/assets/cv-classic.jpg';
+import proImg from '@/assets/cv-template-professional.jpg';
+import execImg from '@/assets/cv-template-executive.jpg';
+import minimalImg from '@/assets/cv-template-minimalistic.jpg';
+import modernImg from '@/assets/cv-template-modern.jpg';
 
 export default {
   name: 'ResumeTemplate',
   data() {
     return {
       templates: [
-        { id: 1, name: 'The Architect', category: 'Engineering', desc: 'A structure-first layout for senior technical leads.', image: '/cv-template-professional.jpg' },
-        { id: 2, name: 'The Specialist', category: 'Product', desc: 'Focuses on outcome-driven metrics and impact.', image: '/cv-template-executive.jpg' },
-        { id: 3, name: 'The Minimalist', category: 'Creative', desc: 'Clean, Swiss-inspired design for high density.', image: '/cv-template-minimalistic.jpg' },
-        { id: 4, name: 'The Classic', category: 'Business', desc: 'Timeless professional layout for established roles.', image: '/cv-classic.jpg' },
-        { id: 5, name: 'The Modern', category: 'Tech', desc: 'Bold, high-contrast design for the modern workforce.', image: '/cv-template-modern.jpg' }
+        { 
+          id: 1, 
+          name: 'The Architect', 
+          category: 'Engineering', 
+          desc: 'A structure-first layout for senior technical leads.', 
+          image: proImg 
+        },
+        { 
+          id: 2, 
+          name: 'The Specialist', 
+          category: 'Product', 
+          desc: 'Focuses on outcome-driven metrics and impact.', 
+          image: execImg 
+        },
+        { 
+          id: 3, 
+          name: 'The Minimalist', 
+          category: 'Creative', 
+          desc: 'Clean, Swiss-inspired design for high data density.', 
+          image: minimalImg 
+        },
+        { 
+          id: 4, 
+          name: 'The Classic', 
+          category: 'Business', 
+          desc: 'Timeless professional layout for established roles.', 
+          image: classicImg 
+        },
+        { 
+          id: 5, 
+          name: 'The Modern', 
+          category: 'Tech', 
+          desc: 'Bold, high-contrast design for the modern workforce.', 
+          image: modernImg 
+        },
+        { 
+          id: 6, 
+          name: 'The Visionary', 
+          category: 'Management', 
+          desc: 'Forward-looking structure showcasing leadership initiatives.', 
+          image: execImg
+        },
+        { 
+          id: 7, 
+          name: 'The Developer', 
+          category: 'Engineering', 
+          desc: 'Syntax-highlighted aesthetics tailored for coders.', 
+          image: proImg 
+        },
+        { 
+          id: 8, 
+          name: 'The Strategist', 
+          category: 'Business', 
+          desc: 'A dense, analytics-focused layout for strategists.', 
+          image: classicImg 
+        }
       ]
     };
   },
-  mounted() {
-    this.executeAnimations();
-  },
   methods: {
-    executeAnimations() {
-      this.$nextTick(() => {
-        gsap.from('.reveal-up', {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          clearProps: 'opacity,transform'
-        });
-      });
-    },
     selectTemplate(id) {
-      this.$router.push(`/fill-resume/${id}`);
+      this.$router.push(`/resume-template/fill-resume?template=${id}`);
     }
   }
 };
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-
-.templates-wrapper {
-  min-height: 100vh;
-  background-color: #030712;
-  color: #F8FAFC;
-  font-family: 'Outfit', sans-serif;
-  overflow-x: hidden;
-  position: relative;
+.templates-page {
+  padding: 4rem 2rem 8rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.atmosphere {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
+.page-header {
+  text-align: center;
+  margin-bottom: 5rem;
 }
-.aura { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.1; }
-.aura-1 { width: 800px; height: 800px; background: #6366F1; top: -10%; left: -10%; }
-.aura-2 { width: 600px; height: 600px; background: #EC4899; bottom: -5%; right: -5%; }
 
-.navbar-saas { padding: 2rem 0; z-index: 100; position: relative; }
-.nav-content { display: flex; justify-content: space-between; align-items: center; }
-.logo-link { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-img { height: 28px; }
-.logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: #fff; }
+.badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 99px;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
 
-.nav-links { display: flex; gap: 2rem; }
-.nav-link { color: #64748B; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s; }
-.nav-link:hover { color: #fff; }
+.page-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
 
-.btn-ghost { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.9rem; margin-right: 1.5rem; }
-.btn-saas-primary { background: #fff; color: #030712; padding: 0.6rem 1.4rem; border-radius: 99px; font-weight: 700; text-decoration: none; font-size: 0.9rem; transition: all 0.3s; }
-.btn-saas-primary:hover { transform: scale(1.05); box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2); }
+.page-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  max-width: 700px;
+  margin: 0 auto;
+}
 
-.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 10; }
+.templates-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+  gap: 3rem; 
+}
 
-.template-hero { padding: 6rem 0; text-align: center; }
-.template-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1rem; }
-.text-gradient { background: linear-gradient(to right, #6366F1, #FDBA74); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.template-hero p { font-size: 1.25rem; color: #94A3B8; max-width: 600px; margin: 0 auto; }
+.template-card { 
+  background: var(--bg-card); 
+  border: 1px solid rgba(255, 255, 255, 0.08); 
+  border-radius: 24px; 
+  overflow: hidden; 
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
 
-.templates-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; padding-bottom: 8rem; }
+.template-card:hover { 
+  border-color: var(--accent); 
+  transform: translateY(-8px); 
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+}
 
-.template-card-saas { background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; overflow: hidden; transition: all 0.4s; }
-.template-card-saas:hover { border-color: rgba(99, 102, 241, 0.3); transform: translateY(-8px); }
+.card-visual { 
+  height: 480px; 
+  overflow: hidden; 
+  position: relative; 
+  background: #000;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
 
-.card-visual { height: 480px; overflow: hidden; position: relative; background: #000; }
-.t-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; opacity: 0.8; }
-.template-card-saas:hover .t-img { transform: scale(1.05); opacity: 1; }
+.t-img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  object-position: top;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s; 
+  opacity: 0.8; 
+}
 
-.t-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s; }
-.template-card-saas:hover .t-overlay { opacity: 1; }
+.template-card:hover .t-img { 
+  transform: scale(1.05); 
+  opacity: 1; 
+}
 
-.btn-saas-select { background: #fff; color: #030712; border: none; padding: 1rem 2rem; border-radius: 99px; font-weight: 800; cursor: pointer; transform: translateY(10px); transition: all 0.3s; }
-.template-card-saas:hover .btn-saas-select { transform: translateY(0); }
+.t-overlay { 
+  position: absolute; 
+  top: 0; left: 0; width: 100%; height: 100%; 
+  display: flex; align-items: center; justify-content: center; 
+  background: rgba(15, 23, 42, 0.6); 
+  backdrop-filter: blur(4px); 
+  opacity: 0; 
+  transition: opacity 0.3s; 
+}
 
-.card-info { padding: 2rem; }
-.info-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.info-top h3 { font-size: 1.25rem; font-weight: 700; color: #fff; }
-.t-badge { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #6366F1; background: rgba(99, 102, 241, 0.1); padding: 4px 10px; border-radius: 4px; }
-.card-info p { color: #64748B; font-size: 0.95rem; line-height: 1.6; }
+.template-card:hover .t-overlay { 
+  opacity: 1; 
+}
 
-.footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 4rem 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: #475569; }
-.status-badge { display: flex; align-items: center; gap: 8px; font-weight: 600; }
-.status-dot { width: 8px; height: 8px; background: #10B981; border-radius: 50%; box-shadow: 0 0 10px #10B981; }
+.btn-primary-large { 
+  background: var(--text-main); 
+  color: var(--bg-deep) !important; 
+  padding: 1rem 2rem; 
+  border-radius: 99px; 
+  font-weight: 700; 
+  cursor: pointer; 
+  transform: translateY(20px); 
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+  font-family: var(--font-primary);
+  border: none;
+}
+
+.btn-primary-large:hover {
+  transform: translateY(0) scale(1.05);
+  box-shadow: 0 15px 40px rgba(255,255,255,0.2);
+}
+
+.template-card:hover .btn-primary-large { 
+  transform: translateY(0); 
+}
+
+.card-info { 
+  padding: 2rem; 
+  flex-grow: 1;
+}
+
+.info-top { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 1rem; 
+}
+
+.info-top h3 { 
+  font-size: 1.35rem; 
+  font-weight: 700; 
+  color: var(--text-main); 
+}
+
+.t-badge { 
+  font-size: 0.75rem; 
+  font-weight: 800; 
+  text-transform: uppercase; 
+  color: var(--accent); 
+  background: rgba(99, 102, 241, 0.1); 
+  padding: 6px 12px; 
+  border-radius: 8px; 
+}
+
+.card-info p { 
+  color: var(--text-muted); 
+  font-size: 1rem; 
+  line-height: 1.6; 
+}
 
 @media (max-width: 768px) {
-   .nav-links { display: none; }
-   .template-hero h1 { font-size: 2.5rem; }
+   .page-title { font-size: 2.5rem; }
    .templates-grid { grid-template-columns: 1fr; }
-   .card-visual { height: 350px; }
+   .card-visual { height: 400px; }
 }
 </style>
