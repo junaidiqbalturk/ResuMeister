@@ -11,27 +11,30 @@
       <!-- Sidebar Chrome -->
       <aside class="sidebar reveal-left">
         <div class="sidebar-brand">
-          <img src="/resumeister.png" alt="ResuMeister" class="s-logo">
+          <img src="/resumeister.png" alt="ResuMeister" class="s-logo" />
           <span>ResuMeister</span>
         </div>
         
         <nav class="sidebar-nav">
-          <a href="#" class="s-nav-link active">
+          <a href="#" class="s-nav-link" :class="{ active: activeTab === 'overview' }" @click.prevent="activeTab = 'overview'">
             <span class="s-icon">▤</span> Overview
           </a>
           <a href="/resume-template" class="s-nav-link">
             <span class="s-icon">⚡</span> New Resume
           </a>
-          <a href="#" class="s-nav-link">
+          <a href="#" class="s-nav-link" :class="{ active: activeTab === 'settings' }" @click.prevent="activeTab = 'settings'">
             <span class="s-icon">⚙</span> Settings
+          </a>
+          <a href="#" class="s-nav-link mt-auto s-logout" @click.prevent="handleLogout">
+            <span class="s-icon">↩</span> Logout
           </a>
         </nav>
 
         <div class="sidebar-footer">
           <div class="user-profile">
-            <div class="avatar">JD</div>
+            <div class="avatar">{{ userInitials }}</div>
             <div class="u-info">
-              <p class="u-name">John Doe</p>
+              <p class="u-name">{{ store.user?.fullName || store.user?.username || 'Guest' }}</p>
               <p class="u-plan">Pro Plan</p>
             </div>
           </div>
@@ -42,8 +45,10 @@
       <main class="dashboard-main">
         <header class="dash-header container reveal-up">
            <div class="h-left">
-              <h1>Workspace Overview</h1>
-              <p>Welcome back, commander. Your career engine is optimal.</p>
+              <h1 v-if="activeTab === 'overview'">Workspace Overview</h1>
+              <h1 v-else>Account Settings</h1>
+              <p v-if="activeTab === 'overview'">Welcome back, {{ store.user?.username || 'Commander' }}. Your career engine is optimal.</p>
+              <p v-else>Manage your profile and default resume data.</p>
            </div>
            <div class="h-right">
               <button class="btn-create-saas" @click="$router.push('/resume-template')">
@@ -53,67 +58,109 @@
         </header>
 
         <section class="container scroll-area">
-           <!-- Statistics Bento -->
-           <div class="bento-grid">
-              <div class="bento-item stat-card reveal-up">
-                 <p class="label">Total Resumes</p>
-                 <div class="val-group">
-                    <span class="value">12</span>
-                    <span class="trend">+2 this week</span>
-                 </div>
-              </div>
-              <div class="bento-item stat-card reveal-up">
-                 <p class="label">ATS Optimization</p>
-                 <div class="val-group">
-                    <span class="value">94%</span>
-                    <span class="trend pos">Deep-sync active</span>
-                 </div>
-              </div>
-              <div class="bento-item bento-wide activity-card reveal-up">
-                 <h3>Recent Activity</h3>
-                 <div class="activity-list">
-                    <div class="act-item">
-                       <span class="act-dot"></span>
-                       <p>Resume <strong>"Software_Eng_v2"</strong> exported as PDF</p>
-                       <span class="act-time">2h ago</span>
+           <!-- Tab: Overview -->
+           <div v-if="activeTab === 'overview'">
+             <!-- Statistics Bento -->
+             <div class="bento-grid">
+                <div class="bento-item stat-card reveal-up">
+                   <p class="label">Total Resumes</p>
+                   <div class="val-group">
+                      <span class="value">12</span>
+                      <span class="trend">+2 this week</span>
+                   </div>
+                </div>
+                <div class="bento-item stat-card reveal-up">
+                   <p class="label">ATS Optimization</p>
+                   <div class="val-group">
+                      <span class="value">94%</span>
+                      <span class="trend pos">Deep-sync active</span>
+                   </div>
+                </div>
+                <div class="bento-item bento-wide activity-card reveal-up">
+                   <h3>Recent Activity</h3>
+                   <div class="activity-list">
+                      <div class="act-item">
+                         <span class="act-dot"></span>
+                         <p>Resume <strong>"Software_Eng_v2"</strong> exported as PDF</p>
+                         <span class="act-time">2h ago</span>
+                      </div>
+                      <div class="act-item">
+                         <span class="act-dot"></span>
+                         <p>Mock Interview <strong>"Google_PM"</strong> session completed</p>
+                         <span class="act-time">Yesterday</span>
+                      </div>
+                   </div>
+                </div>
+                <div class="bento-item promo-card reveal-up">
+                   <img src="/resumeister.png" alt="" class="p-logo">
+                   <h3>Unlock AI Design</h3>
+                   <p>Get access to our neural-link design suggestions.</p>
+                   <button class="btn-sm-primary">Upgrade</button>
+                </div>
+             </div>
+
+             <!-- Resume Repository -->
+             <div class="repo-section reveal-up">
+                <div class="section-title">
+                   <h2>Active Narratives</h2>
+                   <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="resume-list">
+                   <div class="resume-row" v-for="i in 3" :key="i">
+                      <div class="r-info">
+                         <div class="r-icon">📄</div>
+                         <div>
+                            <p class="r-name">Principal_Software_Strategist_0{{i}}</p>
+                            <p class="r-meta">Modified Feb 21, 2024 • 2:45 PM</p>
+                         </div>
+                      </div>
+                      <div class="r-actions">
+                         <button class="btn-row-ghost" @click="$router.push('/resume-template/fill-resume?template=1')">Edit</button>
+                         <button class="btn-row-ghost">Export</button>
+                      </div>
+                   </div>
+                </div>
+             </div>
+           </div>
+
+           <!-- Tab: Settings -->
+           <div v-else-if="activeTab === 'settings'" class="settings-view reveal-up">
+              <div class="settings-card bento-item">
+                 <h3>Contact Information</h3>
+                 <p class="mb-4 text-muted">This data will automatically pre-fill when you create a new resume.</p>
+                 
+                 <form @submit.prevent="saveProfile" class="profile-form">
+                    <div class="form-row">
+                      <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" v-model="profileForm.fullName" placeholder="John Doe" />
+                      </div>
+                      <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" v-bind:value="store.user?.email" disabled class="disabled-input"/>
+                      </div>
                     </div>
-                    <div class="act-item">
-                       <span class="act-dot"></span>
-                       <p>Mock Interview <strong>"Google_PM"</strong> session completed</p>
-                       <span class="act-time">Yesterday</span>
+                    
+                    <div class="form-row">
+                      <div class="input-group">
+                        <label>Phone Number</label>
+                        <input type="tel" v-model="profileForm.phone" placeholder="+1 (555) 000-0000" />
+                      </div>
+                      <div class="input-group">
+                        <label>Location / Address</label>
+                        <input type="text" v-model="profileForm.address" placeholder="San Francisco, CA" />
+                      </div>
                     </div>
-                 </div>
-              </div>
-              <div class="bento-item promo-card reveal-up">
-                 <img src="/resumeister.png" alt="" class="p-logo">
-                 <h3>Unlock AI Design</h3>
-                 <p>Get access to our neural-link design suggestions.</p>
-                 <button class="btn-sm-primary">Upgrade</button>
+
+                    <div v-if="saveMessage" class="save-msg mb-4">{{ saveMessage }}</div>
+
+                    <div class="form-actions mt-4">
+                      <button type="submit" class="btn-create-saas">Save Changes</button>
+                    </div>
+                 </form>
               </div>
            </div>
 
-           <!-- Resume Repository -->
-           <div class="repo-section reveal-up">
-              <div class="section-title">
-                 <h2>Active Narratives</h2>
-                 <a href="#" class="view-all">View All</a>
-              </div>
-              <div class="resume-list">
-                 <div class="resume-row" v-for="i in 3" :key="i">
-                    <div class="r-info">
-                       <div class="r-icon">📄</div>
-                       <div>
-                          <p class="r-name">Principal_Software_Strategist_0{{i}}</p>
-                          <p class="r-meta">Modified Feb 21, 2024 • 2:45 PM</p>
-                       </div>
-                    </div>
-                    <div class="r-actions">
-                       <button class="btn-row-ghost" @click="$router.push('/fill-resume/1')">Edit</button>
-                       <button class="btn-row-ghost">Export</button>
-                    </div>
-                 </div>
-              </div>
-           </div>
         </section>
       </main>
     </div>
@@ -122,27 +169,48 @@
 
 <script>
 import { gsap } from 'gsap';
+import { store } from '@/store';
 
 export default {
   name: 'Dashboard',
+  data() {
+    return {
+      store,
+      activeTab: 'overview',
+      saveMessage: '',
+      profileForm: {
+        fullName: store.user?.fullName || '',
+        phone: store.user?.phone || '',
+        address: store.user?.address || ''
+      }
+    }
+  },
+  computed: {
+    userInitials() {
+      const name = this.store.user?.fullName || this.store.user?.username || 'G';
+      return name.charAt(0).toUpperCase();
+    }
+  },
   mounted() {
     this.executeAnimations();
   },
   methods: {
     executeAnimations() {
-      gsap.from('.reveal-left', {
-        x: -50,
-        opacity: 0,
-        duration: 1,
-        ease: 'expo.out'
+      gsap.from('.reveal-left', { x: -50, opacity: 0, duration: 1, ease: 'expo.out' });
+      gsap.from('.reveal-up', { y: 20, opacity: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' });
+    },
+    saveProfile() {
+      store.updateProfile({
+        fullName: this.profileForm.fullName,
+        phone: this.profileForm.phone,
+        address: this.profileForm.address
       });
-      gsap.from('.reveal-up', {
-        y: 20,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power3.out'
-      });
+      this.saveMessage = 'Profile updated successfully!';
+      setTimeout(() => this.saveMessage = '', 3000);
+    },
+    handleLogout() {
+      store.logout();
+      this.$router.push('/');
     }
   }
 };
@@ -325,4 +393,32 @@ export default {
   .resume-row { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
   .r-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
 }
+
+/* Settings View Elements */
+.settings-view { margin-bottom: 8rem; }
+.settings-card { max-width: 800px; }
+.settings-card h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; }
+.text-muted { color: #94A3B8; font-size: 0.95rem; }
+.mb-4 { margin-bottom: 2rem; }
+.mt-4 { margin-top: 2rem; }
+
+.profile-form { display: flex; flex-direction: column; gap: 2rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+
+.input-group { display: flex; flex-direction: column; gap: 8px; }
+.input-group label { font-size: 0.85rem; font-weight: 600; color: #E2E8F0; }
+.input-group input { 
+  background: rgba(15, 23, 42, 0.6); 
+  border: 1px solid rgba(255,255,255,0.1); 
+  padding: 12px 16px; 
+  border-radius: 8px; 
+  color: #F8FAFC; 
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.3s;
+}
+.input-group input:focus { outline: none; border-color: #6366F1; background: rgba(15, 23, 42, 0.9); }
+.disabled-input { background: rgba(0,0,0,0.2) !important; color: #64748B !important; cursor: not-allowed; }
+
+.save-msg { color: #10B981; font-weight: 600; font-size: 0.9rem; padding: 10px 14px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2); }
+.s-logout:hover { color: #EF4444 !important; background: rgba(239, 68, 68, 0.1) !important; }
 </style>

@@ -24,7 +24,7 @@
           <div class="mockup-header">
             <span></span><span></span><span></span>
           </div>
-          <img src="https://source.unsplash.com/random/1200x800/?dashboard" alt="ResuMeister Dashboard Mockup" class="mockup-img" />
+          <img :src="heroImage" alt="ResuMeister Dashboard Mockup" class="mockup-img" />
           <div class="mockup-overlay"></div>
         </div>
       </div>
@@ -94,8 +94,15 @@
 </template>
 
 <script>
+import heroImg from '@/assets/hero-bg.jpeg';
+
 export default {
-  name: 'HomeView'
+  name: 'HomeView',
+  data() {
+    return {
+      heroImage: heroImg
+    };
+  }
 }
 </script>
 

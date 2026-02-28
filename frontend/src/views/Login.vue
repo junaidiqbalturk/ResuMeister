@@ -47,6 +47,10 @@
             <label for="password">Password</label>
           </div>
 
+          <div v-if="errorMessage" class="error-msg">
+            {{ errorMessage }}
+          </div>
+
           <div class="form-actions">
             <label class="checkbox-wrapper">
               <input type="checkbox" /> Keep me signed in
@@ -54,7 +58,9 @@
             <a href="#" class="link forgot">Forgot password?</a>
           </div>
 
-          <button type="submit" class="btn-primary-large full-width">Sign In</button>
+          <button type="submit" class="btn-primary-large full-width" :disabled="isLoading">
+            {{ isLoading ? 'Signing In...' : 'Sign In' }}
+          </button>
         </form>
       </div>
     </div>
@@ -62,19 +68,52 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { store } from '@/store.js';
+
 export default {
   name: 'LoginView',
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      errorMessage: '',
+      isLoading: false
     }
   },
   methods: {
-    handleLogin() {
-      // Simulate login and redirect to dashboard
-      console.log('Logging in with', this.email);
-      this.$router.push('/dashboard');
+    async handleLogin() {
+      this.errorMessage = '';
+      this.isLoading = true;
+
+      try {
+        const response = await axios.post('http://localhost:5000/login', {
+          email: this.email,
+          password: this.password
+        });
+        
+        if (response.data.success) {
+          // Fake fetching additional profile data from this login endpoint for now
+          // We can expand the backend to return literal DB values (Name, phone, etc.)
+          store.login({
+            email: this.email,
+            username: this.email.split('@')[0], 
+            // In a real scenario, the backend might return `id`, `fullName`, `phone`, `address` here
+          });
+          
+          this.$router.push('/dashboard');
+        } else {
+          this.errorMessage = response.data.message || 'Invalid credentials';
+        }
+      } catch (err) {
+        if (err.response && err.response.data) {
+          this.errorMessage = err.response.data.message || 'Invalid credentials';
+        } else {
+          this.errorMessage = 'Network error. Please ensure backend is running.';
+        }
+      } finally {
+        this.isLoading = false;
+      }
     }
   }
 }

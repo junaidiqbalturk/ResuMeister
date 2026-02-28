@@ -21,8 +21,14 @@
         <router-link to="/contact" @click="closeMenu">Contact</router-link>
         
         <div class="nav-actions">
-          <router-link to="/login" class="nav-link-subtle" @click="closeMenu">Log in</router-link>
-          <router-link to="/register" class="btn-primary" @click="closeMenu">Get Started</router-link>
+          <template v-if="!store.isLoggedIn">
+            <router-link to="/login" class="nav-link-subtle" @click="closeMenu">Log in</router-link>
+            <router-link to="/register" class="btn-primary" @click="closeMenu">Get Started</router-link>
+          </template>
+          <template v-else>
+            <router-link to="/dashboard" class="btn-primary" @click="closeMenu">Dashboard</router-link>
+            <button @click="logout" class="nav-link-subtle btn-logout">Logout</button>
+          </template>
         </div>
       </div>
     </div>
@@ -30,12 +36,15 @@
 </template>
 
 <script>
+import { store } from '@/store.js';
+
 export default {
   name: 'SiteNavbar',
   data() {
     return {
       isScrolled: false,
-      isMenuOpen: false
+      isMenuOpen: false,
+      store
     }
   },
   mounted() {
@@ -53,6 +62,11 @@ export default {
     },
     closeMenu() {
       this.isMenuOpen = false;
+    },
+    logout() {
+      store.logout();
+      this.closeMenu();
+      this.$router.push('/');
     }
   }
 }

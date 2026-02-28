@@ -150,6 +150,7 @@
 
 <script>
 import { gsap } from 'gsap';
+import { store } from '@/store.js';
 
 export default {
   name: 'FillResume',
@@ -165,7 +166,8 @@ export default {
       },
       experience: '',
       skills: '',
-      isGenerating: false
+      isGenerating: false,
+      isAutoFilled: false
     };
   },
   computed: {
@@ -175,6 +177,36 @@ export default {
   },
   mounted() {
     this.executeAnimations();
+
+    // Auto-fill from global user store if logged in
+    if (store.user) {
+      let filledCount = 0;
+      if (store.user.fullName) {
+        this.form.name = store.user.fullName;
+        filledCount++;
+      }
+      if (store.user.email) {
+        this.form.email = store.user.email;
+        filledCount++;
+      }
+      // Assuming store.user.location or store.user.address maps to form.location
+      if (store.user.location) {
+        this.form.location = store.user.location;
+        filledCount++;
+      } else if (store.user.address) { // Fallback for address if location isn't present
+        this.form.location = store.user.address;
+        filledCount++;
+      }
+      // If there's a professional title in the store, use it
+      if (store.user.professionalTitle) {
+        this.form.title = store.user.professionalTitle;
+        filledCount++;
+      }
+
+      if (filledCount > 0) {
+        this.isAutoFilled = true;
+      }
+    }
   },
   methods: {
     executeAnimations() {

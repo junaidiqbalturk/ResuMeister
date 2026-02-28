@@ -41,15 +41,25 @@
           </div>
           
           <div class="input-group floating">
-            <input type="password" id="password" v-model="password" placeholder=" " required />
+            <input type="password" id="password" v-model="password" placeholder=" " required @input="checkStrength" />
             <label for="password">Password</label>
-            <div class="password-strength" v-if="password.length > 0">
-              <div class="str-meter" :class="{ 'good': password.length > 5, 'strong': password.length > 8 }"></div>
-              <span>{{ password.length > 8 ? 'Strong' : password.length > 5 ? 'Good' : 'Weak' }}</span>
+            <div class="strength-meter mt-2">
+              <div class="strength-bar" :style="{ width: strength + '%', background: strengthColor }"></div>
             </div>
           </div>
 
-          <button type="submit" class="btn-primary-large full-width">Create Account</button>
+          <div class="input-group floating">
+            <input type="password" id="confirmPassword" v-model="confirmPassword" placeholder=" " required />
+            <label for="confirmPassword">Confirm Password</label>
+          </div>
+
+          <div v-if="errorMessage" class="error-msg">
+            {{ errorMessage }}
+          </div>
+
+          <button type="submit" class="btn-primary-large full-width" :disabled="isLoading">
+            {{ isLoading ? 'Creating Account...': 'Create Account' }}
+          </button>
           
           <p class="terms">By creating an account, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
         </form>
@@ -66,19 +76,77 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { store } from '@/store.js';
+
 export default {
   name: 'RegisterView',
   data() {
     return {
       name: '',
       email: '',
-      password: ''
+      password: '',
+      confirmPassword: '',
+      strength: 0,
+      errorMessage: '',
+      isLoading: false
+    }
+  },
+  computed: {
+    strengthColor() {
+      if (this.strength < 33) return '#EF4444';
+      if (this.strength < 66) return '#F59E0B';
+      return '#10B981';
     }
   },
   methods: {
-    handleRegister() {
-      console.log('Registering', this.email);
-      this.$router.push('/dashboard');
+    checkStrength() {
+      let score = 0;
+      if (this.password.length > 6) score += 33;
+      if (/[A-Z]/.test(this.password)) score += 33;
+      if (/[0-9!@#\$%\^\&*\)\(+=._-]/.test(this.password)) score += 34;
+      this.strength = score;
+    },
+    async handleRegister() {
+      this.errorMessage = '';
+      if (this.password !== this.confirmPassword) {
+        this.errorMessage = "Passwords do not match.";
+        return;
+      }
+      if (this.strength < 66) {
+        this.errorMessage = "Please choose a stronger password.";
+        return;
+      }
+
+      this.isLoading = true;
+      try {
+         const response = await axios.post('http://localhost:5000/register', {
+            username: this.name.split(' ')[0] || this.name, // Flask expects username right now
+            email: this.email,
+            password: this.password,
+            confirmPassword: this.confirmPassword
+         });
+
+         if (response.status === 201 || response.data.message === "User registered successfully") {
+            // Fake auto-login after register since backend doesn't return full user payload on register
+            store.login({
+               email: this.email,
+               username: this.name.split(' ')[0] || this.name,
+               fullName: this.name
+            });
+            this.$router.push('/dashboard');
+         } else {
+            this.errorMessage = response.data.message || 'Registration failed';
+         }
+      } catch(err) {
+         if (err.response && err.response.data) {
+           this.errorMessage = err.response.data.message || 'Registration failed';
+         } else {
+           this.errorMessage = 'Network error. Please ensure backend is running.';
+         }
+      } finally {
+         this.isLoading = false;
+      }
     }
   }
 }
