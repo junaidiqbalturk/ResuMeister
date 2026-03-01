@@ -107,6 +107,52 @@
              </div>
           </div>
           
+          <!-- ATS Scan History Section -->
+          <div class="d-section mt-12">
+             <div class="d-section-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">My ATS Scans</h2>
+                <button class="d-btn-secondary btn-sm" @click="$router.push('/ats-scanner')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display:inline; margin-right:4px; vertical-align:text-bottom;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                   New Scan
+                </button>
+             </div>
+             
+             <div v-if="atsHistory.length === 0" class="d-empty-state">
+                <div class="d-empty-icon">🔍</div>
+                <p>No ATS scans found. Upload a resume and job description to get started.</p>
+                <button class="d-btn-primary mt-4" @click="$router.push('/ats-scanner')">Try ATS Scanner</button>
+             </div>
+             
+             <div v-else class="ats-table-container">
+               <table class="ats-table">
+                 <thead>
+                   <tr>
+                     <th>Date</th>
+                     <th>Resume File</th>
+                     <th>Job Target</th>
+                     <th>Overall Score</th>
+                     <th>Action</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr v-for="scan in atsHistory" :key="scan.id">
+                     <td>{{ formatDate(scan.created_at) }}</td>
+                     <td class="file-cell">{{ scan.cv_filename }}</td>
+                     <td class="desc-cell">{{ scan.job_description }}</td>
+                     <td>
+                        <div class="score-badge" :class="getScoreClass(scan.overall_score)">
+                          {{ Math.round(scan.overall_score) }}%
+                        </div>
+                     </td>
+                     <td>
+                        <button class="d-btn-secondary" @click="viewScanDetails(scan)">Details</button>
+                     </td>
+                   </tr>
+                 </tbody>
+               </table>
+             </div>
+          </div>
+          
         </div>
 
         <!-- Settings Content -->
@@ -193,6 +239,7 @@ export default {
       activeTab: 'overview',
       toast: { visible: false, type: 'success', title: '', message: '' },
       toastTimer: null,
+      atsHistory: [],
       profileForm: {
         fullName: store.user?.fullName || '',
         phone: store.user?.phone || '',
@@ -230,6 +277,7 @@ export default {
   },
   mounted() {
     this.fetchProfile();
+    this.fetchATSHistory();
   },
   methods: {
     async fetchProfile() {
@@ -279,6 +327,31 @@ export default {
     handleLogout() {
       store.logout();
       this.$router.push('/');
+    },
+    async fetchATSHistory() {
+      if (store.user?.id) {
+        try {
+          const response = await axios.get(`http://localhost:5000/api/ats-history`, { withCredentials: true });
+          if (response.data.success) {
+            this.atsHistory = response.data.history;
+          }
+        } catch (err) {
+          console.error("Could not fetch ATS history", err);
+        }
+      }
+    },
+    formatDate(dateString) {
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    },
+    getScoreClass(score) {
+      if (score >= 80) return 'score-success';
+      if (score >= 40) return 'score-warning';
+      return 'score-danger';
+    },
+    viewScanDetails(scan) {
+      // In a real app, this might open a modal or navigate to a detailed view
+      this.showToast('success', 'Scan Overview', `Overall: ${Math.round(scan.overall_score)}% | Semantic: ${Math.round(scan.semantic_score)}% | Keywords: ${Math.round(scan.keyword_score)}%`);
     }
   }
 };
@@ -465,6 +538,62 @@ export default {
   font-family: var(--font-primary);
 }
 .d-btn-primary:hover { box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5); transform: translateY(-2px); }
+
+.d-btn-secondary {
+  background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border-subtle);
+  padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; font-family: var(--font-primary);
+}
+.d-btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+
+/* ATS Table Styles */
+.ats-table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-subtle);
+}
+.ats-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.ats-table th {
+  padding: 1rem 1.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  font-weight: 600;
+}
+.ats-table td {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.95rem;
+  color: var(--text-main);
+  vertical-align: middle;
+}
+.ats-table tbody tr:last-child td { border-bottom: none; }
+.ats-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+
+.file-cell { font-family: var(--font-secondary); font-weight: 500; color: var(--accent); }
+.desc-cell { color: var(--text-dim); max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.score-success { background: rgba(16, 185, 129, 0.15); color: #34D399; }
+.score-warning { background: rgba(245, 158, 11, 0.15); color: #FBBF24; }
+.score-danger { background: rgba(239, 68, 68, 0.15); color: #F87171; }
 
 /* Forms */
 .d-settings-card { max-width: 850px; padding: 3rem; }

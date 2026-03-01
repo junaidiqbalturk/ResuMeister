@@ -15,6 +15,7 @@
       <div class="nav-links" :class="{ 'open': isMenuOpen }">
         <router-link to="/features" @click="closeMenu">Features</router-link>
         <router-link to="/resume-template" @click="closeMenu">Templates</router-link>
+        <router-link to="/ats-scanner" @click="closeMenu">ATS Scanner</router-link>
         <router-link to="/pricing" @click="closeMenu">Pricing</router-link>
         <router-link to="/about" @click="closeMenu">About Us</router-link>
         <router-link to="/blog" @click="closeMenu">Blog</router-link>

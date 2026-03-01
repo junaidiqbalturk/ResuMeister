@@ -212,3 +212,88 @@ def delete_resume(resume_id):
     db.session.commit()
     return jsonify({"message": "Resume deleted successfully"}), 200
 
+# --- ATS SCANNER API ---
+import os
+import tempfile
+from werkzeug.utils import secure_filename
+from app.models import AtsScan
+
+@main.route('/api/ats-scan', methods=['POST'])
+@login_required
+def ats_scan():
+    try:
+        from ats_algorithm import rank_candidates
+        
+        job_description = request.form.get('job_description', '')
+        if not job_description:
+            return jsonify({"message": "Job description is required"}), 400
+            
+        if 'cv_file' not in request.files:
+            return jsonify({"message": "CV file is required"}), 400
+            
+        file = request.files['cv_file']
+        if file.filename == '':
+            return jsonify({"message": "No selected file"}), 400
+            
+        filename = secure_filename(file.filename)
+        ext = os.path.splitext(filename)[1].lower()
+        if ext not in ['.pdf', '.docx']:
+            return jsonify({"message": "Only PDF and DOCX files are supported"}), 400
+            
+        fd, temp_path = tempfile.mkstemp(suffix=ext)
+        with os.fdopen(fd, 'wb') as temp_file:
+            file.save(temp_file)
+            
+        try:
+            results = rank_candidates([temp_path], job_description)
+            if not results:
+                return jsonify({"message": "Could not parse document."}), 500
+                
+            result = results[0]
+            
+            user_id = current_user.id if current_user.is_authenticated else None
+            
+            new_scan = AtsScan(
+                user_id=user_id,
+                job_description=job_description,
+                cv_file_name=filename,
+                match_score=result['overall_score'],
+                semantic_score=result['semantic_score'],
+                keyword_score=result['keyword_score']
+            )
+            db.session.add(new_scan)
+            db.session.commit()
+            
+            return jsonify({
+                "success": True,
+                "scan_id": new_scan.id,
+                "result": result
+            }), 200
+            
+        finally:
+            os.remove(temp_path)
+            
+    except Exception as e:
+        print(f"ATS Scan Error: {str(e)}")
+        return jsonify({"message": f"Server error: {str(e)}"}), 500
+
+@main.route('/api/ats-history', methods=['GET'])
+@login_required
+def get_ats_history():
+    try:
+        scans = AtsScan.query.filter_by(user_id=current_user.id).order_by(AtsScan.created_at.desc()).all()
+        history = []
+        for scan in scans:
+            history.append({
+                "id": scan.id,
+                "job_description": scan.job_description[:100] + "..." if len(scan.job_description) > 100 else scan.job_description,
+                "cv_filename": scan.cv_file_name,
+                "overall_score": scan.match_score,
+                "semantic_score": scan.semantic_score,
+                "keyword_score": scan.keyword_score,
+                "created_at": scan.created_at.isoformat()
+            })
+        return jsonify({"success": True, "history": history}), 200
+    except Exception as e:
+        return jsonify({"success": False, "message": "Failed to fetch ATS history."}), 500
+

@@ -24,6 +24,8 @@ axios.defaults.withCredentials = true;
 // Initialize global user state
 store.init();
 
+import ATSScanner from "@/views/ATSScanner.vue";
+
 const routes = [
   { name: 'Home', path: '/', component: Home },
   { name: 'Features', path: '/features', component: Features },
@@ -36,6 +38,7 @@ const routes = [
   { name: 'Dashboard', path: '/Dashboard', component: Dashboard, meta: { requiresAuth: true, hideNav: true, isDashboard: true } },
   { name: 'ResumeTemplate', path: '/resume-template', component: ResumeTemplate },
   { name: 'FillResume', path: '/resume-template/fill-resume', component: FillResume, meta: { hideNav: true } },
+  { name: 'ATSScanner', path: '/ats-scanner', component: ATSScanner, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({

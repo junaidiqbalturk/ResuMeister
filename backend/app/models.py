@@ -67,3 +67,25 @@ class Resume(db.Model):
             'created_at': self.created_at.isoformat() + 'Z' if self.created_at else None,
             'updated_at': self.updated_at.isoformat() + 'Z' if self.updated_at else None
         }
+
+class AtsScan(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True) # Nullable for guest scans
+    job_description = db.Column(db.Text, nullable=False)
+    cv_file_name = db.Column(db.String(200), nullable=True)
+    match_score = db.Column(db.Float, nullable=True)
+    semantic_score = db.Column(db.Float, nullable=True)
+    keyword_score = db.Column(db.Float, nullable=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'job_description': self.job_description,
+            'cv_file_name': self.cv_file_name,
+            'match_score': self.match_score,
+            'semantic_score': self.semantic_score,
+            'keyword_score': self.keyword_score,
+            'created_at': self.created_at.isoformat() + 'Z' if self.created_at else None
+        }
