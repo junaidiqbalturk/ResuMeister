@@ -81,22 +81,82 @@
               <div class="section-title">
                 <span class="num">03</span> <h3>Experience Stack</h3>
               </div>
-              <div class="input-group">
-                <div class="control-box">
-                  <textarea v-model="experience" placeholder="Describe your missions, achievements, and impact..." rows="6"></textarea>
-                  <div class="ai-helper">
-                    <span>✨ AI Optimize</span>
-                  </div>
-                </div>
+              <div class="repeater-wrapper">
+                 <div v-for="(exp, index) in form.experience" :key="index" class="repeater-item">
+                    <div class="repeater-header">
+                       <h4>Experience {{ index + 1 }}</h4>
+                       <button type="button" class="btn-remove" @click="removeExperience(index)" v-if="form.experience.length > 1">×</button>
+                    </div>
+                    <div class="input-grid">
+                       <div class="input-group">
+                          <label>Job Title</label>
+                          <input v-model="exp.title" type="text" placeholder="Senior Developer" />
+                       </div>
+                       <div class="input-group">
+                          <label>Company</label>
+                          <input v-model="exp.company" type="text" placeholder="TechCorp Inc." />
+                       </div>
+                    </div>
+                    <div class="input-grid">
+                       <div class="input-group">
+                          <label>Start Date</label>
+                          <input v-model="exp.startDate" type="text" placeholder="Jan 2020" />
+                       </div>
+                       <div class="input-group">
+                          <label>End Date</label>
+                          <input v-model="exp.endDate" type="text" placeholder="Present" />
+                       </div>
+                    </div>
+                    <div class="input-group">
+                       <label>Description & Achievements</label>
+                       <textarea v-model="exp.description" placeholder="• Led development of... &#10;• Increased performance by 40%..." rows="4"></textarea>
+                    </div>
+                 </div>
+                 <button type="button" class="btn-add-repeater" @click="addExperience">+ Add Experience</button>
+              </div>
+            </div>
+            
+            <div class="form-section reveal-up">
+              <div class="section-title">
+                <span class="num">04</span> <h3>Education Stack</h3>
+              </div>
+              <div class="repeater-wrapper">
+                 <div v-for="(edu, index) in form.education" :key="index" class="repeater-item">
+                    <div class="repeater-header">
+                       <h4>Education {{ index + 1 }}</h4>
+                       <button type="button" class="btn-remove" @click="removeEducation(index)" v-if="form.education.length > 1">×</button>
+                    </div>
+                    <div class="input-grid">
+                       <div class="input-group">
+                          <label>Degree / Certificate</label>
+                          <input v-model="edu.degree" type="text" placeholder="B.S. Computer Science" />
+                       </div>
+                       <div class="input-group">
+                          <label>Institution</label>
+                          <input v-model="edu.school" type="text" placeholder="University of Technology" />
+                       </div>
+                    </div>
+                    <div class="input-grid">
+                       <div class="input-group">
+                          <label>Start Date</label>
+                          <input v-model="edu.startDate" type="text" placeholder="2016" />
+                       </div>
+                       <div class="input-group">
+                          <label>End Date</label>
+                          <input v-model="edu.endDate" type="text" placeholder="2020" />
+                       </div>
+                    </div>
+                 </div>
+                 <button type="button" class="btn-add-repeater" @click="addEducation">+ Add Education</button>
               </div>
             </div>
 
             <div class="form-section reveal-up">
               <div class="section-title">
-                <span class="num">04</span> <h3>Skill Calibration</h3>
+                <span class="num">05</span> <h3>Skill Calibration</h3>
               </div>
                <div class="input-group">
-                  <input v-model="skills" type="text" placeholder="React, Python, AWS, Design Ops (comma separated)" />
+                  <input v-model="skillsInput" type="text" placeholder="React, Python, AWS, Design Ops (comma separated)" />
                </div>
             </div>
 
@@ -116,29 +176,102 @@
         </div>
         <div class="preview-canvas-container">
            <div class="resume-canvas reveal-zoom">
-              <!-- Live Preview Content -->
-              <div class="canvas-header">
-                 <h1>{{ form.name || 'Your Name' }}</h1>
-                 <p class="canvas-title">{{ form.title || 'Professional Title' }}</p>
-                 <div class="canvas-contact">
-                    <span>{{ form.email || 'Email' }}</span> | <span>{{ form.location || 'Location' }}</span>
+              <!-- Classic / Standard Layout (Template 1, 4, etc) -->
+              <div v-if="['1', '3', '4', '8'].includes(templateId)" class="template-layout-classic">
+                 <div class="canvas-header">
+                    <h1>{{ form.name || 'Your Name' }}</h1>
+                    <p class="canvas-title">{{ form.title || 'Professional Title' }}</p>
+                    <div class="canvas-contact">
+                       <span v-if="form.email">{{ form.email }}</span>
+                       <span v-if="form.email && form.location"> | </span>
+                       <span v-if="form.location">{{ form.location }}</span>
+                    </div>
+                 </div>
+                 
+                 <div class="canvas-section" v-if="form.objective">
+                    <h3>Objective</h3>
+                    <p class="canvas-text">{{ form.objective }}</p>
+                 </div>
+
+                 <div class="canvas-section" v-if="form.experience && form.experience.some(e => e.title || e.company)">
+                    <h3>Experience</h3>
+                    <div v-for="(exp, index) in form.experience" :key="'exp'+index" class="cv-item">
+                       <div v-if="exp.title || exp.company" class="cv-item-header">
+                          <span class="cv-role">{{ exp.title || 'Job Title' }}</span>
+                          <span class="cv-company"><span v-if="exp.title && exp.company"> at </span>{{ exp.company }}</span>
+                          <span class="cv-dates">{{ exp.startDate }} <span v-if="exp.startDate && exp.endDate">-</span> {{ exp.endDate }}</span>
+                       </div>
+                       <div class="canvas-text cv-desc" v-html="formatDescription(exp.description)"></div>
+                    </div>
+                 </div>
+
+                 <div class="canvas-section" v-if="form.education && form.education.some(e => e.degree || e.school)">
+                    <h3>Education</h3>
+                    <div v-for="(edu, index) in form.education" :key="'edu'+index" class="cv-item">
+                       <div v-if="edu.degree || edu.school" class="cv-item-header">
+                          <span class="cv-role">{{ edu.degree || 'Degree' }}</span>
+                          <span class="cv-company"><span v-if="edu.degree && edu.school">, </span>{{ edu.school }}</span>
+                          <span class="cv-dates">{{ edu.startDate }} <span v-if="edu.startDate && edu.endDate">-</span> {{ edu.endDate }}</span>
+                       </div>
+                    </div>
+                 </div>
+
+                 <div class="canvas-section" v-if="form.skills && form.skills.length > 0">
+                    <h3>Skills</h3>
+                    <div class="canvas-skills">
+                       <span v-for="skill in form.skills" :key="skill" class="skill-pill">{{ skill }}</span>
+                    </div>
                  </div>
               </div>
-              
-              <div class="canvas-section" v-if="form.objective">
-                 <h3>Objective</h3>
-                 <p>{{ form.objective }}</p>
-              </div>
 
-              <div class="canvas-section">
-                 <h3>Experience</h3>
-                 <div class="canvas-text">{{ experience || 'Detailed achievements will appear here...' }}</div>
-              </div>
+              <!-- Modern / Split Column Layout (Template 2, 5, etc) -->
+              <div v-else class="template-layout-modern">
+                 <div class="modern-left">
+                    <div class="m-header">
+                       <h1>{{ form.name || 'Your Name' }}</h1>
+                       <h2>{{ form.title || 'Professional Title' }}</h2>
+                    </div>
 
-              <div class="canvas-section">
-                 <h3>Skills</h3>
-                 <div class="canvas-skills">
-                    <span v-for="skill in skillsArr" :key="skill" class="skill-pill">{{ skill }}</span>
+                    <div class="m-section" v-if="form.email || form.location">
+                       <h3>Contact</h3>
+                       <div class="m-contact-item" v-if="form.email">{{ form.email }}</div>
+                       <div class="m-contact-item" v-if="form.location">{{ form.location }}</div>
+                    </div>
+
+                    <div class="m-section" v-if="form.skills && form.skills.length > 0">
+                       <h3>Skills</h3>
+                       <ul class="m-skills-list">
+                          <li v-for="skill in form.skills" :key="'m'+skill">{{ skill }}</li>
+                       </ul>
+                    </div>
+                    
+                    <div class="m-section" v-if="form.education && form.education.some(e => e.degree || e.school)">
+                       <h3>Education</h3>
+                       <div v-for="(edu, index) in form.education" :key="'medu'+index" class="m-edu-item">
+                          <div class="m-edu-deg">{{ edu.degree || 'Degree' }}</div>
+                          <div class="m-edu-sch">{{ edu.school || 'Institution' }}</div>
+                          <div class="m-edu-date">{{ edu.startDate }} <span v-if="edu.startDate && edu.endDate">-</span> {{ edu.endDate }}</div>
+                       </div>
+                    </div>
+                 </div>
+                 
+                 <div class="modern-right">
+                    <div class="m-section" v-if="form.objective">
+                       <h3>Profile</h3>
+                       <p class="m-text">{{ form.objective }}</p>
+                    </div>
+
+                    <div class="m-section" v-if="form.experience && form.experience.some(e => e.title || e.company)">
+                       <h3>Work Experience</h3>
+                       <div v-for="(exp, index) in form.experience" :key="'mexp'+index" class="m-exp-item">
+                          <div class="m-exp-header">
+                             <div class="m-exp-title">{{ exp.title || 'Job Title' }}</div>
+                             <div class="m-exp-date">{{ exp.startDate }} <span v-if="exp.startDate && exp.endDate">-</span> {{ exp.endDate }}</div>
+                          </div>
+                          <div class="m-exp-company">{{ exp.company }}</div>
+                          <div class="m-text m-exp-desc" v-html="formatDescription(exp.description)"></div>
+                       </div>
+                    </div>
                  </div>
               </div>
            </div>
@@ -156,23 +289,29 @@ export default {
   name: 'FillResume',
   data() {
     return {
-      templateId: this.$route.params.templateId,
+      templateId: this.$route.query.template || '1',
       form: {
         name: '',
         title: '',
         email: '',
         location: '',
-        objective: ''
+        objective: '',
+        experience: [
+           { title: '', company: '', startDate: '', endDate: '', description: '' }
+        ],
+        education: [
+           { degree: '', school: '', startDate: '', endDate: '' }
+        ],
+        skills: []
       },
-      experience: '',
-      skills: '',
+      skillsInput: '',
       isGenerating: false,
       isAutoFilled: false
     };
   },
-  computed: {
-     skillsArr() {
-        return this.skills ? this.skills.split(',').map(s => s.trim()).filter(s => s) : [];
+  watch: {
+     skillsInput(newVal) {
+        this.form.skills = newVal.split(',').map(s => s.trim()).filter(s => s);
      }
   },
   mounted() {
@@ -181,34 +320,33 @@ export default {
     // Auto-fill from global user store if logged in
     if (store.user) {
       let filledCount = 0;
-      if (store.user.fullName) {
-        this.form.name = store.user.fullName;
-        filledCount++;
-      }
-      if (store.user.email) {
-        this.form.email = store.user.email;
-        filledCount++;
-      }
-      // Assuming store.user.location or store.user.address maps to form.location
-      if (store.user.location) {
-        this.form.location = store.user.location;
-        filledCount++;
-      } else if (store.user.address) { // Fallback for address if location isn't present
-        this.form.location = store.user.address;
-        filledCount++;
-      }
-      // If there's a professional title in the store, use it
-      if (store.user.professionalTitle) {
-        this.form.title = store.user.professionalTitle;
-        filledCount++;
-      }
+      if (store.user.fullName) { this.form.name = store.user.fullName; filledCount++; }
+      if (store.user.email) { this.form.email = store.user.email; filledCount++; }
+      if (store.user.location) { this.form.location = store.user.location; filledCount++; } 
+      else if (store.user.address) { this.form.location = store.user.address; filledCount++; }
+      if (store.user.professionalTitle) { this.form.title = store.user.professionalTitle; filledCount++; }
 
-      if (filledCount > 0) {
-        this.isAutoFilled = true;
-      }
+      if (filledCount > 0) this.isAutoFilled = true;
     }
   },
   methods: {
+    addExperience() {
+       this.form.experience.push({ title: '', company: '', startDate: '', endDate: '', description: '' });
+    },
+    removeExperience(index) {
+       this.form.experience.splice(index, 1);
+    },
+    addEducation() {
+       this.form.education.push({ degree: '', school: '', startDate: '', endDate: '' });
+    },
+    removeEducation(index) {
+       this.form.education.splice(index, 1);
+    },
+    formatDescription(text) {
+       if (!text) return '';
+       // Convert newlines to breaks for simple formatting, or handle bullets
+       return text.replace(/\n/g, '<br/>');
+    },
     executeAnimations() {
        gsap.from('.reveal-up', {
          y: 20,
@@ -351,8 +489,33 @@ export default {
 }
 
 .control-box { position: relative; }
-.ai-helper { position: absolute; bottom: 1rem; right: 1rem; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); padding: 5px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700; color: #818CF8; cursor: pointer; transition: all 0.3s; }
-.ai-helper:hover { background: rgba(99, 102, 241, 0.2); transform: scale(1.05); }
+
+/* Repeater Styles */
+.repeater-wrapper { display: flex; flex-direction: column; gap: 1.5rem; }
+.repeater-item {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 1.5rem;
+  position: relative;
+}
+.repeater-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.repeater-header h4 { font-size: 0.9rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; }
+.btn-remove { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: all 0.2s; }
+.btn-remove:hover { background: rgba(239, 68, 68, 0.2); color: #fff; }
+
+.btn-add-repeater {
+  background: transparent;
+  border: 1px dashed rgba(99, 102, 241, 0.4);
+  color: #818CF8;
+  padding: 1rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+}
+.btn-add-repeater:hover { background: rgba(99, 102, 241, 0.1); border-style: solid; box-shadow: 0 0 15px rgba(99, 102, 241, 0.2); }
 
 .data-usage { font-size: 0.8rem; color: #475569; margin-top: 2rem; }
 
@@ -382,11 +545,13 @@ export default {
   min-height: 297mm;
   background: #fff;
   color: #111827;
-  padding: 60px;
   box-shadow: 0 40px 80px -20px rgba(0,0,0,0.4);
   transform-origin: top center;
+  overflow: hidden;
 }
 
+/* --- CLASSIC TEMPLATE (Padding controlled inside wrapper) --- */
+.template-layout-classic { padding: 60px; }
 .canvas-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
 .canvas-title { font-size: 18px; color: #6366F1; font-weight: 700; margin-bottom: 12px; }
 .canvas-contact { font-size: 14px; color: #64748B; margin-bottom: 30px; border-bottom: 1px solid #E2E8F0; padding-bottom: 20px; }
@@ -395,8 +560,61 @@ export default {
 .canvas-section h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 900; color: #111827; margin-bottom: 12px; border-bottom: 2px solid #111827; padding-bottom: 4px; width: fit-content; }
 .canvas-text { font-size: 14px; line-height: 1.6; color: #334155; }
 
+.cv-item { margin-bottom: 16px; page-break-inside: avoid; }
+.cv-item-header { display: flex; align-items: baseline; flex-wrap: wrap; margin-bottom: 4px; }
+.cv-role { font-weight: 800; font-size: 15px; color: #111827; margin-right: 6px; }
+.cv-company { font-weight: 600; font-size: 14px; color: #475569; }
+.cv-dates { margin-left: auto; font-size: 13px; font-weight: 600; color: #64748B; background: #F8FAFC; padding: 2px 8px; border-radius: 4px; }
+.cv-desc { margin-top: 4px; }
+
 .canvas-skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .skill-pill { background: #F1F5F9; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #E2E8F0; }
+
+
+/* --- MODERN SPLIT TEMPLATE --- */
+.template-layout-modern {
+  display: flex;
+  height: 100%;
+  min-height: 297mm;
+}
+.modern-left {
+  width: 32%;
+  background: #1E293B; /* Slate 800 */
+  color: #F8FAFC;
+  padding: 40px 30px;
+}
+.modern-right {
+  width: 68%;
+  background: #FFFFFF;
+  padding: 40px 40px;
+}
+
+.m-header { margin-bottom: 40px; }
+.m-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; line-height: 1.1; margin-bottom: 8px; color: #fff; }
+.m-header h2 { font-size: 16px; font-weight: 400; color: #94A3B8; }
+
+.m-section { margin-bottom: 35px; }
+.m-section h3 { font-size: 15px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.1em; margin-bottom: 16px; }
+.modern-left .m-section h3 { color: #fff; border-bottom: 2px solid #334155; padding-bottom: 6px; }
+.modern-right .m-section h3 { color: #0F172A; border-bottom: 2px solid #E2E8F0; padding-bottom: 6px; }
+
+.m-contact-item { font-size: 13px; color: #CBD5E1; margin-bottom: 8px; word-break: break-all; }
+.m-skills-list { list-style: none; padding: 0; margin: 0; }
+.m-skills-list li { font-size: 13px; color: #CBD5E1; margin-bottom: 6px; position: relative; padding-left: 12px; }
+.m-skills-list li::before { content: '•'; position: absolute; left: 0; color: #6366F1; }
+
+.m-edu-item { margin-bottom: 16px; }
+.m-edu-deg { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.m-edu-sch { font-size: 13px; color: #94A3B8; margin-bottom: 4px; }
+.m-edu-date { font-size: 12px; color: #64748B; }
+
+.m-text { font-size: 14px; line-height: 1.6; color: #334155; }
+.m-exp-item { margin-bottom: 24px; }
+.m-exp-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.m-exp-title { font-size: 16px; font-weight: 700; color: #0F172A; }
+.m-exp-date { font-size: 13px; font-weight: 600; color: #64748B; text-align: right; }
+.m-exp-company { font-size: 14px; font-weight: 600; color: #6366F1; margin-bottom: 8px; }
+.m-exp-desc { margin-top: 8px; }
 
 @media (max-width: 1200px) {
   .workspace-main { flex-direction: column; overflow-y: auto; }

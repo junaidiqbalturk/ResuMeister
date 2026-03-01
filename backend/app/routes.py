@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 from flask_bcrypt import Bcrypt
 
 from app import db, bcrypt
-from app.models import User
+from app.models import User, AccountDetail
 
 # Define the blueprint
 main = Blueprint('main', __name__)
@@ -31,9 +31,9 @@ def register():
 
     if User.query.filter_by(email=email).first():
         return jsonify({'message': 'Email already exists'}), 400
-    username = email.split('@')[0]  # making username by spiriting the email address
+        
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-    new_user = User(username=username, email=email, password=hashed_password)
+    new_user = User(username=username, email=email, password=hashed_password, image_file='default.jpg')
 
     db.session.add(new_user)
     db.session.commit()
@@ -51,10 +51,46 @@ def login():
 
     if user and bcrypt.check_password_hash(user.password, password):
         # User authenticated successfully
-        return jsonify({'success': True, 'message': 'Login successful'}), 200
+        return jsonify({'success': True, 'message': 'Login successful', 'user': {'id': user.id, 'username': user.username, 'email': user.email}}), 200
     else:
         # Authentication failed
         return jsonify({'success': False, 'message': 'Invalid credentials'}), 401
+        
+@main.route('/account/details/<int:user_id>', methods=['GET'])
+def get_account_details(user_id):
+    details = AccountDetail.query.filter_by(user_id=user_id).first()
+    if details:
+        return jsonify({'success': True, 'data': details.to_dict()}), 200
+    return jsonify({'success': False, 'message': 'Account details not found'}), 404
+
+@main.route('/account/details/<int:user_id>', methods=['POST', 'PUT'])
+def save_account_details(user_id):
+    data = request.json
+    details = AccountDetail.query.filter_by(user_id=user_id).first()
+    
+    if not details:
+        details = AccountDetail(user_id=user_id)
+        db.session.add(details)
+        
+    if 'fullName' in data: details.full_name = data.get('fullName')
+    if 'phone' in data: details.phone = data.get('phone')
+    if 'address' in data: details.address = data.get('address')
+    if 'githubProfile' in data: details.github_profile = data.get('githubProfile')
+    if 'linkedinProfile' in data: details.linkedin_profile = data.get('linkedinProfile')
+    if 'discord' in data: details.discord = data.get('discord')
+    
+    db.session.commit()
+    
+    return jsonify({'success': True, 'message': 'Account details saved successfully', 'data': details.to_dict()}), 200
+
+@main.route('/account/details/<int:user_id>', methods=['DELETE'])
+def delete_account_details(user_id):
+    details = AccountDetail.query.filter_by(user_id=user_id).first()
+    if details:
+        db.session.delete(details)
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Account details deleted successfully'}), 200
+    return jsonify({'success': False, 'message': 'Account details not found'}), 404
 
 @main.route('/generate-resume', methods=['POST'])
 def generate_resume():

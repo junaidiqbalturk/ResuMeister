@@ -10,17 +10,33 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
 
-    def __init__(self, username, email, password):
-        self.username = username
-        self.email = email
-        self.password = password
-
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    account_detail = db.relationship('AccountDetail', backref='user', uselist=False, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+
+class AccountDetail(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    full_name = db.Column(db.String(100), nullable=True)
+    phone = db.Column(db.String(20), nullable=True)
+    address = db.Column(db.String(200), nullable=True)
+    github_profile = db.Column(db.String(100), nullable=True)
+    linkedin_profile = db.Column(db.String(100), nullable=True)
+    discord = db.Column(db.String(100), nullable=True)
+
+    def to_dict(self):
+        return {
+            'full_name': self.full_name,
+            'phone': self.phone,
+            'address': self.address,
+            'github_profile': self.github_profile,
+            'linkedin_profile': self.linkedin_profile,
+            'discord': self.discord
+        }

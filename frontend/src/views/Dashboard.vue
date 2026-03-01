@@ -1,175 +1,174 @@
 <template>
-  <div class="dashboard-wrapper">
-    <!-- Atmosphere -->
-    <div class="atmosphere">
-      <div class="aura aura-1"></div>
-      <div class="aura aura-2"></div>
-    </div>
-
-    <!-- Dashboard App Shell -->
-    <div class="app-shell">
-      <!-- Sidebar Chrome -->
-      <aside class="sidebar reveal-left">
-        <div class="sidebar-brand">
-          <img src="/resumeister.png" alt="ResuMeister" class="s-logo" />
-          <span>ResuMeister</span>
-        </div>
+  <div class="d-minimal-wrapper">
+    
+    <!-- Top Header Navigation -->
+    <header class="d-header-nav">
+      <div class="d-nav-container">
         
-        <nav class="sidebar-nav">
-          <a href="#" class="s-nav-link" :class="{ active: activeTab === 'overview' }" @click.prevent="activeTab = 'overview'">
-            <span class="s-icon">▤</span> Overview
-          </a>
-          <a href="/resume-template" class="s-nav-link">
-            <span class="s-icon">⚡</span> New Resume
-          </a>
-          <a href="#" class="s-nav-link" :class="{ active: activeTab === 'settings' }" @click.prevent="activeTab = 'settings'">
-            <span class="s-icon">⚙</span> Settings
-          </a>
-          <a href="#" class="s-nav-link mt-auto s-logout" @click.prevent="handleLogout">
-            <span class="s-icon">↩</span> Logout
-          </a>
-        </nav>
+        <!-- Brand / Identity -->
+        <div class="d-brand" @click="activeTab = 'overview'" role="button">
+          <img src="/resumeister.png" alt="ResuMeister" class="d-logo" />
+          <span class="d-brand-text">ResuMeister</span>
+        </div>
 
-        <div class="sidebar-footer">
-          <div class="user-profile">
-            <div class="avatar">{{ userInitials }}</div>
-            <div class="u-info">
-              <p class="u-name">{{ store.user?.fullName || store.user?.username || 'Guest' }}</p>
-              <p class="u-plan">Pro Plan</p>
+        <!-- Right Side Nav -->
+        <div class="d-nav-right">
+          
+          <div class="d-nav-links">
+             <button class="d-nav-link" :class="{ 'active': activeTab === 'overview' }" @click="activeTab = 'overview'">Overview</button>
+             <button class="d-nav-link" :class="{ 'active': activeTab === 'settings' }" @click="activeTab = 'settings'">Settings</button>
+             <div class="d-divider"></div>
+             <button class="d-nav-link d-text-error" @click="handleLogout">Logout</button>
+          </div>
+
+          <!-- User Profile -->
+          <div class="d-user-profile">
+            <div class="d-avatar">{{ userInitials }}</div>
+            <div class="d-user-info">
+              <span class="d-user-name">{{ store.user?.fullName || store.user?.username || 'Guest' }}</span>
+              <span class="d-user-plan">Pro Plan</span>
             </div>
           </div>
+
         </div>
-      </aside>
+      </div>
+    </header>
 
-      <!-- Main Content Area -->
-      <main class="dashboard-main">
-        <header class="dash-header container reveal-up">
-           <div class="h-left">
-              <h1 v-if="activeTab === 'overview'">Workspace Overview</h1>
-              <h1 v-else>Account Settings</h1>
-              <p v-if="activeTab === 'overview'">Welcome back, {{ store.user?.username || 'Commander' }}. Your career engine is optimal.</p>
-              <p v-else>Manage your profile and default resume data.</p>
-           </div>
-           <div class="h-right">
-              <button class="btn-create-saas" @click="$router.push('/resume-template')">
-                <span>+</span> New Strategy
-              </button>
-           </div>
-        </header>
+    <!-- Main Workspace -->
+    <main class="d-main-content">
+      <div class="d-workspace-container">
+        
+        <!-- Welcome Header -->
+        <div class="d-page-header">
+           <h1 v-if="activeTab === 'overview'">Overview</h1>
+           <h1 v-else>Account Settings</h1>
+           <p v-if="activeTab === 'overview'">Welcome back, {{ store.user?.username || 'User' }}. Here is a summary of your workspace.</p>
+           <p v-else>Manage your personal information and default resume details.</p>
+           <div class="d-ph-glow"></div>
+        </div>
 
-        <section class="container scroll-area">
-           <!-- Tab: Overview -->
-           <div v-if="activeTab === 'overview'">
-             <!-- Statistics Bento -->
-             <div class="bento-grid">
-                <div class="bento-item stat-card reveal-up">
-                   <p class="label">Total Resumes</p>
-                   <div class="val-group">
-                      <span class="value">12</span>
-                      <span class="trend">+2 this week</span>
-                   </div>
-                </div>
-                <div class="bento-item stat-card reveal-up">
-                   <p class="label">ATS Optimization</p>
-                   <div class="val-group">
-                      <span class="value">94%</span>
-                      <span class="trend pos">Deep-sync active</span>
-                   </div>
-                </div>
-                <div class="bento-item bento-wide activity-card reveal-up">
-                   <h3>Recent Activity</h3>
-                   <div class="activity-list">
-                      <div class="act-item">
-                         <span class="act-dot"></span>
-                         <p>Resume <strong>"Software_Eng_v2"</strong> exported as PDF</p>
-                         <span class="act-time">2h ago</span>
-                      </div>
-                      <div class="act-item">
-                         <span class="act-dot"></span>
-                         <p>Mock Interview <strong>"Google_PM"</strong> session completed</p>
-                         <span class="act-time">Yesterday</span>
-                      </div>
-                   </div>
-                </div>
-                <div class="bento-item promo-card reveal-up">
-                   <img src="/resumeister.png" alt="" class="p-logo">
-                   <h3>Unlock AI Design</h3>
-                   <p>Get access to our neural-link design suggestions.</p>
-                   <button class="btn-sm-primary">Upgrade</button>
-                </div>
+        <!-- Overview Content -->
+        <div v-if="activeTab === 'overview'" class="d-fade-enter">
+          
+          <div class="d-card-grid">
+            
+            <!-- Create New Resume Card -->
+            <div class="d-card d-create-card" @click="$router.push('/resume-template')">
+               <div class="d-card-header">
+                  <div class="d-icon-ring"><i class="ph-plus">+</i></div>
+               </div>
+               <div class="d-card-body">
+                  <h3>Create New Resume</h3>
+                  <p>Start a new document with our AI builder.</p>
+               </div>
+            </div>
+
+            <!-- Profile Completion Card -->
+            <div class="d-card">
+               <div class="d-card-header d-flex-between">
+                  <span class="d-label">Profile Strength</span>
+                  <span class="d-pct-text">{{ profileCompletion }}%</span>
+               </div>
+               <div class="d-card-body mt-auto">
+                 <div class="d-progress-track">
+                    <div class="d-progress-fill" :style="{ width: profileCompletion + '%' }"></div>
+                 </div>
+                 <p class="d-sub-text mt-3">Complete your <a href="#" @click.prevent="activeTab = 'settings'" class="d-link">Settings</a> to increase your score.</p>
+               </div>
+            </div>
+
+            <!-- Statistics Grid (Inner) -->
+            <div class="d-card-subgrid">
+               <!-- Total Resumes -->
+               <div class="d-card d-sm-card">
+                  <span class="d-label">Total Resumes</span>
+                  <span class="d-value mt-auto">0</span>
+               </div>
+               
+               <!-- Subscription -->
+               <div class="d-card d-sm-card">
+                  <span class="d-label">Plan</span>
+                  <span class="d-value d-text-gradient mt-auto">Pro</span>
+               </div>
+            </div>
+
+          </div>
+
+          <!-- Documents Section -->
+          <div class="d-section mt-12">
+             <div class="d-section-header">
+                <h2>Recent Documents</h2>
              </div>
-
-             <!-- Resume Repository -->
-             <div class="repo-section reveal-up">
-                <div class="section-title">
-                   <h2>Active Narratives</h2>
-                   <a href="#" class="view-all">View All</a>
-                </div>
-                <div class="resume-list">
-                   <div class="resume-row" v-for="i in 3" :key="i">
-                      <div class="r-info">
-                         <div class="r-icon">📄</div>
-                         <div>
-                            <p class="r-name">Principal_Software_Strategist_0{{i}}</p>
-                            <p class="r-meta">Modified Feb 21, 2024 • 2:45 PM</p>
-                         </div>
-                      </div>
-                      <div class="r-actions">
-                         <button class="btn-row-ghost" @click="$router.push('/resume-template/fill-resume?template=1')">Edit</button>
-                         <button class="btn-row-ghost">Export</button>
-                      </div>
-                   </div>
-                </div>
+             
+             <div class="d-empty-state">
+                <div class="d-empty-icon">📄</div>
+                <p>No narratives found in your workspace.</p>
+                <button class="d-btn-primary mt-4" @click="$router.push('/resume-template')">Create Document</button>
              </div>
-           </div>
+          </div>
+          
+        </div>
 
-           <!-- Tab: Settings -->
-           <div v-else-if="activeTab === 'settings'" class="settings-view reveal-up">
-              <div class="settings-card bento-item">
-                 <h3>Contact Information</h3>
-                 <p class="mb-4 text-muted">This data will automatically pre-fill when you create a new resume.</p>
+        <!-- Settings Content -->
+        <div v-else-if="activeTab === 'settings'" class="d-fade-enter">
+           <div class="d-card d-settings-card">
+              <form @submit.prevent="saveProfile" class="d-form">
+                 <div class="d-form-row">
+                    <div class="d-input-group">
+                       <label>Full Name</label>
+                       <input type="text" v-model="profileForm.fullName" placeholder="John Doe" />
+                    </div>
+                    <div class="d-input-group">
+                       <label>Email Address</label>
+                       <input type="email" :value="store.user?.email" disabled class="d-input-disabled" />
+                    </div>
+                 </div>
                  
-                 <form @submit.prevent="saveProfile" class="profile-form">
-                    <div class="form-row">
-                      <div class="input-group">
-                        <label>Full Name</label>
-                        <input type="text" v-model="profileForm.fullName" placeholder="John Doe" />
-                      </div>
-                      <div class="input-group">
-                        <label>Email Address</label>
-                        <input type="email" v-bind:value="store.user?.email" disabled class="disabled-input"/>
-                      </div>
+                 <div class="d-form-row mt-6">
+                    <div class="d-input-group">
+                       <label>Phone Number</label>
+                       <input type="tel" v-model="profileForm.phone" placeholder="+1 (555) 000-0000" />
                     </div>
-                    
-                    <div class="form-row">
-                      <div class="input-group">
-                        <label>Phone Number</label>
-                        <input type="tel" v-model="profileForm.phone" placeholder="+1 (555) 000-0000" />
-                      </div>
-                      <div class="input-group">
-                        <label>Location / Address</label>
-                        <input type="text" v-model="profileForm.address" placeholder="San Francisco, CA" />
-                      </div>
+                    <div class="d-input-group">
+                       <label>Location</label>
+                       <input type="text" v-model="profileForm.address" placeholder="City, State" />
                     </div>
+                 </div>
 
-                    <div v-if="saveMessage" class="save-msg mb-4">{{ saveMessage }}</div>
-
-                    <div class="form-actions mt-4">
-                      <button type="submit" class="btn-create-saas">Save Changes</button>
+                 <div class="d-form-row mt-6">
+                    <div class="d-input-group">
+                       <label>GitHub Profile</label>
+                       <input type="text" v-model="profileForm.githubProfile" placeholder="https://github.com/..." />
                     </div>
-                 </form>
-              </div>
+                    <div class="d-input-group">
+                       <label>LinkedIn Profile</label>
+                       <input type="text" v-model="profileForm.linkedinProfile" placeholder="https://linkedin.com/in/..." />
+                    </div>
+                 </div>
+
+                 <div class="d-form-row mt-6">
+                    <div class="d-input-group w-50">
+                       <label>Discord Username</label>
+                       <input type="text" v-model="profileForm.discord" placeholder="username#1234" />
+                    </div>
+                 </div>
+
+                 <div class="d-form-actions mt-8">
+                    <span v-if="saveMessage" class="d-save-msg">{{ saveMessage }}</span>
+                    <button type="submit" class="d-btn-primary ml-auto">Save Changes</button>
+                 </div>
+              </form>
            </div>
+        </div>
 
-        </section>
-      </main>
-    </div>
+      </div>
+    </main>
   </div>
 </template>
 
 <script>
-import { gsap } from 'gsap';
 import { store } from '@/store';
+import axios from 'axios';
 
 export default {
   name: 'Dashboard',
@@ -181,31 +180,79 @@ export default {
       profileForm: {
         fullName: store.user?.fullName || '',
         phone: store.user?.phone || '',
-        address: store.user?.address || ''
+        address: store.user?.address || '',
+        githubProfile: store.user?.githubProfile || '',
+        linkedinProfile: store.user?.linkedinProfile || '',
+        discord: store.user?.discord || ''
       }
     }
   },
   computed: {
     userInitials() {
-      const name = this.store.user?.fullName || this.store.user?.username || 'G';
-      return name.charAt(0).toUpperCase();
+      if (!this.store.user) return 'U';
+      const nameObj = this.store.user;
+      let displayName = nameObj.fullName || nameObj.username || nameObj.email || 'User';
+      if (typeof displayName === 'string' && displayName.length > 0) {
+         return displayName.charAt(0).toUpperCase();
+      }
+      return 'U';
+    },
+    profileCompletion() {
+      const form = this.profileForm;
+      let filled = 0;
+      const totalFields = 7;
+      if (this.store.user?.email) filled++;
+      if (form.fullName && form.fullName.trim()) filled++;
+      if (form.phone && form.phone.trim()) filled++;
+      if (form.address && form.address.trim()) filled++;
+      if (form.githubProfile && form.githubProfile.trim()) filled++;
+      if (form.linkedinProfile && form.linkedinProfile.trim()) filled++;
+      if (form.discord && form.discord.trim()) filled++;
+      
+      return Math.round((filled / totalFields) * 100);
     }
   },
   mounted() {
-    this.executeAnimations();
+    this.fetchProfile();
   },
   methods: {
-    executeAnimations() {
-      gsap.from('.reveal-left', { x: -50, opacity: 0, duration: 1, ease: 'expo.out' });
-      gsap.from('.reveal-up', { y: 20, opacity: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' });
+    async fetchProfile() {
+      if (store.user?.id) {
+        try {
+          const response = await axios.get(`http://localhost:5000/account/details/${store.user.id}`);
+          if (response.data.success) {
+             const data = response.data.data;
+             this.profileForm.fullName = data.full_name || store.user.fullName || '';
+             this.profileForm.phone = data.phone || store.user.phone || '';
+             this.profileForm.address = data.address || store.user.address || '';
+             this.profileForm.githubProfile = data.github_profile || store.user.githubProfile || '';
+             this.profileForm.linkedinProfile = data.linkedin_profile || store.user.linkedinProfile || '';
+             this.profileForm.discord = data.discord || store.user.discord || '';
+             store.updateProfile(this.profileForm);
+          }
+        } catch (err) {
+          console.error("Could not fetch profile", err);
+        }
+      }
     },
-    saveProfile() {
-      store.updateProfile({
-        fullName: this.profileForm.fullName,
-        phone: this.profileForm.phone,
-        address: this.profileForm.address
-      });
-      this.saveMessage = 'Profile updated successfully!';
+    async saveProfile() {
+      try {
+        if (!store.user?.id) {
+          this.saveMessage = 'Please login first.';
+          setTimeout(() => this.saveMessage = '', 3000);
+          return;
+        }
+        const response = await axios.post(`http://localhost:5000/account/details/${store.user.id}`, this.profileForm);
+        if (response.data.success) {
+          store.updateProfile(this.profileForm);
+          this.saveMessage = 'Successfully saved.';
+        } else {
+          this.saveMessage = 'Failed to update.';
+        }
+      } catch (err) {
+        console.error("Error updating profile", err);
+        this.saveMessage = 'Server error.';
+      }
       setTimeout(() => this.saveMessage = '', 3000);
     },
     handleLogout() {
@@ -217,208 +264,226 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-
-.dashboard-wrapper {
-  height: 100vh;
-  background-color: #030712;
-  color: #F8FAFC;
-  font-family: 'Outfit', sans-serif;
-  overflow: hidden;
-  position: relative;
-}
-
-.atmosphere {
-  position: fixed;
-  top: 0;
-  left: 0;
+/* Base Reset & Variables for Dashboard Theme using Global SaaS tokens */
+.d-minimal-wrapper {
   width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-.aura { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.08; }
-.aura-1 { width: 600px; height: 600px; background: #6366F1; top: -10%; left: -10%; }
-.aura-2 { width: 500px; height: 500px; background: #EC4899; bottom: -10%; right: -10%; }
-
-.app-shell {
-  display: flex;
-  height: 100%;
-  position: relative;
-  z-index: 10;
+  min-height: 100vh;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-primary);
+  box-sizing: border-box;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 280px;
-  background: rgba(15, 23, 42, 0.4);
+* { box-sizing: border-box; }
+
+/* Top Header Navigation */
+.d-header-nav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 72px;
+  background: rgba(2, 6, 23, 0.7); /* Deep dark background with high transparency */
   backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-  display: flex;
-  flex-direction: column;
-  padding: 2.5rem;
-}
-
-.sidebar-brand {
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: 50;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 4rem;
-}
-.s-logo { height: 24px; filter: brightness(100); }
-.sidebar-brand span { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; }
-
-.sidebar-nav { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-.s-nav-link {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 12px 16px;
-  color: #64748B;
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
-  border-radius: 8px;
-  transition: all 0.3s;
-}
-.s-nav-link:hover { color: #fff; background: rgba(255,255,255,0.03); }
-.s-nav-link.active { color: #fff; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.05); }
-.s-icon { font-size: 1rem; opacity: 0.7; }
-
-.sidebar-footer { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem; }
-.user-profile { display: flex; align-items: center; gap: 12px; }
-.avatar { width: 40px; height: 40px; background: #6366F1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; }
-.u-name { font-weight: 600; font-size: 0.9rem; }
-.u-plan { font-size: 0.75rem; color: #64748B; font-weight: 500; }
-
-/* Main Area */
-.dashboard-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
 }
 
-.container { max-width: 1000px; margin: 0 auto; padding: 0 4rem; }
-
-.dash-header { padding-top: 5rem; padding-bottom: 3.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
-.dash-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-.dash-header p { color: #94A3B8; font-size: 1.1rem; }
-
-.btn-create-saas {
-  background: #fff;
-  color: #030712;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: all 0.3s;
-}
-.btn-create-saas:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.15); }
-
-/* Bento Grid */
-.bento-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 4rem;
-}
-
-.bento-item {
-  background: rgba(15, 23, 42, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 24px;
-  padding: 2rem;
-  transition: all 0.3s;
-}
-.bento-item:hover { border-color: rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.4); }
-
-.stat-card .label { font-size: 0.8rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.5rem; }
-.val-group { display: flex; flex-direction: column; gap: 5px; }
-.value { font-size: 2.2rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
-.trend { font-size: 0.75rem; color: #64748B; font-weight: 600; }
-.trend.pos { color: #10B981; }
-
-.bento-wide { grid-column: span 2; }
-.bento-wide h3 { font-size: 1.1rem; margin-bottom: 2rem; }
-.activity-list { display: flex; flex-direction: column; gap: 1.5rem; }
-.act-item { display: flex; align-items: center; gap: 1rem; font-size: 0.95rem; }
-.act-dot { width: 6px; height: 6px; background: #6366F1; border-radius: 50%; }
-.act-time { margin-left: auto; font-size: 0.8rem; color: #475569; }
-
-.promo-card { background: linear-gradient(135deg, #6366F1, #EC4899); border: none; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; }
-.p-logo { height: 24px; filter: brightness(100); }
-.promo-card h3 { font-size: 1.2rem; font-weight: 700; color: #fff; }
-.promo-card p { font-size: 0.85rem; color: rgba(255,255,255,0.8); }
-.btn-sm-primary { background: #fff; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 700; font-size: 0.75rem; cursor: pointer; }
-
-/* Repository */
-.repo-section { margin-bottom: 8rem; }
-.section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-.section-title h2 { font-size: 1.4rem; font-weight: 700; }
-.view-all { font-size: 0.85rem; color: #6366F1; font-weight: 600; text-decoration: none; }
-
-.resume-list { display: flex; flex-direction: column; gap: 12px; }
-.resume-row {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  padding: 1.25rem 2rem;
-  border-radius: 16px;
+.d-nav-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.d-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.d-logo { height: 24px; filter: invert(1); }
+.d-brand-text { font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem; letter-spacing: -0.02em; color: var(--text-main); }
+
+.d-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.d-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.d-nav-link {
+  background: none; border: none; color: var(--text-muted); font-size: 0.95rem; font-weight: 600;
+  cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); font-family: var(--font-primary);
+}
+.d-nav-link:hover, .d-nav-link.active { color: var(--text-main); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+.d-text-error { color: #f87171; }
+.d-text-error:hover { color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
+
+.d-divider { width: 1px; height: 16px; background: var(--border-subtle); }
+
+.d-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 16px 6px 6px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
   transition: all 0.3s;
 }
-.resume-row:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.1); }
+.d-user-profile:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); }
+.d-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--tertiary));
+  display: flex; justify-content: center; align-items: center;
+  font-size: 1rem; font-weight: 700; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.d-user-info { display: flex; flex-direction: column; }
+.d-user-name { font-size: 0.9rem; font-weight: 700; line-height: 1; margin-bottom: 3px; font-family: var(--font-secondary); }
+.d-user-plan { font-size: 0.7rem; color: var(--accent); font-weight: 600; line-height: 1; text-transform: uppercase; letter-spacing: 0.05em; }
 
-.r-info { display: flex; align-items: center; gap: 1.5rem; }
-.r-icon { font-size: 1.2rem; }
-.r-name { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
-.r-meta { font-size: 0.8rem; color: #475569; }
-
-.r-actions { display: flex; gap: 10px; }
-.btn-row-ghost { background: transparent; border: 1px solid rgba(255,255,255,0.06); color: #94A3B8; padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
-.btn-row-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.02); }
-
-@media (max-width: 1024px) {
-  .sidebar { display: none; }
-  .dash-header { padding-top: 3rem; flex-direction: column; align-items: flex-start; gap: 2rem; }
-  .bento-grid { grid-template-columns: 1fr; }
-  .bento-wide { grid-column: span 1; }
-  .resume-row { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
-  .r-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+/* Main Workspace */
+.d-main-content {
+  padding: 5rem 2rem 8rem;
+}
+.d-workspace-container {
+  max-width: 1050px;
+  margin: 0 auto;
 }
 
-/* Settings View Elements */
-.settings-view { margin-bottom: 8rem; }
-.settings-card { max-width: 800px; }
-.settings-card h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; }
-.text-muted { color: #94A3B8; font-size: 0.95rem; }
-.mb-4 { margin-bottom: 2rem; }
-.mt-4 { margin-top: 2rem; }
+/* Typography & Headers */
+.d-page-header { margin-bottom: 4rem; position: relative; }
+.d-page-header h1 { font-family: var(--font-heading); font-size: 3rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.5rem; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+.d-page-header p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; font-weight: 400; }
+.d-ph-glow {
+  position: absolute; top: -100px; left: -50px; width: 300px; height: 300px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); filter: blur(40px); border-radius: 50%; pointer-events: none; z-index: -1;
+}
 
-.profile-form { display: flex; flex-direction: column; gap: 2rem; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+/* Cards System */
+.d-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
 
-.input-group { display: flex; flex-direction: column; gap: 8px; }
-.input-group label { font-size: 0.85rem; font-weight: 600; color: #E2E8F0; }
-.input-group input { 
-  background: rgba(15, 23, 42, 0.6); 
-  border: 1px solid rgba(255,255,255,0.1); 
-  padding: 12px 16px; 
-  border-radius: 8px; 
-  color: #F8FAFC; 
-  font-family: 'Outfit', sans-serif;
+.d-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  box-shadow: var(--shadow-premium);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+.d-card::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%); pointer-events: none;
+}
+.d-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.2); box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 30px var(--accent-glow); }
+
+/* Specific Cards */
+.d-create-card {
+  cursor: pointer;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(236, 72, 153, 0.1) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+.d-create-card:hover { border-color: rgba(99, 102, 241, 0.6); }
+.d-icon-ring {
+  width: 60px; height: 60px; border-radius: 50%; background: #ffffff;
+  display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #000;
+  margin-bottom: 2rem; transition: all 0.4s; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+.d-create-card:hover .d-icon-ring { transform: rotate(90deg) scale(1.1); box-shadow: 0 0 30px rgba(255,255,255,0.6); }
+.d-card-body h3 { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; margin-bottom: 0.35rem; }
+.d-card-body p { font-size: 1rem; color: var(--text-main); opacity: 0.8; }
+
+/* Subgrid for smaller metrics */
+.d-card-subgrid { display: grid; grid-template-rows: 1fr 1fr; gap: 2rem; }
+.d-sm-card { padding: 1.75rem; }
+
+/* Elements within cards */
+.d-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); font-weight: 700; }
+.d-value { font-family: var(--font-heading); font-size: 2.8rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+.d-text-gradient { background: linear-gradient(135deg, var(--accent), var(--tertiary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.d-pct-text { font-family: var(--font-heading); font-size: 1.4rem; font-weight: 700; }
+
+.d-progress-track { width: 100%; height: 8px; background: rgba(0,0,0,0.3); border-radius: 99px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); }
+.d-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--tertiary)); border-radius: 99px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 0 10px var(--accent-glow); }
+.d-sub-text { font-size: 0.9rem; color: var(--text-muted); }
+.d-link { color: var(--accent); text-decoration: none; font-weight: 600; transition: color 0.3s; }
+.d-link:hover { color: var(--text-main); text-shadow: 0 0 10px var(--accent-glow); }
+
+.d-flex-between { display: flex; justify-content: space-between; align-items: center; }
+
+/* Sections */
+.d-section-header h2 { font-family: var(--font-heading); font-size: 1.75rem; font-weight: 700; margin-bottom: 2rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem; }
+.d-empty-state {
+  background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px dashed var(--border-subtle);
+  border-radius: 20px; padding: 5rem 2rem; text-align: center; color: var(--text-muted);
+}
+.d-empty-icon { font-size: 3rem; margin-bottom: 1.5rem; opacity: 0.7; }
+.d-btn-primary { 
+  background: linear-gradient(135deg, var(--accent), var(--tertiary)); color: #fff; border: none; 
+  padding: 0.85rem 1.75rem; border-radius: 12px; font-size: 1rem; font-weight: 600; 
+  cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+  font-family: var(--font-primary);
+}
+.d-btn-primary:hover { box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5); transform: translateY(-2px); }
+
+/* Forms */
+.d-settings-card { max-width: 850px; padding: 3rem; }
+.d-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.d-input-group { display: flex; flex-direction: column; gap: 8px; }
+.d-input-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; }
+.d-input-group input { 
+  background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); padding: 0.85rem 1rem; 
+  border-radius: 8px; color: var(--text-main); font-family: var(--font-primary); font-size: 1rem;
   transition: all 0.3s;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
-.input-group input:focus { outline: none; border-color: #6366F1; background: rgba(15, 23, 42, 0.9); }
-.disabled-input { background: rgba(0,0,0,0.2) !important; color: #64748B !important; cursor: not-allowed; }
+.d-input-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 15px var(--accent-glow); background: rgba(0,0,0,0.5); }
+.d-input-disabled { opacity: 0.5; cursor: not-allowed; }
 
-.save-msg { color: #10B981; font-weight: 600; font-size: 0.9rem; padding: 10px 14px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2); }
-.s-logout:hover { color: #EF4444 !important; background: rgba(239, 68, 68, 0.1) !important; }
+.w-50 { grid-column: span 1; }
+.d-form-actions { display: flex; align-items: center; justify-content: flex-end; border-top: 1px solid var(--border-subtle); padding-top: 2rem;}
+.d-save-msg { color: #34D399; font-size: 0.95rem; font-weight: 600; margin-right: 1.5rem; }
+.ml-auto { margin-left: auto; }
+
+/* Utilities */
+.mt-3 { margin-top: 0.75rem; }
+.mt-4 { margin-top: 1.25rem; }
+.mt-6 { margin-top: 1.75rem; }
+.mt-8 { margin-top: 2.25rem; }
+.mt-10 { margin-top: 2.75rem; }
+.mt-12 { margin-top: 3.5rem; }
+.mt-auto { margin-top: auto; }
+
+/* Animations */
+.d-fade-enter { animation: fade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+@keyframes fade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Mobile */
+@media(max-width: 768px) {
+  .d-card-grid { grid-template-columns: 1fr; }
+  .d-card-subgrid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .d-nav-links { display: none; }
+  .d-form-row { grid-template-columns: 1fr; }
+  .d-main-content { padding: 3rem 1.5rem 5rem; }
+  .d-nav-right { gap: 1rem; }
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <SiteNavbar v-if="!$route.meta.hideNav" />
-    <main class="page-content" :class="{ 'auth-page': $route.meta.hideNav }">
+    <main class="page-content" :class="{ 'auth-page': $route.meta.hideNav && !$route.meta.isDashboard, 'dashboard-page': $route.meta.isDashboard }">
       <router-view v-slot="{ Component }">
         <transition name="page" mode="out-in">
           <component :is="Component" />
@@ -32,6 +32,10 @@ export default {
   padding-top: 80px; /* Account for fixed navbar */
 }
 .page-content.auth-page {
+  padding-top: 0;
+  min-height: 100vh;
+}
+.page-content.dashboard-page {
   padding-top: 0;
   min-height: 100vh;
 }

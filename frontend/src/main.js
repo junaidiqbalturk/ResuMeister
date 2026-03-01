@@ -29,7 +29,7 @@ const routes = [
   { name: 'Contact', path: '/contact', component: Contact },
   { name: 'Login', path: '/login', component: Login, meta: { hideNav: true } },
   { name: 'Register', path: '/register', component: Register, meta: { hideNav: true } },
-  { name: 'Dashboard', path: '/Dashboard', component: Dashboard, meta: { requiresAuth: true } },
+  { name: 'Dashboard', path: '/Dashboard', component: Dashboard, meta: { requiresAuth: true, hideNav: true, isDashboard: true } },
   { name: 'ResumeTemplate', path: '/resume-template', component: ResumeTemplate },
   { name: 'FillResume', path: '/resume-template/fill-resume', component: FillResume },
 ];
