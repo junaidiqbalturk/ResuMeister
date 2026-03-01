@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     account_detail = db.relationship('AccountDetail', backref='user', uselist=False, cascade="all, delete-orphan")
+    resumes = db.relationship('Resume', backref='author', lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
@@ -39,4 +40,30 @@ class AccountDetail(db.Model):
             'github_profile': self.github_profile,
             'linkedin_profile': self.linkedin_profile,
             'discord': self.discord
+        }
+
+class Resume(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    title = db.Column(db.String(100), nullable=False, default='Untitled Resume')
+    data = db.Column(db.Text, nullable=False) # JSON string containing the full resume payload
+    template_id = db.Column(db.String(20), nullable=False, default='1')
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def to_dict(self):
+        import json
+        try:
+            parsed_data = json.loads(self.data)
+        except:
+            parsed_data = {}
+            
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'title': self.title,
+            'template_id': self.template_id,
+            'data': parsed_data,
+            'created_at': self.created_at.isoformat() + 'Z' if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() + 'Z' if self.updated_at else None
         }

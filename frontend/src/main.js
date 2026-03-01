@@ -16,6 +16,10 @@ import Blog from "@/views/Blog.vue";
 import Contact from "@/views/Contact.vue";
 
 import { store } from './store.js';
+import axios from 'axios';
+
+// Configure Axios globally to send cookies
+axios.defaults.withCredentials = true;
 
 // Initialize global user state
 store.init();
@@ -31,7 +35,7 @@ const routes = [
   { name: 'Register', path: '/register', component: Register, meta: { hideNav: true } },
   { name: 'Dashboard', path: '/Dashboard', component: Dashboard, meta: { requiresAuth: true, hideNav: true, isDashboard: true } },
   { name: 'ResumeTemplate', path: '/resume-template', component: ResumeTemplate },
-  { name: 'FillResume', path: '/resume-template/fill-resume', component: FillResume },
+  { name: 'FillResume', path: '/resume-template/fill-resume', component: FillResume, meta: { hideNav: true } },
 ];
 
 const router = createRouter({

@@ -154,7 +154,6 @@
                  </div>
 
                  <div class="d-form-actions mt-8">
-                    <span v-if="saveMessage" class="d-save-msg">{{ saveMessage }}</span>
                     <button type="submit" class="d-btn-primary ml-auto">Save Changes</button>
                  </div>
               </form>
@@ -163,6 +162,22 @@
 
       </div>
     </main>
+
+    <!-- Toast Notification -->
+    <transition name="toast-slide">
+      <div v-if="toast.visible" class="d-toast" :class="'d-toast-' + toast.type">
+        <div class="d-toast-icon">
+          <span v-if="toast.type === 'success'">✓</span>
+          <span v-else>!</span>
+        </div>
+        <div class="d-toast-content">
+          <div class="d-toast-title">{{ toast.title }}</div>
+          <div class="d-toast-msg">{{ toast.message }}</div>
+        </div>
+        <button class="d-toast-close" @click="toast.visible = false">&times;</button>
+      </div>
+    </transition>
+
   </div>
 </template>
 
@@ -176,7 +191,8 @@ export default {
     return {
       store,
       activeTab: 'overview',
-      saveMessage: '',
+      toast: { visible: false, type: 'success', title: '', message: '' },
+      toastTimer: null,
       profileForm: {
         fullName: store.user?.fullName || '',
         phone: store.user?.phone || '',
@@ -235,25 +251,30 @@ export default {
         }
       }
     },
+    showToast(type, title, message) {
+      if(this.toastTimer) clearTimeout(this.toastTimer);
+      this.toast = { visible: true, type, title, message };
+      this.toastTimer = setTimeout(() => {
+        this.toast.visible = false;
+      }, 4000);
+    },
     async saveProfile() {
       try {
         if (!store.user?.id) {
-          this.saveMessage = 'Please login first.';
-          setTimeout(() => this.saveMessage = '', 3000);
+          this.showToast('error', 'Authentication Error', 'Please login first.');
           return;
         }
         const response = await axios.post(`http://localhost:5000/account/details/${store.user.id}`, this.profileForm);
         if (response.data.success) {
           store.updateProfile(this.profileForm);
-          this.saveMessage = 'Successfully saved.';
+          this.showToast('success', 'Profile Updated', 'Your settings have been saved successfully.');
         } else {
-          this.saveMessage = 'Failed to update.';
+          this.showToast('error', 'Update Failed', 'Failed to save changes. Please try again.');
         }
       } catch (err) {
         console.error("Error updating profile", err);
-        this.saveMessage = 'Server error.';
+        this.showToast('error', 'Server Error', 'Could not connect to the server.');
       }
-      setTimeout(() => this.saveMessage = '', 3000);
     },
     handleLogout() {
       store.logout();
@@ -461,7 +482,6 @@ export default {
 
 .w-50 { grid-column: span 1; }
 .d-form-actions { display: flex; align-items: center; justify-content: flex-end; border-top: 1px solid var(--border-subtle); padding-top: 2rem;}
-.d-save-msg { color: #34D399; font-size: 0.95rem; font-weight: 600; margin-right: 1.5rem; }
 .ml-auto { margin-left: auto; }
 
 /* Utilities */
@@ -476,6 +496,57 @@ export default {
 /* Animations */
 .d-fade-enter { animation: fade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
 @keyframes fade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Toast Notification */
+.d-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+.d-toast-success { border-bottom: 2px solid #10B981; }
+.d-toast-error { border-bottom: 2px solid #EF4444; }
+
+.d-toast-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #fff;
+}
+.d-toast-success .d-toast-icon { background: rgba(16, 185, 129, 0.2); color: #10B981; }
+.d-toast-error .d-toast-icon { background: rgba(239, 68, 68, 0.2); color: #EF4444; }
+
+.d-toast-content { display: flex; flex-direction: column; }
+.d-toast-title { font-weight: 700; font-size: 0.95rem; color: var(--text-main); margin-bottom: 2px; }
+.d-toast-msg { font-size: 0.85rem; color: var(--text-muted); }
+
+.d-toast-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: color 0.2s;
+}
+.d-toast-close:hover { color: var(--text-main); }
+
+.toast-slide-enter-active, .toast-slide-leave-active { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.toast-slide-enter-from, .toast-slide-leave-to { opacity: 0; transform: translateY(20px) scale(0.95); }
 
 /* Mobile */
 @media(max-width: 768px) {

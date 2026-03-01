@@ -90,7 +90,7 @@ export default {
         const response = await axios.post('http://localhost:5000/login', {
           email: this.email,
           password: this.password
-        });
+        }, { withCredentials: true });
         
         if (response.data.success) {
           store.login({

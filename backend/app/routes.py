@@ -50,6 +50,7 @@ def register():
 
 @main.route('/login', methods=['POST'])
 def login():
+    from flask_login import login_user
     data = request.json
     email = data.get('email')
     password = data.get('password')
@@ -57,7 +58,8 @@ def login():
     user = User.query.filter_by(email=email).first()
 
     if user and bcrypt.check_password_hash(user.password, password):
-        # User authenticated successfully
+        # User authenticated successfully - CREATE SESSION
+        login_user(user, remember=True)
         return jsonify({'success': True, 'message': 'Login successful', 'user': {'id': user.id, 'username': user.username, 'email': user.email}}), 200
     else:
         # Authentication failed
@@ -131,4 +133,82 @@ def generate_resume():
 
     return jsonify({"message": "Resume generated successfully", "file_path": file_path})
 
+# --- RESUME CRUD ENDPOINTS ---
+
+from app.models import Resume
+from flask_login import login_required, current_user
+import json
+
+@main.route('/api/resumes', methods=['GET'])
+@login_required
+def get_resumes():
+    """Get all resumes for the logged-in user."""
+    resumes = Resume.query.filter_by(user_id=current_user.id).order_by(Resume.updated_at.desc()).all()
+    return jsonify({"resumes": [r.to_dict() for r in resumes]}), 200
+
+@main.route('/api/resumes', methods=['POST'])
+@login_required
+def create_resume():
+    """Create a new resume."""
+    req = request.get_json()
+    if not req:
+        return jsonify({"message": "Invalid data format"}), 400
+
+    title = req.get('title', 'Untitled Resume')
+    template_id = req.get('template_id', '1')
+    data = req.get('data', {})
+
+    new_resume = Resume(
+        user_id=current_user.id,
+        title=title,
+        template_id=template_id,
+        data=json.dumps(data)
+    )
+    db.session.add(new_resume)
+    db.session.commit()
+
+    return jsonify({"message": "Resume created successfully", "resume": new_resume.to_dict()}), 201
+
+@main.route('/api/resumes/<int:resume_id>', methods=['GET'])
+@login_required
+def get_resume(resume_id):
+    """Retrieve a specific resume."""
+    resume = Resume.query.get_or_404(resume_id)
+    if resume.user_id != current_user.id:
+        return jsonify({"message": "Unauthorized"}), 403
+    return jsonify({"resume": resume.to_dict()}), 200
+
+@main.route('/api/resumes/<int:resume_id>', methods=['PUT', 'POST'])
+@login_required
+def update_resume(resume_id):
+    """Update an existing resume."""
+    resume = Resume.query.get_or_404(resume_id)
+    if resume.user_id != current_user.id:
+        return jsonify({"message": "Unauthorized"}), 403
+
+    req = request.get_json()
+    if not req:
+        return jsonify({"message": "Invalid data format"}), 400
+
+    if 'title' in req:
+        resume.title = req['title']
+    if 'template_id' in req:
+        resume.template_id = req['template_id']
+    if 'data' in req:
+        resume.data = json.dumps(req['data'])
+
+    db.session.commit()
+    return jsonify({"message": "Resume updated successfully", "resume": resume.to_dict()}), 200
+
+@main.route('/api/resumes/<int:resume_id>', methods=['DELETE'])
+@login_required
+def delete_resume(resume_id):
+    """Delete a resume."""
+    resume = Resume.query.get_or_404(resume_id)
+    if resume.user_id != current_user.id:
+        return jsonify({"message": "Unauthorized"}), 403
+
+    db.session.delete(resume)
+    db.session.commit()
+    return jsonify({"message": "Resume deleted successfully"}), 200
 
