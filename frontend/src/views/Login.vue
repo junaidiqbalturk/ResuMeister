@@ -93,12 +93,10 @@ export default {
         });
         
         if (response.data.success) {
-          // Fake fetching additional profile data from this login endpoint for now
-          // We can expand the backend to return literal DB values (Name, phone, etc.)
           store.login({
-            email: this.email,
-            username: this.email.split('@')[0], 
-            // In a real scenario, the backend might return `id`, `fullName`, `phone`, `address` here
+            id: response.data.user.id,
+            email: response.data.user.email,
+            username: response.data.user.username,
           });
           
           this.$router.push('/dashboard');

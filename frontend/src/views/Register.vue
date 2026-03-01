@@ -128,10 +128,10 @@ export default {
          });
 
          if (response.status === 201 || response.data.message === "User registered successfully") {
-            // Fake auto-login after register since backend doesn't return full user payload on register
             store.login({
-               email: this.email,
-               username: this.name.split(' ')[0] || this.name,
+               id: response.data.user?.id,
+               email: response.data.user?.email || this.email,
+               username: response.data.user?.username || (this.name.split(' ')[0] || this.name),
                fullName: this.name
             });
             this.$router.push('/dashboard');
